@@ -14,6 +14,7 @@ def handle_new_url(self):
         domain = snip_domain(full_domain)
         region = get_region(domain, self.region_dict)
         self.region = region
+        self.determine_encounter()
 
 # Takes the url and returns the full domain
 def get_domain(url):
