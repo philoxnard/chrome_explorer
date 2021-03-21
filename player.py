@@ -8,3 +8,4 @@ class Player:
         self.password = ""
         self.party = []
         self.collection = []
+        self.url = "https://www.youtube.com/philoxnard/chrome_explorer"

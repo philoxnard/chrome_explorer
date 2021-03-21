@@ -83,3 +83,8 @@ Each monster will have a repertoire of attacks and abilities at their disposal, 
 ### Swapping
 
 Like in Pokemon, a player will be able to spend their action to swap between the active monster and another monster in their party. The utility of switching will be very different than in Pokemon, though. Because the players' turns do not happen simultaneously, you will not be able to switch in a predictive manner. When a monster is on the bench, it will continue to regenerate resources according to its stat block.
+
+## IDEA
+
+Encounter other users who are on the same site as you
+maybe flag yourself for pvp
