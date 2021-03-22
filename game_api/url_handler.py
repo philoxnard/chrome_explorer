@@ -6,7 +6,6 @@ import validators
 #########################################################################
 
 # General handler for receiving a new url from the player
-### Needs something to validate that self.url is actually a url
 def handle_new_url(self):
     valid = validators.url(self.player.url)
     if valid:
