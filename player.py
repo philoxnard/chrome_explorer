@@ -4,8 +4,10 @@ class Player:
     """
 
     def __init__(self):
+        # Attributes imported from database
         self.username = ""
-        self.password = ""
         self.party = []
         self.collection = []
-        self.url = "https://www.facebook.com/philoxnard/chrome_explorer"
+
+        # Attributes changed during play
+        self.url = "https://www.youtube.com/philoxnard/chrome_explorer"

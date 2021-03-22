@@ -20,6 +20,9 @@ class Game:
 
     def __init__(self):
 
+        # Game state! Very important
+        self.state = "initialize"
+
         # Get all the info from the databases
         # This may get tweaked or removed, might be really work heavy
         self.regions = db.regions
@@ -31,7 +34,7 @@ class Game:
 
         # Attributes that determine themselves by connecting to the database
         self.region_dict = self.get_region_dict()
-        self.player = self.handle_login()
+        self.player = None
 
         # Percentage odds of having an encounter while trotting
         self.encounter_frequency = 100
@@ -57,5 +60,5 @@ class Game:
         return regions_dict
 
 
-game = Game()
-game.new_url_handler()
+# game = Game()
+# game.new_url_handler()

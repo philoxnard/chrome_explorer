@@ -10,7 +10,8 @@ def new_url_handler(self):
     valid = validators.url(self.player.url)
     if valid:
         full_domain = get_domain(self.player.url)
-        domain = snip_domain(full_domain)
+        sanitized_domain = sanitize_domain(full_domain)
+        domain = snip_domain(sanitized_domain)
         region = get_region(domain, self.region_dict)
         self.region = region
         self.determine_encounter()
@@ -19,6 +20,12 @@ def new_url_handler(self):
 def get_domain(url):
     domain = urlparse(url).netloc
     return domain
+
+# Checks to see if the domain leads with www. and adds it if not
+def sanitize_domain(full_domain):
+    if not full_domain[3] == ".":
+        full_domain = "www." + full_domain
+    return full_domain
 
 # Takes the full domain and returns a snipped domain
 def snip_domain(domain):
