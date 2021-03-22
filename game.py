@@ -16,8 +16,9 @@ class Game:
     def __init__(self):
 
         self.region_dict = self.get_region_dict()
-        self.encounter_frequency = 50
+        self.encounter_frequency = 100
         self.region = None
+        self.regions = regions
 
     from game_api.url_handler import handle_new_url
     from game_api.determine_encounter import determine_encounter
