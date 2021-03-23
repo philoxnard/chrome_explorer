@@ -28,7 +28,9 @@ def instantiate_party(self):
     for phox in self.player.party:
         get_collection_info(phox, self.player.collection, self.attacks, self.talents)
 
+
 # Big long ugly function that gets an instance of a phox from the base blueprint
+# Will also likely be called when instantiating wild phoxes
 def get_base_phox(phox, phoxDB):
     new_phox = Phox()
     blueprint = phoxDB.find({"species": phox})
@@ -60,6 +62,7 @@ def get_base_phox(phox, phoxDB):
         #       These strings must then be put into attack db
         #       via get_phox_attacks
         new_phox.attack_strings = doc["base attacks"]
+        new_phox.talents = doc["base talents"]
         return new_phox
 
 # Goes through the player's collection and grabs data for a
@@ -108,9 +111,8 @@ def get_phox_talents(phox, talentDB):
             index = phox.talent_indexes[i]
             talent_options = phox.talent_options[i]
             phox.talents.append(talent_options[index])
-    if phox.talents:
-        for talent in phox.talents:
-            get_talent_effects(talent, phox, talentDB)
+    for talent in phox.talents:
+        get_talent_effects(talent, phox, talentDB)
 
 # This will take the string names of each attach, find those attacks in the attackDB,
 # Then pass those attacks into a phox.attacks list. 
@@ -126,10 +128,5 @@ def get_phox_attacks(phox, attackDB):
             attack.style = doc["style"]
             attack.damage = doc["damage"]
             attack.cost = doc["cost"]
-            # NOTE: Use eval() 
-            #       have effect in attackDB be an array of strings
-            #       each string gets looped over and eval()'d
-            #       the code in the DB will have to change a lot but thats okay
-        # make an Attack() class for that attack
-        # plug in all the relevant info for the attack from the db
-        # append that Attack to phox.attacks[]
+            attack.plain_text_effect = doc["plain text effect"]
+            phox.attacks.append(attack)

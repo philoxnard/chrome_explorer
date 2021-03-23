@@ -12,7 +12,6 @@ if __name__ == "__main__":
             # To only run new_url_handler when a new url appears
             game.player.url = input("type a new url ")
             game.new_url_handler()
-            pass
         if game.state == "initialize_encounter":
             # Server will tell browser to display a pokemon-type battle screen
             # Server will populate active_mon and active_enemy_mon

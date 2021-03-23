@@ -20,6 +20,9 @@ def get_talent_effects(talent_string, phox, talentDB):
     for doc in talent:
         for title, effect in doc["effect"].items():
 
+            if title == "win_speed_tie":
+                phox.photo_finish = effect
+
             if title == "cha_boost":
                 phox.charisma += effect
             
@@ -29,3 +32,5 @@ def get_talent_effects(talent_string, phox, talentDB):
             if title == "exp_mod":
                 effect /= 100
                 phox.exp_mod *= effect
+
+            

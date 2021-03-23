@@ -18,3 +18,14 @@ class Phox:
         self.talents = []
         self.attacks = []
         self.exp_mod = 1
+
+        # These stats are set equal to the phox's actual stat when combat starts
+        # and they are then manipulated and used in that single combat
+        self.temp_str = 0
+        self.temp_spd = 0
+        self.temp_int = 0
+        self.temp_con = 0
+        self.temp_spi = 0
+        self.temp_cha = 0
+
+        self.photo_finish = False
