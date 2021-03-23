@@ -4,7 +4,7 @@
 
 Phoxtrot is an in-development online game that will take place in a Chrome extension. The back-end will be in Python utilizing Flask to package it as a web app, and the front-end will utilize HTML, CSS, Javascript, and potentially Socket.IO if the need arises.
 
-Phoxtrot is a game that exists somewhere between Pokemon, Pokemon-GO, and Skannerz. It is a Pokemon-style game that uses the internet as its game map. As players traverse the web and hop from site to site, they will encounter different Phoxes (called Phoxes). Players can then use their own Phoxes to battle the ones they encounter in the wild, strenghtening their own Phoxes while also adding to their collection each time they find a new one.
+Phoxtrot is a game that exists somewhere between Pokemon, Pokemon-GO, and Skannerz. It is a Pokemon-style game that uses the internet as its game map. As players traverse the web and hop from site to site, they will encounter different monsters (called Phoxes). Players can then use their own Phoxes to battle the ones they encounter in the wild, strenghtening their own Phoxes while also adding to their collection each time they find a new one.
 
 ## General Structure
 
