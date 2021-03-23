@@ -16,3 +16,4 @@ class Phox:
         self.charisma = 0
         self.status = None
         self.talents = []
+        self.attacks = []

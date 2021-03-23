@@ -1,4 +1,5 @@
 from phox import Phox
+from talents import get_talent_effects
 
 ################################################################################
 ### Library for instantiating phox classes for each phox in the user's party ###
@@ -23,7 +24,7 @@ def instantiate_party(self):
             base_phox = get_base_phox(phox, self.phoxes)
             self.player.party.append(base_phox)
     for phox in self.player.party:
-        get_collection_info(phox, self.player.collection)
+        get_collection_info(phox, self.player.collection, self.attacks)
 
 # Big long ugly function that gets an instance of a phox from the base blueprint
 def get_base_phox(phox, phoxDB):
@@ -53,13 +54,16 @@ def get_base_phox(phox, phoxDB):
         new_phox.lvl8_talents = talents["level 8"]
         new_phox.lvl10_talents = talents["level 10"]
         new_phox.talent_options =[new_phox.lvl2_talents, new_phox.lvl4_talents, new_phox.lvl6_talents, new_phox.lvl8_talents, new_phox.lvl10_talents]
-        new_phox.attacks = doc["base attacks"]
+        # NOTE: attack_strings is literally just a list of strings.
+        #       These strings must then be put into attack db
+        #       via get_phox_attacks
+        new_phox.attack_strings = doc["base attacks"]
         return new_phox
 
 # Goes through the player's collection and grabs data for a
 # phox in the current party.
 # Also calls the function to combine the information
-def get_collection_info(phox, collection):
+def get_collection_info(phox, collection, attackDB):
     phox_info = collection[phox.species]
     phox.level = phox_info["level"]
     phox.experience = phox_info["experience"]
@@ -68,14 +72,14 @@ def get_collection_info(phox, collection):
     phox.talent_indexes.pop(0)
     phox.nickname = phox_info["nickname"]
     phox.status = phox_info["status"]
-    combine_phox_info(phox)
+    combine_phox_info(phox, attackDB)
 
 # High level function that contains all the information for 
 # how to mix the blueprint data with the collection data
-def combine_phox_info(phox):
+def combine_phox_info(phox, attackDB):
     combine_phox_stats(phox)
     get_phox_talents(phox)
-    get_phox_attacks(phox)
+    get_phox_attacks(phox, attackDB)
 
 # Function to increment and implement changes to the stat block
 def combine_phox_stats(phox):
@@ -93,14 +97,23 @@ def combine_phox_stats(phox):
     phox.charisma += added_cha
     phox.stats = [phox.strength, phox.speed, phox.intelligence, phox.constitution, phox.spirit, phox.charisma]
 
-# Function to give the phox its talents
+# Function to give the phox its talents. Gets looped through entire party.
+# Calls function from the talent.py module to flesh out the talents
+# and actually make them mean something
 def get_phox_talents(phox):
     if phox.talent_indexes:
         for i in range(len(phox.talent_indexes)):
             index = phox.talent_indexes[i]
-            talent_option = phox.talent_options[i]
-            phox.talents.append(talent_option[index])
+            talent_options = phox.talent_options[i]
+            phox.talents.append(talent_options[index])
+    for talent in phox.talents:
+        get_talent_effects(talent, phox)
 
-# Function to give the phox its attacks
-def get_phox_attacks(phox):
-    pass
+# This will take the string names of each attach, find those attacks in the attackDB,
+# Then pass those attacks into a phox.attacks list. 
+def get_phox_attacks(phox, attackDB):
+    for attack in phox.attack_strings:
+        # Search attackDB for that attack
+        # make an Attack() class for that attack
+        # plug in all the relevant info for the attack from the db
+        # append that Attack to phox.attacks[]

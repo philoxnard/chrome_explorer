@@ -47,6 +47,7 @@ class Game:
     from game_api.handle_new_url import new_url_handler
     from game_api.determine_encounter import determine_encounter
     from game_api.instantiate_party import instantiate_party
+    
 
     # Runs when a game session is instantiated to grab the potential regions from the DB
     def get_region_dict(self):
