@@ -17,3 +17,4 @@ class Phox:
         self.status = None
         self.talents = []
         self.attacks = []
+        self.exp_mod = 1

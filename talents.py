@@ -8,16 +8,24 @@
 # This entire thing is literally just one single function that is responsible
 # for altering every single talent
 
-# Need to figure out if there's a way to do this from the talentDB isntead of 
-# here in a python file
+# Takes info from each talent dictionary and applies an actual effect
+# based on the effect of the talent.
 
-# Its eval() !!!!
-# store effects as strings in an array
-# loop through the array and eval() each string
+# This way, talents can be updated by changing them in the database.
+# However, this document must be updated each time a talent is made with 
+# a brand new effect.
 
-def get_talent_effects(talent, phox):
-    if talent == "hard worker":
-        phox.exp_multiplier = 1.5
-    if talent == "charmer":
-        phox.charisma += 20
-        phox.attack_strings.append("charm")
+def get_talent_effects(talent_string, phox, talentDB):
+    talent = talentDB.find({"name": talent_string})
+    for doc in talent:
+        for title, effect in doc["effect"].items():
+
+            if title == "cha_boost":
+                phox.charisma += effect
+            
+            if title == "new_attack":
+                phox.attack_strings.append(effect)
+
+            if title == "exp_mod":
+                effect /= 100
+                phox.exp_mod *= effect
