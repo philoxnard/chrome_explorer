@@ -6,17 +6,19 @@ import random
 
 # General handler for determining the encounter for each trot
 def determine_encounter(self):
-    encounter = does_encounter_happen(self.encounter_frequency)
-    if encounter:
-        proceed = does_player_accept_encounter()
-        if proceed:
-            self.phox_encountered = which_phox_encountered(self.region, self.regions)
-            self.state = "initialize_encounter"
-            print(self.phox_encountered)
+    if self.state == "explore":
+        encounter = does_encounter_happen(self.encounter_frequency)
+        if encounter:
+            proceed = does_player_accept_encounter()
+            if proceed:
+                self.phox_encountered = which_phox_encountered(self.region, self.regions)
+                self.state = "initialize_encounter"
+                # Next need to make a file that initializes the encounter
+                print(self.phox_encountered)
+            else:
+                print("you run from monster")
         else:
-            print("you run from monster")
-    else:
-        print('no encounter')
+            print('no encounter')
 
 # Takes self.encounter_frequency and determines if an encounter happens at all
 def does_encounter_happen(frequency):

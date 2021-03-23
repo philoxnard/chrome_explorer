@@ -8,12 +8,14 @@ import player
 # This entire library will likely change a lot when the front end attaches
 # Upon sucessful login, set game.state to "explore"
 def handle_login(self):
-    login_info = get_login_info()
-    is_valid = validate_login_info(login_info)
-    if is_valid:
-        user = fetch_user_info(self.players, login_info[0])
-        self.player = generate_player(user)
-        self.state = "explore"
+    if self.state == "initialize":
+        login_info = get_login_info()
+        is_valid = validate_login_info(login_info)
+        if is_valid:
+            user = fetch_user_info(self.players, login_info[0])
+            self.player = generate_player(user)
+            self.instantiate_party()
+            self.state = "explore"
 
 # This will change when the front end is attached
 def get_login_info():
@@ -37,5 +39,4 @@ def generate_player(user):
     for doc in user:
         new_user.username = doc["username"]
         new_user.collection = doc["collection"]
-        new_user.party = doc["party"]
     return new_user

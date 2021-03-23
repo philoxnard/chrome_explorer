@@ -7,14 +7,15 @@ import validators
 
 # General handler for receiving a new url from the player
 def new_url_handler(self):
-    valid = validators.url(self.player.url)
-    if valid:
-        full_domain = get_domain(self.player.url)
-        sanitized_domain = sanitize_domain(full_domain)
-        domain = snip_domain(sanitized_domain)
-        region = get_region(domain, self.region_dict)
-        self.region = region
-        self.determine_encounter()
+    if self.state == "explore":
+        valid = validators.url(self.player.url)
+        if valid:
+            full_domain = get_domain(self.player.url)
+            sanitized_domain = sanitize_domain(full_domain)
+            domain = snip_domain(sanitized_domain)
+            region = get_region(domain, self.region_dict)
+            self.region = region
+            self.determine_encounter()
 
 # Takes the url and returns the full domain
 def get_domain(url):
