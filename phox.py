@@ -15,3 +15,4 @@ class Phox:
         self.spirit = 0
         self.charisma = 0
         self.status = None
+        self.talents = []

@@ -24,8 +24,6 @@ def instantiate_party(self):
             self.player.party.append(base_phox)
     for phox in self.player.party:
         get_collection_info(phox, self.player.collection)
-        for i in phox.stats:
-            print(i)
 
 # Big long ugly function that gets an instance of a phox from the base blueprint
 def get_base_phox(phox, phoxDB):
@@ -54,6 +52,7 @@ def get_base_phox(phox, phoxDB):
         new_phox.lvl6_talents = talents["level 6"]
         new_phox.lvl8_talents = talents["level 8"]
         new_phox.lvl10_talents = talents["level 10"]
+        new_phox.talent_options =[new_phox.lvl2_talents, new_phox.lvl4_talents, new_phox.lvl6_talents, new_phox.lvl8_talents, new_phox.lvl10_talents]
         new_phox.attacks = doc["base attacks"]
         return new_phox
 
@@ -64,7 +63,9 @@ def get_collection_info(phox, collection):
     phox_info = collection[phox.species]
     phox.level = phox_info["level"]
     phox.experience = phox_info["experience"]
-    phox.talents = phox_info["talents"]
+    phox.talent_indexes = phox_info["talents"]
+    # The first index in this list is always 0 and must be removed
+    phox.talent_indexes.pop(0)
     phox.nickname = phox_info["nickname"]
     phox.status = phox_info["status"]
     combine_phox_info(phox)
@@ -94,7 +95,11 @@ def combine_phox_stats(phox):
 
 # Function to give the phox its talents
 def get_phox_talents(phox):
-    pass
+    if phox.talent_indexes:
+        for i in range(len(phox.talent_indexes)):
+            index = phox.talent_indexes[i]
+            talent_option = phox.talent_options[i]
+            phox.talents.append(talent_option[index])
 
 # Function to give the phox its attacks
 def get_phox_attacks(phox):
