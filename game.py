@@ -47,6 +47,7 @@ class Game:
     from game_api.handle_new_url import new_url_handler
     from game_api.determine_encounter import determine_encounter
     from game_api.instantiate_party import instantiate_party
+    from game_api.initialize_encounter import initialize_encounter
     
 
     # Runs when a game session is instantiated to grab the potential regions from the DB

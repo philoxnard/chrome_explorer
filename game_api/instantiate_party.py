@@ -117,7 +117,7 @@ def get_phox_talents(phox, talentDB):
 # This will take the string names of each attach, find those attacks in the attackDB,
 # Then pass those attacks into a phox.attacks list. 
 # Looped through entire party
-# NOTE: This may need to call something from its own doc like talents.py
+# NOTE: Actual effects for attacks are instantiated and called during combat
 def get_phox_attacks(phox, attackDB):
     for string in phox.attack_strings:
         attack = Attack()

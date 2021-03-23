@@ -13,10 +13,10 @@ if __name__ == "__main__":
             game.player.url = input("type a new url ")
             game.new_url_handler()
         if game.state == "initialize_encounter":
+            game.initialize_encounter()
             # Server will tell browser to display a pokemon-type battle screen
             # Server will populate active_mon and active_enemy_mon
             # Server will set game.state to "encounter"
-            pass
         if game.state == "encounter":
             # Server will run calcs to determine whose turn it is - add up speed from each mon until someone hits 100
             # If enemy's turn, server will pick an attack and execute

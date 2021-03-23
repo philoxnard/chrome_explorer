@@ -14,7 +14,7 @@ def determine_encounter(self):
                 self.phox_encountered = which_phox_encountered(self.region, self.regions)
                 self.state = "initialize_encounter"
                 # Next need to make a file that initializes the encounter
-                print(self.phox_encountered)
+                print("You found a " + self.phox_encountered)
             else:
                 print("you run from monster")
         else:

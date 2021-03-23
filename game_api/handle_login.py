@@ -20,8 +20,8 @@ def handle_login(self):
 # This will change when the front end is attached
 def get_login_info():
     username = input("Whats your username? ")
-    password = input("Whats your password? ")
-    login_info = [username, password]
+    # password = input("Whats your password? ") #not needed for testing
+    login_info = [username] #will also submit password 
     return login_info
 
 # This will change when I know how to validate logins in Python

@@ -14,6 +14,7 @@
 # a brand new effect.
 
 # NOTE: This will probably only actually ever get called in battle
+# This doc will get updated when combat is further in development
 
 
 def get_attack_effects(title, effect, phox):
