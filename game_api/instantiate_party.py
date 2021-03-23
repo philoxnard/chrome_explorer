@@ -1,4 +1,5 @@
 from phox import Phox
+from attack import Attack
 from talents import get_talent_effects
 
 ################################################################################
@@ -111,9 +112,21 @@ def get_phox_talents(phox):
 
 # This will take the string names of each attach, find those attacks in the attackDB,
 # Then pass those attacks into a phox.attacks list. 
+# Looped through entire party
 def get_phox_attacks(phox, attackDB):
-    for attack in phox.attack_strings:
-        # Search attackDB for that attack
+    for string in phox.attack_strings:
+        attack = Attack()
+        db_info = attackDB.find({"name": string})
+        for doc in db_info:
+            attack.name = doc["name"]
+            attack.family = doc["family"]
+            attack.style = doc["style"]
+            attack.damage = doc["damage"]
+            attack.cost = doc["cost"]
+            # NOTE: Use eval() 
+            #       have effect in attackDB be an array of strings
+            #       each string gets looped over and eval()'d
+            #       the code in the DB will have to change a lot but thats okay
         # make an Attack() class for that attack
         # plug in all the relevant info for the attack from the db
         # append that Attack to phox.attacks[]
