@@ -29,6 +29,9 @@ class Game:
         self.talents = db.talents
         self.families = db.families
 
+        # The instance of a wild phox that appears while exploring
+        self.wild_phox = None
+
         # Attributes that determine themselves by connecting to the database
         self.region_dict = self.get_region_dict()
         self.player = None

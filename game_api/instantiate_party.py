@@ -57,7 +57,8 @@ def get_base_phox(phox, phoxDB):
         new_phox.lvl6_talents = talents["level 6"]
         new_phox.lvl8_talents = talents["level 8"]
         new_phox.lvl10_talents = talents["level 10"]
-        new_phox.talent_options =[new_phox.lvl2_talents, new_phox.lvl4_talents, new_phox.lvl6_talents, new_phox.lvl8_talents, new_phox.lvl10_talents]
+        # talent_options is a list of lists, each list containing 2 strings, each of which are names of talents
+        new_phox.talent_options = [new_phox.lvl2_talents, new_phox.lvl4_talents, new_phox.lvl6_talents, new_phox.lvl8_talents, new_phox.lvl10_talents]
         # NOTE: attack_strings is literally just a list of strings.
         #       These strings must then be put into attack db
         #       via get_phox_attacks
