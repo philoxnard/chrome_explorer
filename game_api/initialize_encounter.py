@@ -32,7 +32,7 @@ def get_wild_phox_level(region, regionsDB):
 
 # Randomize talents according to the phox's level
 def get_phox_talents(phox):
-    print(phox.level)
+    # num_talents may change if the rate of talent acquisition changes
     num_talents = int(phox.level/2)
     for i in range(num_talents):
         index = random.randint(0, 1)

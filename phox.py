@@ -4,28 +4,27 @@ class Phox:
     """
 
     def __init__(self):
-        self.species = ""
+        self.species = "asdf"
+        self.family = ""
         self.nickname = ""
         self.level = 0
         self.experience = 0
-        self.strength = 0
-        self.speed = 0
-        self.intelligence = 0
-        self.constitution = 0
-        self.spirit = 0
-        self.charisma = 0
-        self.status = None
-        self.talents = []
+
+        self.health = 0
+        self.RAM = 100
+        self.base_stats = {}
+        self.stat_growth = {}
+        self.upgrade_tree = {}
+        self.attack_strings = []
+        self.upgrades = []
+
         self.attacks = []
+
+        self.status = None
+        self.attack = []
         self.exp_mod = 1
 
-        # These stats are set equal to the phox's actual stat when combat starts
-        # and they are then manipulated and used in that single combat
-        self.temp_str = 0
-        self.temp_spd = 0
-        self.temp_int = 0
-        self.temp_con = 0
-        self.temp_spi = 0
-        self.temp_cha = 0
+        # Set to true whenever a wild phox is instantiated
+        self.is_wild = False
 
         self.photo_finish = False

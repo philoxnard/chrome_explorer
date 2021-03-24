@@ -26,7 +26,7 @@ class Game:
         self.players = db.players
         self.phoxes = db.phoxes
         self.attacks = db.attacks
-        self.talents = db.talents
+        self.upgrades = db.upgrades
         self.families = db.families
 
         # The instance of a wild phox that appears while exploring
@@ -61,7 +61,6 @@ class Game:
             domains = doc["domains"]
             regions_dict[region] = domains
         return regions_dict
-
 
 # game = Game()
 # game.new_url_handler()
