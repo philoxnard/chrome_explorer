@@ -24,7 +24,7 @@ def get_upgrade_effects(upgrade_string, phox, upgradeDB):
                 phox.photo_finish = effect
 
             if title == "vis_boost":
-                phox.vis += effect
+                phox.stats["vis"] += effect
             
             if title == "new_attack":
                 phox.attack_strings.append(effect)

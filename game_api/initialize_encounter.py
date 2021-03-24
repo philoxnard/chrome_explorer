@@ -33,13 +33,18 @@ def get_wild_phox_level(region, regionsDB):
 # Randomize talents according to the phox's level
 def get_phox_talents(phox):
     # num_talents may change if the rate of talent acquisition changes
-    num_talents = int(phox.level/2)
-    for i in range(num_talents):
+    for i in range(phox.level-1):
         index = random.randint(0, 1)
-        talent_options = phox.talent_options[i]
-        phox.talents.append(talent_options[index])
+        upgrade_options = phox.upgrade_tree[i]
+        phox.upgrades.append(upgrade_options[index])
 
 # Gives the phox its temporary stats that will be used and manipulated in combat
 # Looped through every phox in the party, as well as the wild phox
 def set_temp_stats(phox):
-    pass
+    phox.temp_speed = phox.stats["speed"]
+    phox.temp_cpow = phox.stats["cpow"]
+    phox.temp_lpow = phox.stats["lpow"]
+    phox.temp_csec = phox.stats["csec"]
+    phox.temp_lsec = phox.stats["lsec"]
+    phox.temp_rr = phox.stats["rr"]
+    phox.temp_vis = phox.stats["vis"]

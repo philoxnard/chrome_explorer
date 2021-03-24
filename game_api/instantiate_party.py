@@ -67,14 +67,14 @@ def combine_phox_info(phox, attackDB, upgradeDB):
 
 # Function to increment and implement changes to the stat block
 def combine_phox_stats(phox):
-    phox.health = phox.base_stats["health"]+phox.level*phox.stat_growth["health"]
-    phox.speed = phox.base_stats["speed"]+phox.level*phox.stat_growth["speed"]
-    phox.cpow = phox.base_stats["cpow"]+phox.level*phox.stat_growth["cpow"]
-    phox.lpow = phox.base_stats["lpow"]+phox.level*phox.stat_growth["lpow"]
-    phox.csec = phox.base_stats["csec"]+phox.level*phox.stat_growth["csec"]
-    phox.lsec = phox.base_stats["lsec"]+phox.level*phox.stat_growth["lsec"]
-    phox.rr = phox.base_stats["rr"]+phox.level*phox.stat_growth["rr"]
-    phox.vis = phox.base_stats["vis"]+phox.level*phox.stat_growth["vis"]
+    phox.base_stats["health"] += phox.base_stats["health"]+phox.level*phox.stat_growth["health"]
+    phox.base_stats["speed"] += phox.base_stats["speed"]+phox.level*phox.stat_growth["speed"]
+    phox.base_stats["cpow"] += phox.base_stats["cpow"]+phox.level*phox.stat_growth["cpow"]
+    phox.base_stats["lpow"] += phox.base_stats["lpow"]+phox.level*phox.stat_growth["lpow"]
+    phox.base_stats["csec"] += phox.base_stats["csec"]+phox.level*phox.stat_growth["csec"]
+    phox.base_stats["lsec"] += phox.base_stats["lsec"]+phox.level*phox.stat_growth["lsec"]
+    phox.base_stats["rr"] += phox.base_stats["rr"]+phox.level*phox.stat_growth["rr"]
+    phox.base_stats["vis"] += phox.base_stats["vis"]+phox.level*phox.stat_growth["vis"]
     
     
 # Function to give the phox its talents. Gets looped through entire party.

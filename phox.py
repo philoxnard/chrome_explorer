@@ -21,7 +21,6 @@ class Phox:
         self.attacks = []
 
         self.status = None
-        self.attack = []
         self.exp_mod = 1
 
         # Set to true whenever a wild phox is instantiated
