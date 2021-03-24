@@ -16,6 +16,8 @@ When the server decides that an encounter with a wild Phox will happen, the user
 
 ### Stats
 
+THIS ALL NEEDS TO CHANGE TO UPDATED STAT BLOCK
+
 Each Phox will have a stat block similar to most RPG characters. The stats will include Strength, Speed, Intelligence, Spirit, Constitution, and Charisma. These stats are used for the following:
 
 Strength will be used to determine the damage of physical attacks.
