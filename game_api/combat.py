@@ -1,11 +1,13 @@
 import random
 
+from game_api.handle_attack import execute_attack
 
 #########################################################
 ### Library for playing through every round of combat ###
 #########################################################
 
 # All of the randomization calculations can probably be simplified way down.
+
 
 # Start of the combat chain
 def combat(self):
@@ -36,7 +38,7 @@ def check_for_turn(phoxes):
     else:
         for phox in phoxes:
             if phox.can_act:
-                take_turn(phox)
+                take_turn(phox, phoxes)
     increment_speed(phoxes)
 
 # Determines if both phoxes have hit their threshold at the same time
@@ -53,12 +55,12 @@ def settle_tie(phoxes):
     # Check for the photo_finish upgrade
     if phoxes[0].photo_finish == True and phoxes[1].photo_finish == False:
         print(phoxes[0].species + " has photo finish")
-        take_turn(phoxes[0])
-        take_turn(phoxes[1])
+        take_turn(phoxes[0], phoxes)
+        take_turn(phoxes[1], phoxes)
     elif phoxes[1].photo_finish == True and phoxes[0].photo_finish == False:
         print(phoxes[1].species + " has photo finish")
-        take_turn(phoxes[1])
-        take_turn(phoxes[0])
+        take_turn(phoxes[1], phoxes)
+        take_turn(phoxes[0], phoxes)
     # If both or neither phoxes have photo_finish, pick by AS, then temp_speed, then random
     else:
         if not phoxes[0].AS == phoxes[1].AS:
@@ -70,36 +72,37 @@ def settle_tie(phoxes):
 
 def settle_tie_by_AS(phoxes):
     if phoxes[0].AS > phoxes[1].AS:
-        take_turn(phoxes[0])
-        take_turn(phoxes[1])
+        take_turn(phoxes[0], phoxes)
+        take_turn(phoxes[1], phoxes)
     if phoxes[1].AS > phoxes[0].AS:
-        take_turn(phoxes[1])
-        take_turn(phoxes[0])
+        take_turn(phoxes[1], phoxes)
+        take_turn(phoxes[0], phoxes)
 
 def settle_tie_by_temp_speed(phoxes):
     if phoxes[0].temp_speed > phoxes[1].temp_speed:
-        take_turn(phoxes[0])
-        take_turn(phoxes[1])
+        take_turn(phoxes[0], phoxes)
+        take_turn(phoxes[1], phoxes)
     elif phoxes[1].temp_speed > phoxes[0].temp_speed:
-        take_turn(phoxes[1])
-        take_turn(phoxes[0])
+        take_turn(phoxes[1], phoxes)
+        take_turn(phoxes[0], phoxes)
 
 # Randomize turn order for ties that can't be decided by speed or photo_finish
 def randomize_turn(phoxes):
     num = random.randint(0, 1)
-    print(f"the random index is: {num}")
-    take_turn(phoxes[num])
+    take_turn(phoxes[num], phoxes)
     if num == 0:
-        take_turn(phoxes[1])
+        take_turn(phoxes[1], phoxes)
     elif num == 1:
-        take_turn(phoxes[0])
+        take_turn(phoxes[0], phoxes)
 
 # High level architecture for what a turn looks like
-def take_turn(phox):
+def take_turn(phox, phoxes):
+    phox.is_attacking = True
+    defender = get_defender(phox, phoxes)
     if phox.is_wild:
-        wild_phox_take_turn(phox)
+        wild_phox_take_turn(phox, defender)
     else:
-        player_phox_takes_turn(phox)
+        player_phox_takes_turn(phox, defender)
     phox.AS -= phox.AS_threshold
     phox.can_act = False
     print(f"After decrementing, phox has {phox.AS} AS")
@@ -110,17 +113,31 @@ def take_turn(phox):
     # To be implemented later #
     ###########################
 
-def wild_phox_take_turn(phox):
+def get_defender(attacker, phoxes):
+    for phox in phoxes:
+        if phox.is_attacking == False:
+            return phox
+
+def wild_phox_take_turn(phox, defender):
     random_max = len(phox.attacks) - 1
     num = random.randint(0, random_max)
-    # if phox.attacks[num].cost <= phox.RAM:
-    print("Performing wild phox attack")
+    if phox.attacks[num].cost <= phox.RAM:
+        print("Performing wild phox attack")
+        attack = phox.attacks[num]
+        for i in phox.attacks:
+            print(dir(i))
+        execute_attack(phox, defender, attack)
+    else:
+        wild_phox_take_turn(phox, defender)
         
-def player_phox_takes_turn(phox):
-    # This will all get redisigned when front end is in #############
-    for index, attack in enumerate(phox.attacks):                   #
-        print(f"[{index}]: {attack.name.title()}")                  #
-    num = int(input("Which attack do you pick? "))                  #
-    # print("Or, type 'run' or 'swap' to do either of those")       #
-    print(f"Executing attack: {phox.attacks[num].name.title()}")    #
-    #################################################################
+def player_phox_takes_turn(phox, defender):
+    # This will all get redisigned when front end is in #
+    for index, attack in enumerate(phox.attacks):
+        print(f"[{index}]: {attack.name.title()}")
+    num = int(input("Which attack do you pick? "))
+    if phox.attacks[num].cost <= phox.RAM:
+        print(f"Executing attack: {phox.attacks[num].name.title()}")
+        attack = phox.attacks[num]
+        execute_attack(phox, defender, attack)
+    else:
+        player_phox_takes_turn(phox, defender)

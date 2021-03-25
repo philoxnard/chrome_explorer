@@ -21,13 +21,21 @@ class Phox:
 
         self.stats = {}
 
+        # Populated with the actual class instances, not just strings
         self.attacks = []
+
+        # Set to true when a phox takes their turn, helps in passing information
+        # to the functions that calculate damage
+        self.is_attacking = False
 
         self.status = None
 
         self.AS = 0
         self.AS_threshold = 100
+
+        # Used to help determine who goes in the case of speed ties
         self.can_act = False
+
         # Name is given to a phox based on its nickname or species if its tame or wild
         # Used in battle for testing and prob also for text display later
         self.name = ""
