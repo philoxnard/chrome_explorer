@@ -3,7 +3,7 @@ import random
 from game_api.instantiate_party import get_base_phox, combine_phox_stats
 
 ##########################################
-### Library for settig up an encounter ###
+### Library for setting up an encounter ###
 ##########################################
 
 # General handler for setting up a new encounter
@@ -16,6 +16,8 @@ def initialize_encounter(self):
         set_temp_stats(self.wild_phox)
         for phox in self.player.party:
             set_temp_stats(phox)
+        # some function should probably be here to send info to the client
+        # to draw everything
         self.state = "encounter"
 
 

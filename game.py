@@ -51,6 +51,7 @@ class Game:
     from game_api.determine_encounter import determine_encounter
     from game_api.instantiate_party import instantiate_party
     from game_api.initialize_encounter import initialize_encounter
+    from game_api.combat import combat
     
 
     # Runs when a game session is instantiated to grab the potential regions from the DB

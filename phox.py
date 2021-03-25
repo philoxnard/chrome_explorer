@@ -4,7 +4,7 @@ class Phox:
     """
 
     def __init__(self):
-        self.species = "asdf"
+        self.species = ""
         self.family = ""
         self.nickname = ""
         self.level = 0
@@ -21,6 +21,7 @@ class Phox:
         self.attacks = []
 
         self.status = None
+        self.AS = 0
         self.exp_mod = 1
 
         # Set to true whenever a wild phox is instantiated
