@@ -1,23 +1,40 @@
 import random
 
-from game_api.instantiate_party import get_base_phox, combine_phox_stats
+from game_api.instantiate_party import get_base_phox, combine_phox_info
 
-##########################################
+###########################################
 ### Library for setting up an encounter ###
-##########################################
+###########################################
+
+# NOTE: Something to decide later is whether to maintain the temp stats through 
+#       swaps, or whether to have the temp stats reset every time a phox leaves/enters
+#       the battlefield
 
 # General handler for setting up a new encounter
 def initialize_encounter(self):
     if self.state == "initialize_encounter":
+        # First, we get the blueprint for the base phox
         self.wild_phox = get_base_phox(self.phox_encountered, self.phoxes)
+        # Next, get its level depending on where it was encountered
         self.wild_phox.level = get_wild_phox_level(self.region, self.regions)
-        combine_phox_stats(self.wild_phox)
+        # Then, increment the phox based on its assigned level
+        combine_phox_info(self.wild_phox, self.attacks, self.upgrades)
+        # Get the randomized talents for the wild phox
         get_phox_talents(self.wild_phox)
+        # Set the temp stats for the wild phox
         set_temp_stats(self.wild_phox)
+        # Set the name for the wild phox
+        self.wild_phox.name = self.wild_phox.species
+        # Make sure the game knows that the phox is wild
+        self.wild_phox.is_wild = True
+        # Set the temp stats and name for the phoxes in your party
         for phox in self.player.party:
             set_temp_stats(phox)
+            phox.name = phox.nickname
+        self.active_phoxes = [self.player.party[0], self.wild_phox]
         # some function should probably be here to send info to the client
         # to draw everything
+        
         self.state = "encounter"
 
 

@@ -19,7 +19,6 @@ if __name__ == "__main__":
             # Server will run calcs to determine whose turn it is - add up speed from each mon until someone hits 100
             # If enemy's turn, server will pick an attack and execute
             # If player's turn, server will tell browser what options player has
-            encounter_action = input("Player will Attack, Run, or Swap")
             # Server will take input and decide what to do based on it
                 # If run, server will give browser an end-the-fight message and set game.state to "explore"
                 # If swap, server will give browser a menu of who to swap to based on user collection

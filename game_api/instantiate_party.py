@@ -51,6 +51,7 @@ def get_collection_info(phox, collection, attackDB, upgradeDB):
     phox_info = collection[phox.species]
     phox.level = phox_info["level"]
     phox.experience = phox_info["experience"]
+    # Get the array of indexes that determine which upgrades have been selected
     phox.upgrade_indexes = phox_info["upgrade indexes"]
     # The first index in this list is always 0 and must be removed
     phox.upgrade_indexes.pop(0)
@@ -67,14 +68,14 @@ def combine_phox_info(phox, attackDB, upgradeDB):
 
 # Function to increment and implement changes to the stat block
 def combine_phox_stats(phox):
-    phox.base_stats["health"] += phox.base_stats["health"]+phox.level*phox.stat_growth["health"]
-    phox.base_stats["speed"] += phox.base_stats["speed"]+phox.level*phox.stat_growth["speed"]
-    phox.base_stats["cpow"] += phox.base_stats["cpow"]+phox.level*phox.stat_growth["cpow"]
-    phox.base_stats["lpow"] += phox.base_stats["lpow"]+phox.level*phox.stat_growth["lpow"]
-    phox.base_stats["csec"] += phox.base_stats["csec"]+phox.level*phox.stat_growth["csec"]
-    phox.base_stats["lsec"] += phox.base_stats["lsec"]+phox.level*phox.stat_growth["lsec"]
-    phox.base_stats["rr"] += phox.base_stats["rr"]+phox.level*phox.stat_growth["rr"]
-    phox.base_stats["vis"] += phox.base_stats["vis"]+phox.level*phox.stat_growth["vis"]
+    phox.stats["health"] = phox.base_stats["health"]+phox.level*phox.stat_growth["health"]
+    phox.stats["speed"] = phox.base_stats["speed"]+phox.level*phox.stat_growth["speed"]
+    phox.stats["cpow"] = phox.base_stats["cpow"]+phox.level*phox.stat_growth["cpow"]
+    phox.stats["lpow"] = phox.base_stats["lpow"]+phox.level*phox.stat_growth["lpow"]
+    phox.stats["csec"] = phox.base_stats["csec"]+phox.level*phox.stat_growth["csec"]
+    phox.stats["lsec"] = phox.base_stats["lsec"]+phox.level*phox.stat_growth["lsec"]
+    phox.stats["rr"] = phox.base_stats["rr"]+phox.level*phox.stat_growth["rr"]
+    phox.stats["vis"] = phox.base_stats["vis"]+phox.level*phox.stat_growth["vis"]
     
     
 # Function to give the phox its talents. Gets looped through entire party.
