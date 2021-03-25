@@ -34,7 +34,8 @@ def initialize_encounter(self):
         self.active_phoxes = [self.player.party[0], self.wild_phox]
         # some function should probably be here to send info to the client
         # to draw everything
-        
+        print(f"You found a level {self.wild_phox.level} {self.wild_phox.name.title()}")
+        print(f"Go get 'em, {self.player.party[0].name.title()}!")
         self.state = "encounter"
 
 

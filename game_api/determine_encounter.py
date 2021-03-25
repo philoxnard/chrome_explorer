@@ -13,12 +13,10 @@ def determine_encounter(self):
             if proceed:
                 self.phox_encountered = which_phox_encountered(self.region, self.regions)
                 self.state = "initialize_encounter"
-                # Next need to make a file that initializes the encounter
-                print("You found a " + self.phox_encountered)
             else:
                 print("you run from monster")
         else:
-            print('no encounter')
+            print("You didn't find anything...")
 
 # Takes self.encounter_frequency and determines if an encounter happens at all
 def does_encounter_happen(frequency):
@@ -28,7 +26,8 @@ def does_encounter_happen(frequency):
 
 # Takes user input to determine to run from encounter or to engage
 def does_player_accept_encounter():
-    player_response = input("Run from encounter or engage? ")
+    player_response = input("Run from encounter or engage?")
+    print()
     if player_response == "engage":
         proceed = True
     else:

@@ -16,6 +16,7 @@ def combat(self):
 
 # Increment speed in the background
 def increment_speed(phoxes):
+    print()
     for phox in phoxes:
         phox.AS += phox.temp_speed
         # All this stuff can get removed later, just here for testing:
@@ -97,12 +98,12 @@ def randomize_turn(phoxes):
 
 # High level architecture for what a turn looks like
 def take_turn(phox, phoxes):
-    phox.is_attacking = True
     defender = get_defender(phox, phoxes)
     if phox.is_wild:
         wild_phox_take_turn(phox, defender)
     else:
         player_phox_takes_turn(phox, defender)
+    phox.is_attacking = False
     phox.AS -= phox.AS_threshold
     phox.can_act = False
     print(f"After decrementing, phox has {phox.AS} AS")
@@ -114,6 +115,7 @@ def take_turn(phox, phoxes):
     ###########################
 
 def get_defender(attacker, phoxes):
+    attacker.is_attacking = True
     for phox in phoxes:
         if phox.is_attacking == False:
             return phox
@@ -124,8 +126,6 @@ def wild_phox_take_turn(phox, defender):
     if phox.attacks[num].cost <= phox.RAM:
         print("Performing wild phox attack")
         attack = phox.attacks[num]
-        for i in phox.attacks:
-            print(dir(i))
         execute_attack(phox, defender, attack)
     else:
         wild_phox_take_turn(phox, defender)
