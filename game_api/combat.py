@@ -108,6 +108,7 @@ def take_turn(phox, phoxes):
     phox.AS -= phox.AS_threshold
     phox.can_act = False
     print(f"After decrementing, phox has {phox.AS} AS")
+    print()
     # function to check if fight is over
     ###########################
     # if phox.is_AI:          #

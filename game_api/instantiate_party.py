@@ -26,7 +26,7 @@ def instantiate_party(self):
             base_phox = get_base_phox(phox, self.phoxes)
             self.player.party.append(base_phox)
     for phox in self.player.party:
-        get_collection_info(phox, self.player.collection, self.attacks, self.upgrades)
+        get_collection_info(phox, self.player.collection, self.attacks, self.upgrades, self.families)
 
 
 # Big long ugly function that gets an instance of a phox from the base blueprint
@@ -47,7 +47,7 @@ def get_base_phox(phox, phoxDB):
 # Goes through the player's collection and grabs data for a
 # phox in the current party.
 # Also calls the function to combine the information
-def get_collection_info(phox, collection, attackDB, upgradeDB):
+def get_collection_info(phox, collection, attackDB, upgradeDB, familyDB):
     phox_info = collection[phox.species]
     phox.level = phox_info["level"]
     phox.experience = phox_info["experience"]
@@ -57,14 +57,14 @@ def get_collection_info(phox, collection, attackDB, upgradeDB):
     phox.upgrade_indexes.pop(0)
     phox.nickname = phox_info["nickname"]
     phox.status = phox_info["status"]
-    combine_phox_info(phox, attackDB, upgradeDB)
+    combine_phox_info(phox, attackDB, upgradeDB, familyDB)
 
 # High level function that contains all the information for 
 # how to mix the blueprint data with the collection data
-def combine_phox_info(phox, attackDB, upgradeDB):
+def combine_phox_info(phox, attackDB, upgradeDB, familyDB):
     combine_phox_stats(phox)
     get_phox_upgrades(phox, upgradeDB)
-    get_phox_attacks(phox, attackDB)
+    get_phox_attacks(phox, attackDB, familyDB)
 
 # Function to increment and implement changes to the stat block
 def combine_phox_stats(phox):
@@ -94,7 +94,7 @@ def get_phox_upgrades(phox, upgradeDB):
 # Then pass those attacks into a phox.attacks list. 
 # Looped through entire party
 # NOTE: Actual effects for attacks are instantiated and called during combat
-def get_phox_attacks(phox, attackDB):
+def get_phox_attacks(phox, attackDB, familyDB):
     for string in phox.attack_strings:
         attack = Attack()
         db_info = attackDB.find({"name": string})
@@ -105,4 +105,15 @@ def get_phox_attacks(phox, attackDB):
             attack.damage = doc["damage"]
             attack.cost = doc["cost"]
             attack.plain_text_effect = doc["plain text effect"]
+            get_advantages(attack, familyDB)
             phox.attacks.append(attack)
+
+# family = familyDB.find({"name": attack.name})
+# for doc in family:
+# attack.advantages = doc["advantages"]
+def get_advantages(attack, familyDB):
+    family = familyDB.find({"name": attack.family})
+    for doc in family:
+        attack.advantages = doc["advantages"]
+        attack.disadvantages = doc["disadvantages"]
+        attack.zero_effects = doc["zero effects"]

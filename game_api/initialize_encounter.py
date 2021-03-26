@@ -18,7 +18,7 @@ def initialize_encounter(self):
         # Next, get its level depending on where it was encountered
         self.wild_phox.level = get_wild_phox_level(self.region, self.regions)
         # Then, increment the phox based on its assigned level
-        combine_phox_info(self.wild_phox, self.attacks, self.upgrades)
+        combine_phox_info(self.wild_phox, self.attacks, self.upgrades, self.families)
         # Get the randomized talents for the wild phox
         get_phox_talents(self.wild_phox)
         # Set the temp stats for the wild phox
