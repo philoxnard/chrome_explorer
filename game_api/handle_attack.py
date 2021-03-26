@@ -1,4 +1,4 @@
-global_mod = 3
+global_mod = 9
 
 #################################################################
 ### Library for dealing with an attack and calculating damage ###
@@ -9,10 +9,12 @@ def execute_attack(attacker, defender, attack):
     attacker.RAM -= attack.cost
     print(f"{attacker.name.title()} spent {attack.cost} RAM and now has {attacker.RAM}")
     damage = int(calculate_damage(attacker, defender, attack))
+    deal_damage(damage, defender)
     print(f"The attack dealt {damage} damage")
+    
 
 def calculate_damage(attacker, defender, attack):
-    lvl_mod = get_lvl_mod(attacker, defender, attack)
+    lvl_mod = get_lvl_mod(attacker)
     attacker_stat = get_attacker_stat(attacker, defender, attack)
     defender_stat = get_defender_stat(attacker, defender, attack)
     other = get_other_mod(attacker, defender, attack)
@@ -20,14 +22,8 @@ def calculate_damage(attacker, defender, attack):
     damage = lvl_mod*attack.damage*attacker_stat/defender_stat*other/global_mod
     return damage
 
-def get_lvl_mod(attacker, defender, attack):
-    mod = attacker.level - defender.level
-    if mod > 0:
-        mod = 1 + float(mod/10)
-    elif mod < 0:
-        mod = 1 - float(mod/10)
-    elif mod == 0:
-        mod = 1
+def get_lvl_mod(attacker):
+    mod = 1
     return mod
 
 
@@ -49,14 +45,12 @@ def get_defender_stat(attacker, defender, attack):
     elif attack.style == "cloud":
         defender_stat = defender.temp_csec
     else:
-        defender_ = 1
+        defender_stat = 1
     return defender_stat
 
 def get_other_mod(attacker, defender, attack):
     family_mod = get_family_mod(attacker, defender, attack)
-    print(f"family mod is {family_mod}")
     STAB = get_STAB(attacker, attack)
-    print(f"STAB is {STAB}")
     mod = float(STAB*family_mod)
     return mod
 
@@ -77,3 +71,11 @@ def get_STAB(attacker, attack):
         mod *= 1.5
     return mod
 
+def deal_damage(damage, defender):
+    defender.stats["health"] -= damage
+    if defender.stats["health"] < 0:
+        defender.stats["health"] = 0
+    print(f"{defender.name.title()} has {defender.stats['health']} health remaining")
+    if defender.stats["health"] == 0:
+        defender.disconnected = True
+        print(f"{defender.name.title()} disconnected!")

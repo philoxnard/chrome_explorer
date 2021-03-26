@@ -37,6 +37,9 @@ class Phox:
         # Used to help determine who goes in the case of speed ties
         self.can_act = False
 
+        # When a phox loses all of its HP, it disconnects
+        self.disconnected = False
+
         # Name is given to a phox based on its nickname or species if its tame or wild
         # Used in battle for testing and prob also for text display later
         self.name = ""

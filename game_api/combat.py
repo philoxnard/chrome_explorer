@@ -16,15 +16,8 @@ def combat(self):
 
 # Increment speed in the background
 def increment_speed(phoxes):
-    print()
     for phox in phoxes:
         phox.AS += phox.temp_speed
-        # All this stuff can get removed later, just here for testing:
-        if phox.is_wild:
-            var = "Wild"
-        elif not phox.is_wild:
-            var = "Your"
-        print(f"{var} {phox.name.title()} has incremented to {phox.AS} AS")
     check_for_turn(phoxes)
 
 # Check to see if any phox has passed their speed threshold and gets to act
@@ -32,7 +25,6 @@ def check_for_turn(phoxes):
     for phox in phoxes:
         if phox.AS >= phox.AS_threshold:
             phox.can_act = True
-            print(f"{phox.name.title()} has hit its AS threshold")
     tie = check_for_tie(phoxes)
     if tie:
         settle_tie(phoxes)
@@ -45,10 +37,8 @@ def check_for_turn(phoxes):
 # Determines if both phoxes have hit their threshold at the same time
 def check_for_tie(phoxes):
     if phoxes[0].can_act and phoxes[1].can_act:
-        print("we have a speed tie")
         return True
     else:
-        print("no speed tie detected")
         return False
 
 # In the event of a tie, decides who gets to act first   
@@ -90,6 +80,7 @@ def settle_tie_by_temp_speed(phoxes):
 # Randomize turn order for ties that can't be decided by speed or photo_finish
 def randomize_turn(phoxes):
     num = random.randint(0, 1)
+    print(f"{phoxes[num].name.title()} won the speed tie")
     take_turn(phoxes[num], phoxes)
     if num == 0:
         take_turn(phoxes[1], phoxes)
@@ -107,8 +98,7 @@ def take_turn(phox, phoxes):
     phox.is_attacking = False
     phox.AS -= phox.AS_threshold
     phox.can_act = False
-    print(f"After decrementing, phox has {phox.AS} AS")
-    print()
+    is_fight_over(phoxes)
     # function to check if fight is over
     ###########################
     # if phox.is_AI:          #
@@ -136,7 +126,6 @@ def wild_phox_take_turn(phox, defender):
     random_max = len(phox.attacks) - 1
     num = random.randint(0, random_max)
     if phox.attacks[num].cost <= phox.RAM:
-        print("Performing wild phox attack")
         attack = phox.attacks[num]
         execute_attack(phox, defender, attack)
     else:
@@ -149,9 +138,13 @@ def player_phox_takes_turn(phox, defender):
         print(f"[{index}]: {attack.name.title()}")
     num = int(input("Which attack do you pick? "))
     if phox.attacks[num].cost <= phox.RAM:
-        print(f"Executing attack: {phox.attacks[num].name.title()}")
         attack = phox.attacks[num]
         execute_attack(phox, defender, attack)
     else:
         print("Not enough RAM")
         player_phox_takes_turn(phox, defender)
+
+def is_fight_over(phoxes):
+    for phox in phoxes:
+        if phox.disconnected == True:
+            print("The battle is over!")
