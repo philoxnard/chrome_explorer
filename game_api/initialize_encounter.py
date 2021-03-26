@@ -27,10 +27,11 @@ def initialize_encounter(self):
         self.wild_phox.name = self.wild_phox.species
         # Make sure the game knows that the phox is wild
         self.wild_phox.is_wild = True
-        # Set the temp stats and name for the phoxes in your party
+        # Set the temp stats, RAM, and name for the phoxes in your party
         for phox in self.player.party:
             set_temp_stats(phox)
             phox.name = phox.nickname
+            phox.RAM = phox.max_RAM
         self.active_phoxes = [self.player.party[0], self.wild_phox]
         # some function should probably be here to send info to the client
         # to draw everything

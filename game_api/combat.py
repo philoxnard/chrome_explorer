@@ -98,6 +98,7 @@ def randomize_turn(phoxes):
 
 # High level architecture for what a turn looks like
 def take_turn(phox, phoxes):
+    update_RAM(phox)
     defender = get_defender(phox, phoxes)
     if phox.is_wild:
         wild_phox_take_turn(phox, defender)
@@ -114,6 +115,16 @@ def take_turn(phox, phoxes):
     # To be implemented later #
     ###########################
 
+# Currently gets called only when a phox takes its turn
+# May change to be called any time any turn is taken
+# Or maybe even on every AS incrementation
+def update_RAM(phox):
+    if phox.RAM < phox.max_RAM:
+        phox.RAM += phox.temp_rr
+        if phox.RAM > phox.max_RAM:
+            phox.RAM = phox.max_RAM
+        print(f"{phox.name.title()} gained {phox.temp_rr} RAM and now has {phox.RAM}")
+
 def get_defender(attacker, phoxes):
     attacker.is_attacking = True
     for phox in phoxes:
@@ -128,6 +139,7 @@ def wild_phox_take_turn(phox, defender):
         attack = phox.attacks[num]
         execute_attack(phox, defender, attack)
     else:
+        print("Not enough RAM")
         wild_phox_take_turn(phox, defender)
         
 def player_phox_takes_turn(phox, defender):
@@ -140,4 +152,5 @@ def player_phox_takes_turn(phox, defender):
         attack = phox.attacks[num]
         execute_attack(phox, defender, attack)
     else:
+        print("Not enough RAM")
         player_phox_takes_turn(phox, defender)

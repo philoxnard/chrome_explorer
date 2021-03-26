@@ -11,7 +11,8 @@ class Phox:
         self.experience = 0
 
         self.health = 0
-        self.RAM = 100
+        self.max_RAM = 100
+        self.RAM = self.max_RAM
         self.base_stats = {}
         self.stat_growth = {}
         self.upgrade_indexes = []
