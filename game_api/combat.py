@@ -11,6 +11,10 @@ from game_api.handle_attack import execute_attack
 
 # Start of the combat chain
 def combat(self):
+    fight_over = is_fight_over(self.active_phoxes, self.player.party)
+    if fight_over:
+        self.state = "encounter cleanup"
+        self.encounter_cleanup()
     if self.state == "encounter":
         increment_speed(self.active_phoxes)
 
@@ -28,11 +32,13 @@ def check_for_turn(phoxes):
     tie = check_for_tie(phoxes)
     if tie:
         settle_tie(phoxes)
+    elif not phoxes[0].can_act and not phoxes[1].can_act:
+        increment_speed(phoxes)
     else:
         for phox in phoxes:
             if phox.can_act:
                 take_turn(phox, phoxes)
-    increment_speed(phoxes)
+    
 
 # Determines if both phoxes have hit their threshold at the same time
 def check_for_tie(phoxes):
@@ -98,7 +104,6 @@ def take_turn(phox, phoxes):
     phox.is_attacking = False
     phox.AS -= phox.AS_threshold
     phox.can_act = False
-    is_fight_over(phoxes)
     # function to check if fight is over
     ###########################
     # if phox.is_AI:          #
@@ -144,7 +149,11 @@ def player_phox_takes_turn(phox, defender):
         print("Not enough RAM")
         player_phox_takes_turn(phox, defender)
 
-def is_fight_over(phoxes):
+def is_fight_over(phoxes, party):
     for phox in phoxes:
         if phox.disconnected == True:
             print("The battle is over!")
+            return True
+    if all(phox.disconnected for phox in party):
+        print("You got disconnected!")
+        return True

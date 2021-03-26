@@ -79,3 +79,4 @@ def deal_damage(damage, defender):
     if defender.stats["health"] == 0:
         defender.disconnected = True
         print(f"{defender.name.title()} disconnected!")
+        defender.disconnected = True

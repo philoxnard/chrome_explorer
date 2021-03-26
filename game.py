@@ -7,9 +7,6 @@ mongo_URI = os.getenv("mongo_URI")
 client = pymongo.MongoClient(mongo_URI)
 db = client.my_database
 
-
-
-
 class Game:
     """
     A class to model a game session
@@ -52,6 +49,7 @@ class Game:
     from game_api.instantiate_party import instantiate_party
     from game_api.initialize_encounter import initialize_encounter
     from game_api.combat import combat
+    from game_api.encounter_cleanup import encounter_cleanup
     
 
     # Runs when a game session is instantiated to grab the potential regions from the DB
@@ -62,6 +60,3 @@ class Game:
             domains = doc["domains"]
             regions_dict[region] = domains
         return regions_dict
-
-# game = Game()
-# game.new_url_handler()
