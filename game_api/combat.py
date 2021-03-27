@@ -15,6 +15,9 @@ def combat(self):
     if fight_over:
         self.state = "encounter cleanup"
         self.encounter_cleanup()
+    swap_needed = is_swap_needed(self.active_phoxes)
+    if swap_needed:
+        swap_phoxes(self.active_phoxes, self.party)
     if self.state == "encounter":
         increment_speed(self.active_phoxes)
 
@@ -157,3 +160,20 @@ def is_fight_over(phoxes, party):
     if all(phox.disconnected for phox in party):
         print("You got disconnected!")
         return True
+
+def is_swap_needed(active_phoxes):
+    for index, phox in enumerate(active_phoxes):
+        if not phox.is_wild:
+            if phox.disconnected:
+                return True
+
+# When connected to front end, this will need a "forced" argument.
+# If true, don't allow them to cancel the swap
+def swap_phoxes(active_phoxes, party):
+    active_phoxes.pop(0)
+    for index, phox in enumerate(party):
+        if not phox.disconnected:
+            print(f"[{index}]: {phox.name.title()}")
+    num = input("Which phox would you like to swap to? ")
+    phox = party[num]
+    active_phoxes.insert(0, phox)
