@@ -11,6 +11,8 @@ from game_api.handle_attack import execute_attack
 
 # Start of the combat chain
 def combat(self):
+    if self.wild_phox.disconnected:
+        self.handle_experience(self.active_phoxes[0], self.wild_phox, self.player, self.players)
     fight_over = is_fight_over(self.active_phoxes, self.player.party)
     if fight_over:
         self.state = "encounter cleanup"
@@ -107,7 +109,7 @@ def take_turn(phox, phoxes):
     phox.is_attacking = False
     phox.AS -= phox.AS_threshold
     phox.can_act = False
-    # function to check if fight is over
+    print()
     ###########################
     # if phox.is_AI:          #
     # AI_phox_take_turn()     #

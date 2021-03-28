@@ -49,6 +49,7 @@ class Game:
     from game_api.instantiate_party import instantiate_party
     from game_api.initialize_encounter import initialize_encounter
     from game_api.combat import combat
+    from game_api.experience import handle_experience
     from game_api.encounter_cleanup import encounter_cleanup
     
 

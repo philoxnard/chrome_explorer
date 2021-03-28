@@ -1,4 +1,5 @@
-global_mod = 9
+
+
 
 #################################################################
 ### Library for dealing with an attack and calculating damage ###
@@ -9,16 +10,16 @@ def execute_attack(attacker, defender, attack):
     attacker.RAM -= attack.cost
     print(f"{attacker.name.title()} spent {attack.cost} RAM and now has {attacker.RAM}")
     damage = int(calculate_damage(attacker, defender, attack))
-    deal_damage(damage, defender)
-    print(f"The attack dealt {damage} damage")
+    deal_damage(damage, attacker, defender)
+    
     
 
 def calculate_damage(attacker, defender, attack):
+    global_mod = 9
     lvl_mod = get_lvl_mod(attacker)
     attacker_stat = get_attacker_stat(attacker, defender, attack)
     defender_stat = get_defender_stat(attacker, defender, attack)
     other = get_other_mod(attacker, defender, attack)
-    print(f"Formula: {lvl_mod}*{attacker_stat}/{defender_stat}*{other}")
     damage = lvl_mod*attack.damage*attacker_stat/defender_stat*other/global_mod
     return damage
 
@@ -71,7 +72,8 @@ def get_STAB(attacker, attack):
         mod *= 1.5
     return mod
 
-def deal_damage(damage, defender):
+def deal_damage(damage, attacker, defender):
+    print(f"The attack dealt {damage} damage")
     defender.stats["health"] -= damage
     if defender.stats["health"] < 0:
         defender.stats["health"] = 0
@@ -79,4 +81,3 @@ def deal_damage(damage, defender):
     if defender.stats["health"] == 0:
         defender.disconnected = True
         print(f"{defender.name.title()} disconnected!")
-        defender.disconnected = True

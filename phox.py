@@ -44,6 +44,7 @@ class Phox:
         # Used in battle for testing and prob also for text display later
         self.name = ""
 
+        # Modifier on exp gained, some upgrades will modify this
         self.exp_mod = 1
 
         # Set to true whenever a wild phox is instantiated

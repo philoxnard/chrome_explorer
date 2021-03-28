@@ -54,7 +54,6 @@ def get_collection_info(phox, collection, attackDB, upgradeDB, familyDB):
     # Get the array of indexes that determine which upgrades have been selected
     phox.upgrade_indexes = phox_info["upgrade indexes"]
     phox.nickname = phox_info["nickname"]
-    phox.status = phox_info["status"]
     combine_phox_info(phox, attackDB, upgradeDB, familyDB)
 
 # High level function that contains all the information for 
