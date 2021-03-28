@@ -25,7 +25,6 @@ if __name__ == "__main__":
                 # If attack, server will take the attack and run calcs to assign damage/status effects
             # If player mon dies, force swap or run
             # If enemy mon dies, set game.state to "encounter_cleanup"
-            pass
         if game.state == "encounter_cleanup":
             # Server will calculate experience gain for the active mon
             # Server will add enemy mon to user's collection

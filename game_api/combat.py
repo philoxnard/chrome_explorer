@@ -19,7 +19,7 @@ def combat(self):
         self.encounter_cleanup()
     swap_needed = is_swap_needed(self.active_phoxes)
     if swap_needed:
-        swap_phoxes(self.active_phoxes, self.party)
+        swap_phoxes(self.active_phoxes, self.player.party)
     if self.state == "encounter":
         increment_speed(self.active_phoxes)
 
