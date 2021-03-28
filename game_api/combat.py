@@ -13,6 +13,7 @@ from game_api.handle_attack import execute_attack
 def combat(self):
     if self.wild_phox.disconnected:
         self.handle_experience(self.active_phoxes[0], self.wild_phox, self.player, self.players)
+        fight_over = True
     fight_over = is_fight_over(self.active_phoxes, self.player.party)
     if fight_over:
         self.state = "encounter cleanup"
@@ -100,15 +101,16 @@ def randomize_turn(phoxes):
 
 # High level architecture for what a turn looks like
 def take_turn(phox, phoxes):
-    update_RAM(phox)
-    defender = get_defender(phox, phoxes)
-    if phox.is_wild:
-        wild_phox_take_turn(phox, defender)
-    else:
-        player_phox_takes_turn(phox, defender)
-    phox.is_attacking = False
-    phox.AS -= phox.AS_threshold
-    phox.can_act = False
+    if not phox.disconnected:
+        update_RAM(phox)
+        defender = get_defender(phox, phoxes)
+        if phox.is_wild:
+            wild_phox_take_turn(phox, defender)
+        else:
+            player_phox_takes_turn(phox, defender)
+        phox.is_attacking = False
+        phox.AS -= phox.AS_threshold
+        phox.can_act = False
     print()
     ###########################
     # if phox.is_AI:          #
@@ -155,10 +157,6 @@ def player_phox_takes_turn(phox, defender):
         player_phox_takes_turn(phox, defender)
 
 def is_fight_over(phoxes, party):
-    for phox in phoxes:
-        if phox.disconnected == True:
-            print("The battle is over!")
-            return True
     if all(phox.disconnected for phox in party):
         print("You got disconnected!")
         return True
@@ -176,6 +174,6 @@ def swap_phoxes(active_phoxes, party):
     for index, phox in enumerate(party):
         if not phox.disconnected:
             print(f"[{index}]: {phox.name.title()}")
-    num = input("Which phox would you like to swap to? ")
+    num = int(input("Which phox would you like to swap to? "))
     phox = party[num]
     active_phoxes.insert(0, phox)

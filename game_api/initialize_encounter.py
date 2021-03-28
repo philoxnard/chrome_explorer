@@ -32,7 +32,7 @@ def initialize_encounter(self):
             set_temp_stats(phox)
             phox.name = phox.nickname
             phox.RAM = phox.max_RAM
-        self.active_phoxes = [self.player.party[0], self.wild_phox]
+        self.active_phoxes = get_active_phoxes(self.player.party, self.wild_phox)
         # some function should probably be here to send info to the client
         # to draw everything
         print(f"You found a level {self.wild_phox.level} {self.wild_phox.name.title()}")
@@ -69,3 +69,8 @@ def set_temp_stats(phox):
     phox.temp_lsec = phox.stats["lsec"]
     phox.temp_rr = phox.stats["rr"]
     phox.temp_vis = phox.stats["vis"]
+
+def get_active_phoxes(party, wild_phox):
+    for phox in party:
+        if not phox.disconnected:
+            return [phox, wild_phox]
