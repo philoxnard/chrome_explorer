@@ -12,7 +12,7 @@ def determine_encounter(self):
             proceed = does_player_accept_encounter()
             if proceed:
                 self.phox_encountered = which_phox_encountered(self.region, self.regions)
-                self.state = "initialize_encounter"
+                self.state = "initialize encounter"
             else:
                 print("you run from monster")
         else:

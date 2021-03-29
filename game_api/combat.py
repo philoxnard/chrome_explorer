@@ -13,14 +13,16 @@ from game_api.handle_attack import execute_attack
 def combat(self):
     if self.wild_phox.disconnected:
         self.handle_experience(self.active_phoxes[0], self.wild_phox, self.player, self.players)
-        fight_over = True
-    fight_over = is_fight_over(self.active_phoxes, self.player.party)
-    if fight_over:
         self.state = "encounter cleanup"
-        self.encounter_cleanup()
-    swap_needed = is_swap_needed(self.active_phoxes)
-    if swap_needed:
-        swap_phoxes(self.active_phoxes, self.player.party)
+    if self.state == "encounter":
+        shutdown = check_shutdown(self.active_phoxes, self.player.party)
+        if shutdown:
+            self.state = "shutdown"
+            self.shutdown()
+    if self.state == "encounter":
+        swap_needed = is_swap_needed(self.active_phoxes)
+        if swap_needed:
+            swap_phoxes(self.active_phoxes, self.player.party)
     if self.state == "encounter":
         increment_speed(self.active_phoxes)
 
@@ -156,7 +158,7 @@ def player_phox_takes_turn(phox, defender):
         print("Not enough RAM")
         player_phox_takes_turn(phox, defender)
 
-def is_fight_over(phoxes, party):
+def check_shutdown(phoxes, party):
     if all(phox.disconnected for phox in party):
         print("You got disconnected!")
         return True

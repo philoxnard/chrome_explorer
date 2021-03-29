@@ -12,7 +12,7 @@ from game_api.instantiate_party import get_base_phox, combine_phox_info
 
 # General handler for setting up a new encounter
 def initialize_encounter(self):
-    if self.state == "initialize_encounter":
+    if self.state == "initialize encounter":
         # First, we get the blueprint for the base phox
         self.wild_phox = get_base_phox(self.phox_encountered, self.phoxes)
         # Next, get its level depending on where it was encountered

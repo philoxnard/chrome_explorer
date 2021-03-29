@@ -3,5 +3,9 @@
 
 def encounter_cleanup(self):
     print('encounter is over')
-    # handler for is wild_phox is disconnected
-    # handler for if party is disconnected
+    for phox in self.player.party:
+        phox.can_act = False
+        phox.is_attacking = False
+        phox.RAM = phox.max_RAM
+    print("Returning to explore state")
+    self.state = "explore"
