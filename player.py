@@ -9,6 +9,9 @@ class Player:
         self.party = []
         self.collection = []
 
+        # Set to true if a player runs out of living phoxes
+        self.shutdown = False
+
         # Attributes changed during play
         self.url = "https://www.youtube.com/philoxnard/chrome_explorer"
 

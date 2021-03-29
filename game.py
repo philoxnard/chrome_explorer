@@ -51,6 +51,7 @@ class Game:
     from game_api.combat import combat
     from game_api.experience import handle_experience
     from game_api.encounter_cleanup import encounter_cleanup
+    from game_api.handle_phoxtrot_site import handle_phoxtrot_site
     
 
     # Runs when a game session is instantiated to grab the potential regions from the DB

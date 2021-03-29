@@ -17,8 +17,8 @@ def combat(self):
     if self.state == "encounter":
         shutdown = check_shutdown(self.active_phoxes, self.player.party)
         if shutdown:
-            self.state = "shutdown"
-            self.shutdown()
+            self.player.shutdown = True
+            self.state = "explore"
     if self.state == "encounter":
         swap_needed = is_swap_needed(self.active_phoxes)
         if swap_needed:

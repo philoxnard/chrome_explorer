@@ -15,7 +15,10 @@ def new_url_handler(self):
             domain = snip_domain(sanitized_domain)
             region = get_region(domain, self.region_dict)
             self.region = region
-            self.determine_encounter()
+            if self.region == "phoxtrot":
+                self.handle_phoxtrot_site()
+            else:
+                self.determine_encounter()
 
 # Takes the url and returns the full domain
 def get_domain(url):

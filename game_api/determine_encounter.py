@@ -7,16 +7,19 @@ import random
 # General handler for determining the encounter for each trot
 def determine_encounter(self):
     if self.state == "explore":
-        encounter = does_encounter_happen(self.encounter_frequency)
-        if encounter:
-            proceed = does_player_accept_encounter()
-            if proceed:
-                self.phox_encountered = which_phox_encountered(self.region, self.regions)
-                self.state = "initialize encounter"
+        if not self.player.shutdown:
+            encounter = does_encounter_happen(self.encounter_frequency)
+            if encounter:
+                proceed = does_player_accept_encounter()
+                if proceed:
+                    self.phox_encountered = which_phox_encountered(self.region, self.regions)
+                    self.state = "initialize encounter"
+                else:
+                    print("you run from monster")
             else:
-                print("you run from monster")
+                print("You didn't find anything...")
         else:
-            print("You didn't find anything...")
+            print("You're shut down! Go to phoxtrot.com to refresh.")
 
 # Takes self.encounter_frequency and determines if an encounter happens at all
 def does_encounter_happen(frequency):
