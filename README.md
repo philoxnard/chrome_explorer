@@ -16,21 +16,25 @@ When the server decides that an encounter with a wild Phox will happen, the user
 
 ### Stats
 
-THIS ALL NEEDS TO CHANGE TO UPDATED STAT BLOCK
+Each Phox will have a stat block, not dissimilar to the stat blocks attached to most RPG characters (like Pokemon, for example):
 
-Each Phox will have a stat block similar to most RPG characters. The stats will include Strength, Speed, Intelligence, Spirit, Constitution, and Charisma. These stats are used for the following:
+Health: The amount of damage a Phox can withstand before disconnecting
 
-Strength will be used to determine the damage of physical attacks.
+Speed: The frequency with which the Phox will be able to attack 
 
-Speed will determine frequency of attacks and turn order.
+Cloud Power: The damage that the Phox will do with Cloud attacks (abbreviated to CPOW)
 
-Intelligence will determine the potency of magical attacks.
+Local Power: The damage that the Phox will do with Local attacks (abbreviated to LPOW)
 
-Spirit will determine how much health and mana are regenerated per turn.
+Cloud Security: The Phox's resistance to Cloud attacks (abbreviated to CSEC)
 
-Constitution will determine a Phox's health and resistances.
+Local Security: The Phox's resistance to Local attacks (abbreviated to LSEC)
 
-Charisma will come into play in some other calculations.
+Refresh Rate: The rate at which a Phox regains RAM during battle (abbreviated to RR)
+
+Visibility: Comes into play for specific attacks.
+
+In addition to the more straightforward attack/defense aspects of these stats, some attacks will also incorporate "checks," which are analogous to saves in DnD. Checks will compare one of the attacker's stats against a defender's stat. If the attacker wins the check, some special effect will happen. If the defender wins the check, then the attack fails.
 
 ### Familes
 
@@ -41,17 +45,13 @@ Like in Pokemon, the Phoxes here will have different types, here called families
 * AV (anti-virus)
 * Blockchain
 * Pirate
-* Dark Web
+* Nullset
+* Bug
 * Meme
-* Browser
-* Server
-* HTML
-* Assembly/Binary
-* Null
-* Big Data
-* Flash
+* Assembly
+* Troll
 
-These familes will have advantages and disadvantages. For example, Virus will be super effective against Data, Meme, Browser, and Server, but it will be only half effective vs Blockchain and AV.
+These familes will have advantages and disadvantages. Attacks with advantage will deal double damage, and attacks with disadvantage will deal half. Phoxes can have up to two types, meaning that attacks can deal anywhere from 4x to 1/4x damage.
 
 ### Abilities
 
@@ -65,7 +65,7 @@ Different Phoxes will have different passive abilities that will provide differe
 
 As Phoxes level up and grow, they will gain access to a wider and more powerful array of attacks. Attacks will be made up of four main parts: Damage, Family, Style, and Effect. Damage is self explanatory and will be calculated alongside a Phox's Strength of Intelligence stat to determine the actual damage dealt. Family refers to whether it is the Data family, Virus family, etc. Style differentiates between physical and magical attacks. The attack's effect is whatever happens in addition to raw damage - maybe inflicting a status effect, maybe temporarily raising or lowering a Phox's stat.
 
-### Talents
+### Upgrades
 
 Like in many RPGs, Phoxes will be able to unlock different talents as they ascend in level. Talents may give access to new attacks, new abilities, or simple stat boosts.
 
