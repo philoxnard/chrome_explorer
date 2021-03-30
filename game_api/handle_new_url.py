@@ -7,6 +7,8 @@ import validators
 
 # General handler for receiving a new url from the player
 def new_url_handler(self):
+    for phox in self.player.party:
+        phox.RAM = phox.max_RAM
     if self.state == "explore":
         valid = validators.url(self.player.url)
         if valid:

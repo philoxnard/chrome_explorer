@@ -65,6 +65,7 @@ def combine_phox_info(phox, attackDB, upgradeDB, familyDB):
 
 # Function to increment and implement changes to the stat block
 def combine_phox_stats(phox):
+    phox.max_health = phox.base_stats["health"]+phox.level*phox.stat_growth["health"]
     phox.stats["health"] = phox.base_stats["health"]+phox.level*phox.stat_growth["health"]
     phox.stats["speed"] = phox.base_stats["speed"]+phox.level*phox.stat_growth["speed"]
     phox.stats["cpow"] = phox.base_stats["cpow"]+phox.level*phox.stat_growth["cpow"]

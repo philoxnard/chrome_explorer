@@ -160,7 +160,7 @@ def player_phox_takes_turn(phox, defender):
 
 def check_shutdown(phoxes, party):
     if all(phox.disconnected for phox in party):
-        print("You got disconnected!")
+        print("You got Shut Down!")
         return True
 
 def is_swap_needed(active_phoxes):

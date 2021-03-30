@@ -10,7 +10,7 @@ class Phox:
         self.level = 0
         self.experience = 0
 
-        self.health = 0
+        self.max_health = 0
         self.max_RAM = 100
         self.RAM = self.max_RAM
         self.base_stats = {}
@@ -21,6 +21,8 @@ class Phox:
         self.upgrades = []
 
         self.stats = {}
+
+        self.status = None
 
         # Populated with the actual class instances, not just strings
         self.attacks = []
