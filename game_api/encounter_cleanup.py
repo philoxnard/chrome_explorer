@@ -36,6 +36,8 @@ def get_nickname():
     nickname = input("What do you want to name it?")
     return nickname
 
+# Eventually gonna need to make it so that, if your party isn't full, the new phox
+# goes into your party instead of your collection
 def add_phox(phox_name, playerDB, player, nickname):
     phox_dict = {}
     phox_dict["experience"] = 0
