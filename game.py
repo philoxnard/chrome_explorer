@@ -48,7 +48,7 @@ class Game:
         self.phox_encountered = None
 
     # Import the high level functions from the different API libraries
-    from game_api.handle_login import handle_login
+    from game_api.handle_login import handle_login, terminal_test_login
     from game_api.handle_new_url import new_url_handler
     from game_api.determine_encounter import determine_encounter
     from game_api.instantiate_party import instantiate_party

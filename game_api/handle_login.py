@@ -9,27 +9,28 @@ from cryptography.fernet import Fernet
 # This entire library will likely change a lot when the front end attaches
 # Upon sucessful login, set game.state to "explore"
 def handle_login(self):
-    # if self.state == "initialize":
-    #     login_info = get_login_info()
-    #     is_valid = validate_login_info(login_info)
-    #     if is_valid:
-    #         user = fetch_user_info(self.players, login_info[0])
-    #         self.player = generate_player(user)
-    #         self.instantiate_party()
-    #         self.state = "explore"
-
     if self.state == "initialize":
-        password = fetch_user_info(self.players, self.username)
+        password = get_encrypted_password(self.players, self.username)
         if password:
             valid = compare_passwords(self.password, self.secret_key, password)
             # password = encrypt_password(self.password, self.secret_key)
+            # ^^^^ will be used for sign up ^^^^^
             if valid:
                 print("Passwords match")
+                self.player = generate_player(self.username)
+                self.instantiate_party()
                 self.state = "idle"
+
             elif not valid:
                 print("Password does not match")
         else:
             print("Username not found")
+
+def terminal_test_login(self):
+    user = get_account(self.players, "peeup")
+    self.player = generate_player(user)
+    self.instantiate_party()
+    self.state = "explore"
 
 
 def encrypt_password(password, key):
@@ -45,7 +46,7 @@ def encrypt_message(message, key):
     encrypted_message = f.encrypt(encoded_message)
     return encrypted_message
 
-def fetch_user_info(players, username):
+def get_encrypted_password(players, username):
     user = players.find({"username": username})
     for doc in user:
         if doc["username"] == username:
@@ -78,3 +79,8 @@ def generate_player(user):
         new_user.username = doc["username"]
         new_user.collection = doc["collection"]
     return new_user
+
+# Only used for testing
+def get_account(players, username):
+    user = players.find({"username": username})
+    return user

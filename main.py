@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     while True:
         if game.state == "initialize":
-            game.handle_login()
+            game.terminal_test_login()
         if game.state == "explore":
             # This is for testing purposes only, gonna have to find a way
             # To only run new_url_handler when a new url appears
