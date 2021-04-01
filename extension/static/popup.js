@@ -17,13 +17,23 @@ loginButton.addEventListener('click', function(){
     })
 })
 
+$("#content").on("click", "#trotButton", function(){
+    $.get(baseUrl+'/start_trotting')
+})
+
 function idleState() {
     console.log("you did it")
-    $('#content').html("You're currently in the idle state") 
+    $("#content").css("height", "35px")
+    $("#content").css("width", "80px")
+    $('#content').html("<div id='idleWrapper'>\
+                            <button id='trotButton'>\
+                                Start Trotting\
+                            </button>\
+                        </div>") 
 }
 
 window.onload = function(){
-    $.post(baseUrl+"/check_state", 
+    $.get(baseUrl+"/check_state", 
     function(data, status){
         if (data == "idle"){
             idleState()

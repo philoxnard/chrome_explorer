@@ -26,10 +26,16 @@ def handle_login():
     if game.state == "idle":
         return "success", 200
 
-@app.route('/check_state', methods=["GET", "POST"])
+@app.route('/check_state', methods=["GET"])
 def handle_state_check():
     print(f"The current state is {game.state}")
     return game.state, 200
+
+@app.route('/start_trotting', methods=["GET"])
+def start_trotting():
+    game.state = "explore"
+    print(f"The current state is {game.state}")
+    return 'success', 200
 
 @app.route('/send')
 def send_py_data():
