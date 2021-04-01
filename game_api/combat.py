@@ -103,7 +103,7 @@ def randomize_turn(phoxes):
 
 # High level architecture for what a turn looks like
 def take_turn(phox, phoxes):
-    if not phox.disconnected:
+    if all(not phox.disconnected for phox in phoxes):
         update_RAM(phox)
         defender = get_defender(phox, phoxes)
         if phox.is_wild:
