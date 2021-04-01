@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, make_response
+from flask import Flask, request, json, Response, render_template
 from flask_cors import CORS
 
 
@@ -12,16 +12,20 @@ app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
 
 @app.route('/login', methods=["GET", "POST"])
 def handle_login():
-    if request.method == "POST":
-        username = request.form["username"]
-        print(username)
-        return 'Success', 200
+    if game.state == "initialize":
+        if request.method == "POST":
+            game.username = request.form["username"]
+            game.password = request.form["password"]
+            game.handle_login()
+            if game.state == "idle":
+                print('state is idle')
+                return "success", 200
+            else:
+                return "fail", 200
 
-@app.route('/test', methods=["POST"])
-def test_func():
-    data = request.form["data"]
-    print(f"Does this work? {data}")
-    return 'Success', 200
+@app.route('/send')
+def send_py_data():
+    return json.dumps("String")
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

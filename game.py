@@ -26,6 +26,11 @@ class Game:
         self.upgrades = db.upgrades
         self.families = db.families
 
+        # Login assist
+        self.username = None
+        self.password = None
+        self.secret_key = os.getenv("secret_key")
+
         # The instance of a wild phox that appears while exploring
         self.wild_phox = None
 
