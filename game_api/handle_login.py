@@ -17,7 +17,8 @@ def handle_login(self):
             # ^^^^ will be used for sign up ^^^^^
             if valid:
                 print("Passwords match")
-                self.player = generate_player(self.username)
+                user = get_account(self.players, self.username)
+                self.player = generate_player(user)
                 self.instantiate_party()
                 self.state = "idle"
 
