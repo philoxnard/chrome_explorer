@@ -38,6 +38,11 @@ window.onload = function(){
         if (data == "idle"){
             idleState()
         }
+
+        else if (data== "explore" ){
+            console.log("You're exploring")
+            $("#content").html("You're exploring")
+        }
     })
 }
 

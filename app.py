@@ -1,4 +1,4 @@
-from flask import Flask, request, json, Response, render_template
+from flask import Flask, request, json, Response, render_template, session
 from flask_cors import CORS
 
 
@@ -8,7 +8,7 @@ game = Game()
 
 app = Flask(__name__)
 CORS(app)
-app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
+app.secret_key = 'vnkdjnfjknfl1232#'
 
 @app.route('/login', methods=["GET", "POST"])
 def handle_login():
