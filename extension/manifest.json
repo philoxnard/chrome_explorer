@@ -2,7 +2,7 @@
     "name": "Phoxtrot",
     "version": "0.1.0",
     "description": "Front end for the Phoxtrot app",
-    "permissions": ["storage", "declarativeContent", "scripting"],
+    "permissions": ["storage", "declarativeContent", "scripting", "tabs"],
     "background": {
         "service_worker": "background.js"
     },

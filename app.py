@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.secret_key = 'vnkdjnfjknfl1232#'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-@socketio.on('connectx')
+@socketio.on('connection')
 def handle_new_connection(ip, sid, methods=['GET', "POST"]):
     print("new connection")
     if not any(game.ip == ip for game in games):
@@ -22,6 +22,7 @@ def handle_new_connection(ip, sid, methods=['GET', "POST"]):
         for game in games:
             if game.ip == ip:
                 state = game.state
+                print(f"Current state is {state}")
                 socketio.emit('update state', state, room=sid)
 
 @socketio.on('login')
@@ -35,13 +36,17 @@ def handle_login(ip, sid, username, password, methods=['GET', "POST"]):
             if game.state == "idle":
                 print('login successful')
                 print('state is idle')
-                socketio.emit('idle state', ip, room=sid)
+                state = game.state
+                socketio.emit('update state', state, room=sid)
             else:
                 print('login not successful')
 
+@socketio.on('new url')
+def handle_new_url()
+
 @socketio.on('test')
-def handle_test(methods=["GET"]):
-    print('found')
+def handle_test(msg, methods=["GET"]):
+    print(msg)
 
 @socketio.on('start trotting')
 def start_trotting(ip, methods=["GET"]):

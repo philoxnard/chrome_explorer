@@ -4,12 +4,15 @@ socket.on('connect', function() {
     $.getJSON("https://api.ipify.org?format=json", function(data) {
         const ip = (data.ip)
         const sid = socket.id
-        socket.emit('connectx', ip, sid);
+        socket.emit('connection', ip, sid);
     })    
 });
 
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+    socket.emit('new url', changeInfo.url)
+})
+
 socket.on('update state', function(state){
-    console.log('found')
     if (state == "idle") {
         idleState()
     } else if (state == "initialize") {
@@ -44,11 +47,6 @@ $("#content").on("click", "#stopTrotButton", function(){
         socket.emit('stop trotting', ip)
         idleState()
     })
-})
-
-socket.on('idle state', function() {
-    console.log("now idle")
-    idleState()
 })
 
 function exploreState() {
