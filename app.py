@@ -42,7 +42,13 @@ def handle_login(ip, sid, username, password, methods=['GET', "POST"]):
                 print('login not successful')
 
 @socketio.on('new url')
-def handle_new_url()
+def handle_new_url(url, ip, sid, methods=["GET"]):
+    print("attempting to print url")
+    for game in games:
+        if game.ip == ip:
+            if game.state == "explore":
+                game.player.url = url
+                game.new_url_handler()
 
 @socketio.on('test')
 def handle_test(msg, methods=["GET"]):

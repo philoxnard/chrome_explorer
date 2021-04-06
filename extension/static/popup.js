@@ -8,8 +8,14 @@ socket.on('connect', function() {
     })    
 });
 
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
-    socket.emit('new url', changeInfo.url)
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+    console.log("From popup.js")
+    console.log(request.msg)
+    $.getJSON("https://api.ipify.org?format=json", function(data) {
+        const ip = (data.ip)
+        const sid = socket.id
+        socket.emit('new url', request.msg, ip, sid)
+    })
 })
 
 socket.on('update state', function(state){
