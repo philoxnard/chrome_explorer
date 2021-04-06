@@ -8,16 +8,18 @@ socket.on('connect', function() {
     })    
 });
 
-window.addEventListener('beforeunload', function(e){
-    e.preventDefault()
-    socket.emit('disconnectx')
+socket.on('update state', function(state){
+    console.log('found')
+    if (state == "idle") {
+        idleState()
+    } else if (state == "initialize") {
+        initializeState()
+    } else if (state == "explore") {
+        exploreState()
+    }
 })
 
-const form = document.getElementById('getPlayer')
-const signupLink = document.getElementById('signupLink')
-const baseUrl = "http://127.0.0.1:5000"
-
-loginButton.addEventListener('click', function(){
+$("#content").on("click", "#loginButton", function(){
     const password = document.getElementById("password").value
     const username = document.getElementById("username").value
     $.getJSON("https://api.ipify.org?format=json", function(data) {
@@ -27,37 +29,37 @@ loginButton.addEventListener('click', function(){
     })
 })
 
-socket.on('update state', function(state){
-    if (state == "idle"){
-        idleState()
-    }
+$("#content").on("click", "#trotButton", function(){
+    $.getJSON("https://api.ipify.org?format=json", function(data) {
+        const ip = (data.ip)
+        socket.emit('start trotting', ip)
+        exploreState()
+    })
 })
 
-// $("#content").on("click", "#trotButton", function(){
-//     $.get(baseUrl+'/start_trotting')
-//     exploreState()
-// })
 
-// $("#content").on("click", "#stopTrotButton", function(){
-//     $.get(baseUrl+'/stop_trotting')
-//     idleState()
-// })
+$("#content").on("click", "#stopTrotButton", function(){
+    $.getJSON("https://api.ipify.org?format=json", function(data) {
+        const ip = (data.ip)
+        socket.emit('stop trotting', ip)
+        idleState()
+    })
+})
 
 socket.on('idle state', function() {
     console.log("now idle")
     idleState()
 })
 
-// function exploreState() {
-//     console.log("now exploring")
-//     $("#content").css("height", "35px")
-//     $("#content").css("width", "80px")
-//     $('#content').html("<div id='exploreWrapper'>\
-//                             <button id='stopTrotButton'>\
-//                                 Stop Trotting\
-//                             </button>\
-//                         </div>") 
-// }
+function exploreState() {
+    $("#content").css("height", "35px")
+    $("#content").css("width", "80px")
+    $('#content').html("<div id='exploreWrapper'>\
+                            <button id='stopTrotButton'>\
+                                Stop Trotting\
+                            </button>\
+                        </div>") 
+}
 
 function idleState() {
     $("#content").css("height", "35px")
@@ -67,4 +69,16 @@ function idleState() {
                                 Start Trotting\
                             </button>\
                         </div>") 
+}
+
+function initializeState() {
+    $('#content').css("height", "80px")
+    $('#content').css("width", "400px")
+    $("#content").html('<div id="login">\
+                            <form action="" id="getPlayer" method="POST">\
+                                <input type="text" id="username" placeholder="Username"/>\
+                                <input type="password" id="password" placeholder="Password"/>\
+                            </form>\
+                            <button id="loginButton">Log In</button>\
+                        </div>')
 }

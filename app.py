@@ -1,10 +1,6 @@
 from flask import Flask, request, json, Response, render_template, session
 from flask_cors import CORS
 from flask_socketio import SocketIO, send
-import json
-import jsonpickle
-from json import JSONEncoder
-
 
 from game import Game
 games = []
@@ -19,6 +15,8 @@ def handle_new_connection(ip, sid, methods=['GET', "POST"]):
     if not any(game.ip == ip for game in games):
         games.append(Game(ip))
         print(f"Creating new game with IP {ip}")
+        state = "initialize"
+        socketio.emit('update state', state, room=sid)
     else:
         print(f"Game already exists with IP {ip}")  
         for game in games:
@@ -45,27 +43,20 @@ def handle_login(ip, sid, username, password, methods=['GET', "POST"]):
 def handle_test(methods=["GET"]):
     print('found')
 
-# @app.route('/start_trotting', methods=["GET"])
-# def start_trotting():
-#     session["game"].state = "explore"
-#     print(f"The current state is {session['game'].state}")
-#     return 'success', 200
+@socketio.on('start trotting')
+def start_trotting(ip, methods=["GET"]):
+    for game in games:
+        if game.ip == ip:
+            game.state = "explore"
+            print(f"The current state is {game.state}")
 
-# @app.route('/stop_trotting', methods=["GET"])
-# def stop_trotting():
-#     session["game"].state = "idle"
-#     print(f"The current state is {session['game'].state}")
-#     return 'success', 200
+@socketio.on('stop trotting')
+def stop_trotting(ip, methods=["GET"]):
+    for game in games:
+        if game.ip == ip:
+            game.state = "idle"
+            print(f"The current state is {game.state}")
 
-# @app.route('/logout', methods=["GET"])
-# def handle_logout():
-#     print('logout found')
-#     session["game"].state = "initialize"
-#     return 'success', 200
-
-# @app.route('/send')
-# def send_py_data():
-#     return json.dumps("String")
 
 if __name__ == "__main__":
     socketio.run(app, port=5000, debug=True)
