@@ -57,8 +57,6 @@ def get_encrypted_password(players, username):
 def compare_passwords(password, key, encrypted_password):
     b_string = bytes(password, encoding=("UTF-8"))
     decrypted_password = decrypt_message(encrypted_password, key)
-    print(decrypted_password)
-    print(b_string)
     if decrypted_password == b_string:
         return True
     else:

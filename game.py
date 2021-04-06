@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import pymongo
+import json
 
 load_dotenv()
 mongo_URI = os.getenv("mongo_URI")
@@ -12,7 +13,10 @@ class Game:
     A class to model a game session
     """
 
-    def __init__(self):
+    def __init__(self, ip):
+
+        # Used to keep games seperate between users
+        self.ip = ip
 
         # Game state! Very important
         self.state = "initialize"
@@ -67,3 +71,6 @@ class Game:
             domains = doc["domains"]
             regions_dict[region] = domains
         return regions_dict
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__)
