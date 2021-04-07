@@ -6,6 +6,14 @@ Phoxtrot is an in-development online game that will take place in a Chrome exten
 
 Phoxtrot is a game that exists somewhere between Pokemon, Pokemon-GO, and Skannerz. It is a Pokemon-style game that uses the internet as its game map. As players traverse the web and hop from site to site, they will encounter different monsters (called Phoxes). Players can then use their own Phoxes to battle the ones they encounter in the wild, strenghtening their own Phoxes while also adding to their collection each time they find a new one.
 
+## KNOWN ISSUES THAT NEED TESTING
+
+A lot of this project is really difficult to test while in development. Things that need to be tested once its live:
+
+With the use of sockets, the game is theoretically playable by different people on different computers at the same time. Unfortunately, this is hard/impossible to test without having multiple people with multiple IPs. Similarly, multiple people in the same house/network cannot play at the same time if they have the same IP.
+
+The way that new URLs are currently handled is very wonky. It attempts to take the IP address from whoever contacted the server, but it is currently replying with the IP address of localhost... which isn't right. This may right itself upon deployment, but it may not. For now, a dummy IP address (mine) will be hard-coded into the program to allow for testing and development.
+
 ## General Structure
 
 When a user turns on the Chrome Explorer extension, it will start pinging the Phoxtrot server every time a new web address is visited (probably only listening on one tab to avoid confusion/errors). The server will take the URL and identify the domain name, which it will then check against a pre-made list of "Regions" such as Social Media, Video Streaming, News, Search Engine, etc. Much like how different regions of Pokemon have different Pokemon living in them, so too will the different Regions have different Phoxes lurking as potential encounters.

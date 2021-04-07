@@ -1,4 +1,4 @@
-from flask import Flask, request, json, Response, render_template, session
+from flask import Flask, request, json, Response, render_template, session, jsonify
 from flask_cors import CORS
 from flask_socketio import SocketIO, send
 
@@ -49,10 +49,20 @@ def handle_new_url(url, ip, sid, methods=["GET"]):
             if game.state == "explore":
                 game.player.url = url
                 game.new_url_handler()
+            elif game.state == "idle":
+                print("Start trotting to find a Phox!")
 
-@socketio.on('test')
-def handle_test(msg, methods=["GET"]):
-    print(msg)
+@app.route('/test', methods={"POST"})
+def handle_test():
+    ip = "100.0.28.103" #request.remote_addr
+    for game in games:
+        if game.ip == ip:
+            if game.state == "explore":
+                raw_url = request.get_data()
+                url = str(raw_url, 'UTF-8')
+                game.player.url = url
+                game.new_url_handler()
+    return 'success', 200
 
 @socketio.on('start trotting')
 def start_trotting(ip, methods=["GET"]):

@@ -8,14 +8,12 @@ import random
 def determine_encounter(self):
     if self.state == "explore":
         if not self.player.shutdown:
+            print(f"Looking for a Phox at {self.player.url}")
             encounter = does_encounter_happen(self.encounter_frequency)
             if encounter:
-                proceed = does_player_accept_encounter()
-                if proceed:
-                    self.phox_encountered = which_phox_encountered(self.region, self.regions)
-                    self.state = "initialize encounter"
-                else:
-                    print("you run from monster")
+                self.phox_encountered = which_phox_encountered(self.region, self.regions)
+                print(f"You found a wild {self.phox_encountered.title()}")
+                self.state = "initialize encounter"
             else:
                 print("You didn't find anything...")
         else:

@@ -4,7 +4,7 @@
     "description": "Front end for the Phoxtrot app",
     "permissions": ["storage", "declarativeContent", "scripting", "tabs"],
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "bgLoader.js"
     },
     "action": {
         "default_popup": "templates/popup.html"
