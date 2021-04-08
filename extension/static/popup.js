@@ -20,6 +20,10 @@ socket.on('update state', function(state){
     }
 })
 
+socket.on('draw details', function(infoDict) {
+    drawCombatDetails(infoDict)
+})
+
 $("#content").on("click", "#loginButton", function(){
     const password = document.getElementById("password").value
     const username = document.getElementById("username").value
@@ -96,7 +100,8 @@ function initializeState() {
 // Top level combat function for drawing combat
 function renderEncounter() {
     drawCombatBlueprint()
-    //getInfoFromServer()
+    getInfoFromServer()
+    // getInfoFromServer() calls drawCombatDetails(infoDict)
 }
 
 // Render the outline and divs for combat
@@ -108,6 +113,10 @@ function drawCombatBlueprint() {
                             <div id='playerInfo'>player info</div>\
                             <div id='info'>info</div>\
                         </div>") 
+}
+
+function drawCombatDetails(infoDict) {
+    console.log(infoDict)
 }
 
 function getInfoFromServer() {

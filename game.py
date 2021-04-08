@@ -72,5 +72,23 @@ class Game:
             regions_dict[region] = domains
         return regions_dict
 
-    def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__)
+    # Will eventually need to pull info for art
+    def get_info_dict(self):
+        info_dict = {}
+        info_dict["wild_phox_max_hp"]=self.wild_phox.max_health
+        info_dict["wild_phox_current_hp"]=self.wild_phox.stats["health"]
+        info_dict["wild_phox_max_RAM"]=self.wild_phox.max_RAM
+        info_dict["wild_phox_current_RAM"]=self.wild_phox.RAM
+        info_dict["wild_phox_name"]=self.wild_phox.name.title()
+        info_dict["wild_phox_level"]=self.wild_phox.level
+        info_dict["wild_phox_status"]=self.wild_phox.status
+        for phox in self.active_phoxes:
+            if not phox.is_wild:
+                    info_dict["phox_max_hp"]=phox.max_health
+                    info_dict["phox_current_hp"]=phox.stats["health"]
+                    info_dict["phox_max_RAM"]=phox.max_RAM
+                    info_dict["phox_current_RAM"]=phox.RAM
+                    info_dict["phox_name"]=phox.name.title()
+                    info_dict["phox_level"]=phox.level
+                    info_dict["phox_status"]=phox.status
+        return info_dict

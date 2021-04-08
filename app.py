@@ -74,8 +74,8 @@ def stop_trotting(ip, methods=["GET"]):
 def start_combat(ip, sid, methods=["GET"]):
     for game in games:
         if game.ip == ip:
-            pass
-
+            info_dict = game.get_info_dict()
+            socketio.emit('draw details', info_dict, room=sid)
 
 if __name__ == "__main__":
     socketio.run(app, port=5000, debug=True)
