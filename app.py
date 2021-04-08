@@ -6,6 +6,7 @@ from game import Game
 games = []
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = 'vnkdjnfjknfl1232#'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -62,7 +63,7 @@ def handle_test():
                 url = str(raw_url, 'UTF-8')
                 game.player.url = url
                 game.new_url_handler()
-    return 'success', 200
+    return jsonify({"state": game.state}), 200
 
 @socketio.on('start trotting')
 def start_trotting(ip, methods=["GET"]):

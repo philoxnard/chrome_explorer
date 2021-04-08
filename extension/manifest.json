@@ -2,9 +2,9 @@
     "name": "Phoxtrot",
     "version": "0.1.0",
     "description": "Front end for the Phoxtrot app",
-    "permissions": ["storage", "declarativeContent", "scripting", "tabs"],
+    "permissions": ["storage", "declarativeContent", "scripting", "tabs", "notifications"],
     "background": {
-        "service_worker": "bgLoader.js"
+        "service_worker": "background.js"
     },
     "action": {
         "default_popup": "templates/popup.html"
