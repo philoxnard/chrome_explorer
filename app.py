@@ -32,11 +32,9 @@ def handle_login(ip, sid, username, password, methods=['GET', "POST"]):
         if game.ip == ip:
             game.username = username
             game.password = password
-            print(sid)
             game.handle_login()
             if game.state == "idle":
                 print('login successful')
-                print('state is idle')
                 state = game.state
                 socketio.emit('update state', state, room=sid)
             else:
@@ -44,7 +42,7 @@ def handle_login(ip, sid, username, password, methods=['GET', "POST"]):
 
 @app.route('/newUrl', methods={"POST"})
 def handle_test():
-    ip = "100.0.28.103" #request.remote_addr
+    ip = "100.0.28.103" # request.remote_addr when it goes live
     for game in games:
         if game.ip == ip:
             if game.state == "explore":

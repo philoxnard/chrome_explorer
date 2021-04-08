@@ -5,7 +5,8 @@
 }
 
 #enemyInfo{
-    background: red;
+    border-style: solid;
+    background: rgb(240, 90, 90);
     position: absolute;
     top: 0px;
     left: 0px;
@@ -35,7 +36,8 @@
 }
 
 #playerInfo{
-    background: blue;
+    border-style: solid;
+    background: rgb(102, 102, 255);
     position: absolute;
     margin-right: 8px;
     bottom: 109px;
@@ -50,4 +52,72 @@
     width: 600px;
     height: 100px;
     background: gray;
+}
+
+.name {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+}
+
+.health {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+}
+
+.ram {
+    position: absolute;
+    top: 50px;
+    left: 20px;
+}
+
+.status {
+    position: absolute;
+    top: 70px;
+    left: 20px;
+}
+
+.btn {
+    font-size: 28px;
+    border-style: solid;
+    background-color: green;
+    width: 130px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+}
+
+.btn:hover{
+    cursor: pointer;
+    background-color: rgb(136, 230, 136);
+}
+
+.btn:active{
+    background-color: rgb(9, 73, 9);
+}
+
+.run {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
+.swap {
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+}
+
+.attack {
+    position: absolute;
+    left: 20px;
+    top: 13px;
+    font-size: 65px;
+    border-style: solid;
+    background-color: green;
+    width: 260px;
+    height: 70px;
+    text-align: center;
+    line-height: 65px;
 }
