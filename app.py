@@ -42,18 +42,7 @@ def handle_login(ip, sid, username, password, methods=['GET', "POST"]):
             else:
                 print('login not successful')
 
-@socketio.on('new url')
-def handle_new_url(url, ip, sid, methods=["GET"]):
-    print("attempting to print url")
-    for game in games:
-        if game.ip == ip:
-            if game.state == "explore":
-                game.player.url = url
-                game.new_url_handler()
-            elif game.state == "idle":
-                print("Start trotting to find a Phox!")
-
-@app.route('/test', methods={"POST"})
+@app.route('/newUrl', methods={"POST"})
 def handle_test():
     ip = "100.0.28.103" #request.remote_addr
     for game in games:
@@ -63,6 +52,8 @@ def handle_test():
                 url = str(raw_url, 'UTF-8')
                 game.player.url = url
                 game.new_url_handler()
+            elif game.state == "idle":
+                print("Start trotting to find a phox!")
     return jsonify({"state": game.state}), 200
 
 @socketio.on('start trotting')
@@ -78,6 +69,12 @@ def stop_trotting(ip, methods=["GET"]):
         if game.ip == ip:
             game.state = "idle"
             print(f"The current state is {game.state}")
+
+@socketio.on('start combat')
+def start_combat(ip, sid, methods=["GET"]):
+    for game in games:
+        if game.ip == ip:
+            pass
 
 
 if __name__ == "__main__":

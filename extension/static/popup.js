@@ -47,12 +47,17 @@ $("#content").on("click", "#stopTrotButton", function(){
     })
 })
 
+// General handlers for each new state.
+// Typically called when the popup is reopened
+// Also called when switching between explore and idle states
+
 function encounterState() {
     $("#content").css("height", "450px")
     $("#content").css("width", "600px")
     $("#content").html("<div id='encounterWrapper'>\
-                            You're fighting a wild Phox!\
+                            Getting information to display combat...\
                         </div>")
+    renderEncounter()
 }
 
 function exploreState() {
@@ -85,4 +90,30 @@ function initializeState() {
                             </form>\
                             <button id="loginButton">Log In</button>\
                         </div>')
+}
+
+// Combat display
+// Top level combat function for drawing combat
+function renderEncounter() {
+    drawCombatBlueprint()
+    //getInfoFromServer()
+}
+
+// Render the outline and divs for combat
+function drawCombatBlueprint() {
+    $('#content').html("<div id='encounterWrapper'>\
+                            <div id='enemyInfo'>enemy info</div>\
+                            <div id='enemyArt'>enemy art</div>\
+                            <div id='playerArt'>player art</div>\
+                            <div id='playerInfo'>player info</div>\
+                            <div id='info'>info</div>\
+                        </div>") 
+}
+
+function getInfoFromServer() {
+    $.getJSON("https://api.ipify.org?format=json", function(data) {
+        const ip = (data.ip)
+        const sid = socket.id
+        socket.emit('start combat', ip, sid)
+    })
 }

@@ -1,0 +1,53 @@
+#encounterWrapper{
+    background: lightgray;
+    width: 100%;
+    height: 100%;
+}
+
+#enemyInfo{
+    background: red;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 200px;
+    height: 100px;
+    margin-left: 8px;
+    margin-top: 8px;
+}
+
+#enemyArt{
+    background: pink;
+    position: absolute;
+    top: 30px;
+    right: 60px;
+    height: 200px;
+    width: 200px;
+    margin-top: 8px;
+}
+
+#playerArt {
+    background: lightblue;
+    position: absolute;
+    bottom: 130px;
+    left: 60px;
+    height: 200px;
+    width: 200px;
+}
+
+#playerInfo{
+    background: blue;
+    position: absolute;
+    margin-right: 8px;
+    bottom: 109px;
+    width: 200px;
+    height: 100px;
+    right: 0px;
+}
+
+#info{
+    position: absolute;
+    bottom: 9px;
+    width: 600px;
+    height: 100px;
+    background: gray;
+}
