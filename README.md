@@ -10,9 +10,11 @@ Phoxtrot is a game that exists somewhere between Pokemon, Pokemon-GO, and Skanne
 
 A lot of this project is really difficult to test while in development. Things that need to be tested once its live:
 
-With the use of sockets, the game is theoretically playable by different people on different computers at the same time. Unfortunately, this is hard/impossible to test without having multiple people with multiple IPs. Similarly, multiple people in the same house/network cannot play at the same time if they have the same IP.
+* With the use of sockets, the game is theoretically playable by different people on different computers at the same time. Unfortunately, this is hard/impossible to test without having multiple people with multiple IPs. Similarly, multiple people in the same house/network cannot play at the same time if they have the same IP.
 
-The way that new URLs are currently handled is very wonky. It attempts to take the IP address from whoever contacted the server, but it is currently replying with the IP address of localhost... which isn't right. This may right itself upon deployment, but it may not. For now, a dummy IP address (mine) will be hard-coded into the program to allow for testing and development.
+* The way that new URLs are currently handled is very wonky. It attempts to take the IP address from whoever contacted the server, but it is currently replying with the IP address of localhost... which isn't right. This may right itself upon deployment, but it may not. For now, a dummy IP address (mine) will be hard-coded into the program to allow for testing and development.
+
+* Apparently Manifest V3 doesn't work with notification displays yet... Not super relevant, as the game still should run fine, this is just a QoL thing. There's a possible issue that the information isn't going to/from the right client/game instance, but I think its all structured properly. Once V3 is not broken, and once the game is live, this can be tested. See the stackoverflow page: Google Chrome Extensions v3 - Error in event handler: ReferenceError: Image is not defined
 
 ## General Structure
 

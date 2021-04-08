@@ -10,15 +10,18 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
         .then(function(response) {
             response.json().then(function(data) {
                 console.log(data)
-                if (data.state == "initialize encounter"){
-                    console.log("You did it")
-                    chrome.notifications.create('', {
-                        title: "You found a phox",
-                        message: "Look at that pretty phox",
-                        iconUrl: "https://i.pinimg.com/564x/f0/c4/04/f0c404c8486dea5ab74ff001af848ab7.jpg",
-                        type: 'basic'
-                    })
-                }
+                // Manifest V3 apparently doesnt work for notifications, so
+                // this will eventually get implemented as written
+                /////////////////////////////////////////////////////////////
+                // if (data.state == "initialize encounter"){
+                //     console.log("You did it")
+                //     chrome.notifications.create('', {
+                //         title: "You found a phox",
+                //         message: "Look at that pretty phox",
+                //         iconUrl: "notification.png",
+                //         type: 'basic'
+                //     })
+                // }
             })
         })
     }

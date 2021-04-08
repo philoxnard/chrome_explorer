@@ -8,16 +8,6 @@ socket.on('connect', function() {
     })    
 });
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-    console.log("From popup.js")
-    console.log(request.msg)
-    $.getJSON("https://api.ipify.org?format=json", function(data) {
-        const ip = (data.ip)
-        const sid = socket.id
-        socket.emit('new url', request.msg, ip, sid)
-    })
-})
-
 socket.on('update state', function(state){
     if (state == "idle") {
         idleState()
@@ -25,6 +15,8 @@ socket.on('update state', function(state){
         initializeState()
     } else if (state == "explore") {
         exploreState()
+    } else if (state== "encounter"){
+        encounterState()
     }
 })
 
@@ -54,6 +46,14 @@ $("#content").on("click", "#stopTrotButton", function(){
         idleState()
     })
 })
+
+function encounterState() {
+    $("#content").css("height", "450px")
+    $("#content").css("width", "600px")
+    $("#content").html("<div id='encounterWrapper'>\
+                            You're fighting a wild Phox!\
+                        </div>")
+}
 
 function exploreState() {
     $("#content").css("height", "35px")

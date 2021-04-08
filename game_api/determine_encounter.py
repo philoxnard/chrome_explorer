@@ -14,6 +14,7 @@ def determine_encounter(self):
                 self.phox_encountered = which_phox_encountered(self.region, self.regions)
                 print(f"You found a wild {self.phox_encountered.title()}")
                 self.state = "initialize encounter"
+                self.initialize_encounter()
             else:
                 print("You didn't find anything...")
         else:
