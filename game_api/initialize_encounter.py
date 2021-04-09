@@ -37,7 +37,7 @@ def initialize_encounter(self):
         # to draw everything
         print(f"You found a level {self.wild_phox.level} {self.wild_phox.name.title()}")
         print(f"Go get 'em, {self.player.party[0].name.title()}!")
-        self.state = "encounter"
+        
 
 
 # Get the level range from the region, pick a random int in the range,

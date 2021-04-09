@@ -16,8 +16,8 @@ socket.on('update state', function(state){
         initializeState()
     } else if (state == "explore") {
         exploreState()
-    } else if (state== "encounter"){
-        encounterState()
+    } else if (state == "encounter" || state == "initialize encounter"){
+        encounterState(state)
     }
 })
 
@@ -84,17 +84,36 @@ $("#content").on("click", ".attack", function() {
     socket.emit('get attack menu', sid)
 })
 
+$("#content").on("click", ".accept", function() {
+    $.getJSON("https://api.ipify.org?format=json", function(data) {
+        const ip = (data.ip)
+        const sid = socket.id
+        socket.emit('encounter state', ip, sid)
+    })
+})
+
+$("#content").on("click", ".decline", function() {
+    $.getJSON("https://api.ipify.org?format=json", function(data) {
+        const ip = (data.ip)
+        socket.emit('start trotting', ip)
+        exploreState()
+    })
+})
+
 // General handlers for each new state.
 // Typically called when the popup is reopened
 // Also called when switching between explore and idle states
 
-function encounterState() {
+function encounterState(state) {
     $("#content").css("height", "450px")
     $("#content").css("width", "600px")
     $("#content").html("<div id='encounterWrapper'>\
                             Getting information to display combat...\
                         </div>")
     renderEncounter()
+    if (state == "initialize encounter") {
+        initializeEncounter()
+    }
 }
 
 function exploreState() {
@@ -127,6 +146,13 @@ function initializeState() {
                             </form>\
                             <button id="loginButton">Log In</button>\
                         </div>')
+}
+
+// Display when the state is initializing encounter
+function initializeEncounter() {
+    $('#info').html("")
+    $("#info").append("<div class='decline btn'>Run</div>")
+    $("#info").append("<div class='accept btn'>Battle</div>")
 }
 
 // Combat display
@@ -163,6 +189,7 @@ function drawDetailCombatBlueprint(){
 }
 
 function drawCombatButtons(){
+    $('#info').html('')
     $("#info").append("<div class='run btn'>Run</div>")
     $("#info").append("<div class='swap btn'>Swap</div>")
     $("#info").append("<div class='attack btn'>Attack</div>")

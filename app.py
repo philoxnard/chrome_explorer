@@ -68,6 +68,13 @@ def stop_trotting(ip, methods=["GET"]):
             game.state = "idle"
             print(f"The current state is {game.state}")
 
+@socketio.on('encounter state')
+def switch_to_encounter_state(ip, sid, methods=["GET"]):
+    for game in games:
+        if game.ip == ip:
+            game.state = "encounter"
+            socketio.emit('update state', game.state, room=sid)
+
 @socketio.on('start combat')
 def start_combat(ip, sid, methods=["GET"]):
     for game in games:

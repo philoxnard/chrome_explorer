@@ -97,6 +97,28 @@
     background-color: rgb(9, 73, 9);
 }
 
+.accept {
+    position: absolute; 
+    font-size: 60px;
+    top: 12px;
+    left: 30px;
+    padding: 5px;
+    width: 220px;
+    height: 60px;
+    line-height: 60px;
+}
+
+.decline {
+    position: absolute; 
+    font-size: 60px;
+    top: 12px;
+    right: 30px;
+    padding: 5px;
+    width: 220px;
+    height: 60px;
+    line-height: 60px;
+}
+
 .run {
     position: absolute;
     right: 20px;
