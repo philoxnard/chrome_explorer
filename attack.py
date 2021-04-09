@@ -13,9 +13,9 @@ class Attack:
 
     def serialize(self):
         return {
-            "name": self.name,
-            "family": self.family,
-            "style": self.style,
+            "name": self.name.title(),
+            "family": self.family.title(),
+            "style": self.style.title(),
             "damage": self.damage,
             "cost": self.cost,
-            "effect": self.effect}
+            "effect": self.plain_text_effect}

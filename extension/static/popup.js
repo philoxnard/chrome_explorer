@@ -1,4 +1,5 @@
 var socket = io.connect('http://127.0.0.1:5000');
+var globalAttacks = []
 
 socket.on('connect', function() {
     $.getJSON("https://api.ipify.org?format=json", function(data) {
@@ -25,7 +26,30 @@ socket.on('draw details', function(infoDict) {
 })
 
 socket.on('generate attack menu', function(attacks){
-    console.log(attacks)
+    $("#info").append("<div id='attackMenu'></div>")
+    $("#attackMenu").html("")
+    globalAttacks = attacks
+    for (i=0; i<globalAttacks.length; i++){
+        $("#attackMenu").append("<div class='attackOption'>"+globalAttacks[i]["name"]+"</div>")
+    }
+})
+
+$("#content").on('mouseover', '.attackOption', function(){
+    for (i=0; i<globalAttacks.length; i++){
+        if (this.innerHTML == globalAttacks[i]["name"]){
+            let atk = globalAttacks[i]
+            $("#info").append("<div id='tooltip'></div>")
+            $("#tooltip").html("Damage: "+atk["damage"]+"<br> \
+                                Cost: "+atk["cost"]+"<br> \
+                                Family: "+atk["family"]+"<br> \
+                                Style: "+atk["style"]+"<br> \
+                                "+atk["effect"])
+        }
+    }
+})
+
+$("#content").on('mouseout', '.attackOption', function(){
+    $("#tooltip").remove()
 })
 
 $("#content").on("click", "#loginButton", function(){

@@ -19,7 +19,7 @@
 #enemyArt{
     background: pink;
     position: absolute;
-    top: 30px;
+    top: 20px;
     right: 60px;
     height: 200px;
     width: 200px;
@@ -120,4 +120,42 @@
     height: 70px;
     text-align: center;
     line-height: 65px;
+}
+
+#attackMenu {
+    overflow: auto;
+    max-width: 110px;
+    max-height: 80px;
+    background-color: white;
+    border-style: solid;
+    border: 2px;
+    position: absolute;
+    top: 10px;
+    left: 300px;
+}
+
+.attackOption {
+    border-style: solid;
+    border: 2px;
+    margin: 3px;
+    padding: 3px;
+    background: rgb(212, 210, 210);
+    text-align: center;
+}
+
+.attackOption:hover{
+    cursor: pointer;
+    background-color: rgb(240, 240, 240);    
+}
+
+.attackOption:active{
+    background-color: rgb(85, 84, 84); 
+}
+
+#tooltip {
+    background: white;
+    position: absolute;
+    padding: 6px;
+    left: 300px;
+    bottom: 100px;
 }
