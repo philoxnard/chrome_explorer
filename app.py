@@ -42,7 +42,7 @@ def handle_login(ip, sid, username, password, methods=['GET', "POST"]):
 
 @app.route('/newUrl', methods={"POST"})
 def handle_test():
-    ip = "100.0.28.103" # request.remote_addr when it goes live
+    ip = "100.0.28.103" # request.remote_addr
     for game in games:
         if game.ip == ip:
             if game.state == "explore":
@@ -74,6 +74,19 @@ def start_combat(ip, sid, methods=["GET"]):
         if game.ip == ip:
             info_dict = game.get_info_dict()
             socketio.emit('draw details', info_dict, room=sid)
+
+@socketio.on('get attack menu')
+def handle_attack_click(sid, methods=["GET"]):
+    ip = "100.0.28.103" # request.remote_addr
+    for game in games:
+        if game.ip == ip:
+            for phox in game.active_phoxes:
+                if not phox.is_wild:
+                    json_list = []
+                    for attack in phox.attacks:
+                        json_list.append(attack.serialize())
+                    socketio.emit('generate attack menu', json_list, room=sid)
+
 
 if __name__ == "__main__":
     socketio.run(app, port=5000, debug=True)

@@ -16,6 +16,8 @@ A lot of this project is really difficult to test while in development. Things t
 
 * Apparently Manifest V3 doesn't work with notification displays yet... Not super relevant, as the game still should run fine, this is just a QoL thing. There's a possible issue that the information isn't going to/from the right client/game instance, but I think its all structured properly. Once V3 is not broken, and once the game is live, this can be tested. See the stackoverflow page: Google Chrome Extensions v3 - Error in event handler: ReferenceError: Image is not defined
 
+* have the IP address be collected from flask request.addr not on client side
+
 ## General Structure
 
 When a user turns on the Chrome Explorer extension, it will start pinging the Phoxtrot server every time a new web address is visited (probably only listening on one tab to avoid confusion/errors). The server will take the URL and identify the domain name, which it will then check against a pre-made list of "Regions" such as Social Media, Video Streaming, News, Search Engine, etc. Much like how different regions of Pokemon have different Pokemon living in them, so too will the different Regions have different Phoxes lurking as potential encounters.

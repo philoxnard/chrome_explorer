@@ -24,6 +24,10 @@ socket.on('draw details', function(infoDict) {
     drawCombatDetails(infoDict)
 })
 
+socket.on('generate attack menu', function(attacks){
+    console.log(attacks)
+})
+
 $("#content").on("click", "#loginButton", function(){
     const password = document.getElementById("password").value
     const username = document.getElementById("username").value
@@ -49,6 +53,11 @@ $("#content").on("click", "#stopTrotButton", function(){
         socket.emit('stop trotting', ip)
         idleState()
     })
+})
+
+$("#content").on("click", ".attack", function() {
+    const sid = socket.id
+    socket.emit('get attack menu', sid)
 })
 
 // General handlers for each new state.
