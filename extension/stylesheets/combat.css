@@ -131,22 +131,17 @@
     bottom: 10px;
 }
 
-.attack {
+.readout {
+    width: 280px;
+    height: 85px;
     position: absolute;
-    left: 20px;
-    top: 13px;
-    font-size: 65px;
-    border-style: solid;
-    background-color: green;
-    width: 260px;
-    height: 70px;
-    text-align: center;
-    line-height: 65px;
+    margin: 8px;
+    background: white;
 }
 
 #attackMenu {
     overflow: auto;
-    max-width: 110px;
+    width: 130px;
     max-height: 80px;
     background-color: white;
     border-style: solid;

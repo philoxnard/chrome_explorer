@@ -79,11 +79,6 @@ $("#content").on("click", "#stopTrotButton", function(){
     })
 })
 
-$("#content").on("click", ".attack", function() {
-    const sid = socket.id
-    socket.emit('get attack menu', sid)
-})
-
 $("#content").on("click", ".accept", function() {
     $.getJSON("https://api.ipify.org?format=json", function(data) {
         const ip = (data.ip)
@@ -113,6 +108,10 @@ function encounterState(state) {
     renderEncounter()
     if (state == "initialize encounter") {
         initializeEncounter()
+    } else if (state == "encounter")
+    {
+        const sid = socket.id
+        socket.emit('get attack menu', sid)
     }
 }
 
@@ -162,6 +161,7 @@ function renderEncounter() {
     drawDetailCombatBlueprint()
     drawCombatButtons()
     getInfoFromServer()
+    getTurnInfo()
     // getInfoFromServer() calls drawCombatDetails(infoDict)
 }
 
@@ -178,13 +178,13 @@ function drawGeneralCombatBlueprint() {
 
 //Put different divs in place to hold specific info bits for combat
 function drawDetailCombatBlueprint(){
-    $("#enemyInfo").append("<div class='name'>name and level</div>")
-    $("#enemyInfo").append("<div class='health'>health</div>")
-    $("#enemyInfo").append("<div class='ram'>RAM</div>")
+    $("#enemyInfo").append("<div class='name'></div>")
+    $("#enemyInfo").append("<div class='health'></div>")
+    $("#enemyInfo").append("<div class='ram'></div>")
     $("#enemyInfo").append("<div class='status'></div>")
-    $("#playerInfo").append("<div class='name'>name and level</div>")
-    $("#playerInfo").append("<div class='health'>health</div>")
-    $("#playerInfo").append("<div class='ram'>RAM</div>")
+    $("#playerInfo").append("<div class='name'></div>")
+    $("#playerInfo").append("<div class='health'></div>")
+    $("#playerInfo").append("<div class='ram'></div>")
     $("#playerInfo").append("<div class='status'></div>")
 }
 
@@ -192,7 +192,7 @@ function drawCombatButtons(){
     $('#info').html('')
     $("#info").append("<div class='run btn'>Run</div>")
     $("#info").append("<div class='swap btn'>Swap</div>")
-    $("#info").append("<div class='attack btn'>Attack</div>")
+    $("#info").append("<div class='readout'></div>")
 }
 
 function drawCombatDetails(infoDict) {
@@ -244,6 +244,12 @@ function getInfoFromServer() {
     $.getJSON("https://api.ipify.org?format=json", function(data) {
         const ip = (data.ip)
         const sid = socket.id
-        socket.emit('start combat', ip, sid)
+        socket.emit('initialize encounter state', ip, sid)
     })
+}
+
+// Tells the client if its your turn, or tells you what the opponent did on its turn
+function getTurnInfo() {
+    const sid = socket.id
+    socket.emit('get turn info', sid)
 }

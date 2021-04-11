@@ -73,9 +73,10 @@ def switch_to_encounter_state(ip, sid, methods=["GET"]):
     for game in games:
         if game.ip == ip:
             game.state = "encounter"
+            game.combat()
             socketio.emit('update state', game.state, room=sid)
 
-@socketio.on('start combat')
+@socketio.on('initialize encounter state')
 def start_combat(ip, sid, methods=["GET"]):
     for game in games:
         if game.ip == ip:
@@ -93,6 +94,24 @@ def handle_attack_click(sid, methods=["GET"]):
                     for attack in phox.attacks:
                         json_list.append(attack.serialize())
                     socketio.emit('generate attack menu', json_list, room=sid)
+
+@socketio.on('get turn info')
+def get_turn_info(sid, methods=["GET"]):
+    ip = "100.0.28.103" # request.remote_addr
+    for game in games:
+        if game.ip == ip:
+            pass
+        # This will eventually have to get some info and emit it to a new function
+        # on the client side. Info will have to be either: 
+            # If its the player's turn, just say It's your turn!
+            # If the player just acted, say what happened, then have a button
+            # to progress to the next turn
+            # If its the other player's turn, show them what they did, then have
+            # a button to progress to the next turn
+            # Maybe display each phox's AS? 
+        # The "NEXT" button will go through another combat loop, which will be
+        # basically just game.combat()
+        # idk this will actually take some work                        
 
 
 if __name__ == "__main__":
