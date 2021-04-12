@@ -41,6 +41,10 @@ socket.on('update readout', function(readout) {
     $(".readout").append("<div class='nextTurn btn'>Continue</div>")
 })
 
+socket.on('your turn readout', function(){
+    $(".readout").html("It's your turn!")
+})
+
 $("#content").on('mouseover', '.attackOption', function(){
     for (i=0; i<globalAttacks.length; i++){
         if (this.innerHTML == globalAttacks[i]["name"]){
@@ -94,6 +98,14 @@ $("#content").on("click", "#stopTrotButton", function(){
 })
 
 $("#content").on("click", ".accept", function() {
+    $.getJSON("https://api.ipify.org?format=json", function(data) {
+        const ip = (data.ip)
+        const sid = socket.id
+        socket.emit('combat loop', ip, sid)
+    })
+})
+
+$("#content").on("click", ".nextTurn", function() {
     $.getJSON("https://api.ipify.org?format=json", function(data) {
         const ip = (data.ip)
         const sid = socket.id

@@ -72,7 +72,7 @@ def stop_trotting(ip, methods=["GET"]):
             print(f"The current state is {game.state}")
 
 @socketio.on('combat loop')
-def switch_to_encounter_state(ip, sid, methods=["GET"]):
+def handle_combat_loop(ip, sid, methods=["GET"]):
     for game in games:
         if game.ip == ip:
             game.state = "encounter"

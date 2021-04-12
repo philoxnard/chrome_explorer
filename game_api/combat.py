@@ -124,7 +124,7 @@ def upkeep(phox, phoxes):
 
 def wild_phox_take_turn(phox, phoxes):
     # if all(not phox.disconnected for phox in phoxes):
-    defender = upkeep(phox, defender)
+    defender = upkeep(phox, phoxes)
     random_max = len(phox.attacks) - 1
     num = random.randint(0, random_max)
     if phox.attacks[num].cost <= phox.RAM:
