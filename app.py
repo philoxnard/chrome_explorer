@@ -25,6 +25,9 @@ def handle_new_connection(ip, sid, methods=['GET', "POST"]):
                 state = game.state
                 print(f"Current state is {state}")
                 socketio.emit('update state', state, room=sid)
+                if game.combat_info_dict:
+                    readout = game.combat_info_dict
+                    socketio.emit('update readout', readout, room=sid)
 
 @socketio.on('login')
 def handle_login(ip, sid, username, password, methods=['GET', "POST"]):
@@ -68,13 +71,18 @@ def stop_trotting(ip, methods=["GET"]):
             game.state = "idle"
             print(f"The current state is {game.state}")
 
-@socketio.on('encounter state')
+@socketio.on('combat loop')
 def switch_to_encounter_state(ip, sid, methods=["GET"]):
     for game in games:
         if game.ip == ip:
             game.state = "encounter"
             game.combat()
             socketio.emit('update state', game.state, room=sid)
+            if not game.combat_state == "waiting":
+                readout = game.combat_info_dict
+                socketio.emit('update readout', readout, room=sid)
+            else:
+                socketio.emit('your turn readout', room=sid)
 
 @socketio.on('initialize encounter state')
 def start_combat(ip, sid, methods=["GET"]):
@@ -84,7 +92,7 @@ def start_combat(ip, sid, methods=["GET"]):
             socketio.emit('draw details', info_dict, room=sid)
 
 @socketio.on('get attack menu')
-def handle_attack_click(sid, methods=["GET"]):
+def get_attack_menu(sid, methods=["GET"]):
     ip = "100.0.28.103" # request.remote_addr
     for game in games:
         if game.ip == ip:
@@ -113,6 +121,22 @@ def get_turn_info(sid, methods=["GET"]):
         # basically just game.combat()
         # idk this will actually take some work                        
 
+@socketio.on('click attack')
+def handle_attack_click(attack_name, sid, methods=["GET"]):
+    ip = "100.0.28.103" # request.remote_addr
+    for game in games:
+        if game.ip == ip:
+            if game.combat_state == "waiting":
+                print(attack_name)
+                game.player_attack = attack_name.lower()
+                game.execute_player_attack()
+                info_dict = game.get_info_dict()
+                socketio.emit('draw details', info_dict, room=sid)
+                readout = game.combat_info_dict
+                socketio.emit('update readout', readout, room=sid)
+                # if the above properly draws the changes in health and RAM
+                # then emit something that shows those changes in text in the readout
+                # and also gives a button to start the next attack loop
 
 if __name__ == "__main__":
     socketio.run(app, port=5000, debug=True)

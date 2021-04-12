@@ -6,12 +6,26 @@
 #################################################################
 
 def execute_attack(attacker, defender, attack):
+    print(attacker)
+    print(defender)
+    print(attack)
     print(f"{attacker.name.title()} is attacking {defender.name.title()} with {attack.name.title()}")
     attacker.RAM -= attack.cost
     print(f"{attacker.name.title()} spent {attack.cost} RAM and now has {attacker.RAM}")
     damage = int(calculate_damage(attacker, defender, attack))
     deal_damage(damage, attacker, defender)
-    
+    if attacker.is_wild:
+        ownership = "Wild"
+    else:
+        ownership = "Your"
+    info_dict = {
+        "ownership": ownership,
+        "attack": attack.name.title(),
+        "damage": damage,
+        "attacker": attacker.name.title(),
+        "defender": defender.name.title(),
+    }
+    return info_dict
     
 
 def calculate_damage(attacker, defender, attack):

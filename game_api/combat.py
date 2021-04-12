@@ -11,11 +11,7 @@ from game_api.handle_attack import execute_attack
 
 # Start of the combat chain
 def combat(self):
-    # Check if the player is shutdown
-    # Check if a phox is disconnected
-    # Check if a phox has AS > AST
-    # Increment speed 
-
+    self.combat_info_dict = None
     if check_shutdown(self.player.party):
         self.player.shutdown = True
         self.state = "explore"
@@ -27,15 +23,27 @@ def combat(self):
     else:
         phox = check_for_turn(self.active_phoxes)
         if phox:
-            take_turn(phox, self.active_phoxes)
+            if phox.is_wild:
+                self.combat_info_dict = wild_phox_take_turn(phox, self.active_phoxes)
+            else:
+                self.combat_state = "waiting" 
         else:
             increment_speed(self.active_phoxes)
+            combat(self)
+
+def execute_player_attack(self):
+    self.combat_info_dict = player_phox_takes_turn(self.active_phoxes, self.player_attack)
+    self.combat_state = None
+    self.player_attack = None
+
+
 
 
 # Increment speed in the background
 def increment_speed(phoxes):
     for phox in phoxes:
         phox.AS += phox.temp_speed
+    
 
 # Check to see if any phox has passed their speed threshold and gets to act
 def check_for_turn(phoxes):
@@ -93,25 +101,6 @@ def randomize_turn(phoxes):
     print(f"{phoxes[num].name.title()} won the speed tie")
     return phoxes[num]
 
-# High level architecture for what a turn looks like
-def take_turn(phox, phoxes):
-    if all(not phox.disconnected for phox in phoxes):
-        update_RAM(phox)
-        defender = get_defender(phox, phoxes)
-        if phox.is_wild:
-            wild_phox_take_turn(phox, defender)
-        else:
-            player_phox_takes_turn(phox, defender)
-        phox.is_attacking = False
-        phox.AS -= phox.AS_threshold
-        phox.can_act = False
-    print()
-    ###########################
-    # if phox.is_AI:          #
-    # AI_phox_take_turn()     #
-    # To be implemented later #
-    ###########################
-
 # Currently gets called only when a phox takes its turn
 # May change to be called any time any turn is taken
 # Or maybe even on every AS incrementation
@@ -128,27 +117,45 @@ def get_defender(attacker, phoxes):
         if phox.is_attacking == False:
             return phox
 
-def wild_phox_take_turn(phox, defender):
+def upkeep(phox, phoxes):
+    update_RAM(phox)
+    defender = get_defender(phox, phoxes)
+    return defender
+
+def wild_phox_take_turn(phox, phoxes):
+    # if all(not phox.disconnected for phox in phoxes):
+    defender = upkeep(phox, defender)
     random_max = len(phox.attacks) - 1
     num = random.randint(0, random_max)
     if phox.attacks[num].cost <= phox.RAM:
         attack = phox.attacks[num]
-        execute_attack(phox, defender, attack)
+        info_dict = execute_attack(phox, defender, attack)
+        phox.is_attacking = False
+        phox.AS -= phox.AS_threshold
+        phox.can_act = False
+        return info_dict
     else:
         print("Not enough RAM")
         wild_phox_take_turn(phox, defender)
         
-def player_phox_takes_turn(phox, defender):
-    # This will all get redisigned when front end is in #
-    for index, attack in enumerate(phox.attacks):
-        print(f"[{index}]: {attack.name.title()}")
-    num = int(input("Which attack do you pick? "))
-    if phox.attacks[num].cost <= phox.RAM:
-        attack = phox.attacks[num]
-        execute_attack(phox, defender, attack)
-    else:
-        print("Not enough RAM")
-        player_phox_takes_turn(phox, defender)
+def player_phox_takes_turn(phoxes, attack_name):
+    # if all(not phox.disconnected for phox in phoxes):
+    print(attack_name)
+    for phox in phoxes:
+        if not phox.is_wild:
+            defender = upkeep(phox, phoxes)
+            for attack in phox.attacks:
+                if attack.name == attack_name:
+                    print(f'trying attack {attack.name}')
+                    if attack.cost<= phox.RAM:
+                        print(f'executing attack {attack.name}')
+                        info_dict = execute_attack(phox, defender, attack)
+                        phox.is_attacking = False
+                        phox.AS -= phox.AS_threshold
+                        phox.can_act = False
+                        return info_dict
+                    else:
+                        print("Not enough RAM")
 
 def check_shutdown(party):
     if all(phox.disconnected for phox in party):

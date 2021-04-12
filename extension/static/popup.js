@@ -34,6 +34,13 @@ socket.on('generate attack menu', function(attacks){
     }
 })
 
+socket.on('update readout', function(readout) {
+    console.log('attempting to update readout')
+    $(".readout").html(readout["ownership"]+" "+readout["attacker"]+" used " +readout["attack"]+".")
+    $(".readout").append("<br>It dealt "+readout["damage"]+" damage.")
+    $(".readout").append("<div class='nextTurn btn'>Continue</div>")
+})
+
 $("#content").on('mouseover', '.attackOption', function(){
     for (i=0; i<globalAttacks.length; i++){
         if (this.innerHTML == globalAttacks[i]["name"]){
@@ -50,6 +57,13 @@ $("#content").on('mouseover', '.attackOption', function(){
 
 $("#content").on('mouseout', '.attackOption', function(){
     $("#tooltip").remove()
+})
+
+$("#content").on('click', '.attackOption', function(){
+    let attackName = this.innerHTML
+    let sid = socket.id
+    console.log(attackName)
+    socket.emit('click attack', attackName, sid)
 })
 
 $("#content").on("click", "#loginButton", function(){
@@ -83,7 +97,7 @@ $("#content").on("click", ".accept", function() {
     $.getJSON("https://api.ipify.org?format=json", function(data) {
         const ip = (data.ip)
         const sid = socket.id
-        socket.emit('encounter state', ip, sid)
+        socket.emit('combat loop', ip, sid)
     })
 })
 

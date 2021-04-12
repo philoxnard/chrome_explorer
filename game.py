@@ -51,13 +51,20 @@ class Game:
         # String taken from the determine_encounter library
         self.phox_encountered = None
 
+        # Helps display the proper info in combat
+        self.combat_state = None
+        self.player_attack = None
+
+        # Pushed to client to display information in the combat readout
+        self.combat_info_dict = None
+
     # Import the high level functions from the different API libraries
     from game_api.handle_login import handle_login, terminal_test_login
     from game_api.handle_new_url import new_url_handler
     from game_api.determine_encounter import determine_encounter
     from game_api.instantiate_party import instantiate_party
     from game_api.initialize_encounter import initialize_encounter
-    from game_api.combat import combat
+    from game_api.combat import combat, execute_player_attack
     from game_api.experience import handle_experience
     from game_api.encounter_cleanup import encounter_cleanup
     from game_api.handle_phoxtrot_site import handle_phoxtrot_site
