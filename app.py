@@ -11,8 +11,9 @@ app.secret_key = 'vnkdjnfjknfl1232#'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 @socketio.on('connection')
-def handle_new_connection(ip, sid, methods=['GET', "POST"]):
+def handle_new_connection(sid, methods=['GET', "POST"]):
     print("new connection")
+    ip = "100.0.28.103" # request.remote_addr
     if not any(game.ip == ip for game in games):
         games.append(Game(ip))
         print(f"Creating new game with IP {ip}")
@@ -30,7 +31,8 @@ def handle_new_connection(ip, sid, methods=['GET', "POST"]):
                     socketio.emit('update readout', readout, room=sid)
 
 @socketio.on('login')
-def handle_login(ip, sid, username, password, methods=['GET', "POST"]):
+def handle_login(sid, username, password, methods=['GET', "POST"]):
+    ip = "100.0.28.103" # request.remote_addr
     for game in games:
         if game.ip == ip:
             game.username = username
@@ -58,21 +60,25 @@ def handle_test():
     return jsonify({"state": game.state}), 200
 
 @socketio.on('start trotting')
-def start_trotting(ip, methods=["GET"]):
+def start_trotting(methods=["GET"]):
+    ip = "100.0.28.103" # request.remote_addr
     for game in games:
         if game.ip == ip:
+            game.cleanup_info_dict = {}
             game.state = "explore"
             print(f"The current state is {game.state}")
 
 @socketio.on('stop trotting')
-def stop_trotting(ip, methods=["GET"]):
+def stop_trotting(methods=["GET"]):
+    ip = "100.0.28.103" # request.remote_addr
     for game in games:
         if game.ip == ip:
             game.state = "idle"
             print(f"The current state is {game.state}")
 
 @socketio.on('combat loop')
-def handle_combat_loop(ip, sid, methods=["GET"]):
+def handle_combat_loop(sid, methods=["GET"]):
+    ip = "100.0.28.103" # request.remote_addr
     for game in games:
         if game.ip == ip:
             game.state = "encounter"
@@ -88,7 +94,8 @@ def handle_combat_loop(ip, sid, methods=["GET"]):
                 
 
 @socketio.on('initialize encounter state')
-def start_combat(ip, sid, methods=["GET"]):
+def start_combat(sid, methods=["GET"]):
+    ip = "100.0.28.103" # request.remote_addr
     for game in games:
         if game.ip == ip:
             info_dict = game.get_info_dict()

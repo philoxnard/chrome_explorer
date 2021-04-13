@@ -2,11 +2,11 @@ var socket = io.connect('http://127.0.0.1:5000');
 var globalAttacks = []
 
 socket.on('connect', function() {
-    $.getJSON("https://api.ipify.org?format=json", function(data) {
-        const ip = (data.ip)
-        const sid = socket.id
-        socket.emit('connection', ip, sid);
-    })    
+    // $.getJSON("https://api.ipify.org?format=json", function(data) {
+    //     const ip = (data.ip)
+    const sid = socket.id
+    socket.emit('connection', sid);
+    // })    
 });
 
 socket.on('update state', function(state){
@@ -84,60 +84,60 @@ $("#content").on('click', '.attackOption', function(){
 $("#content").on("click", "#loginButton", function(){
     const password = document.getElementById("password").value
     const username = document.getElementById("username").value
-    $.getJSON("https://api.ipify.org?format=json", function(data) {
-        const ip = (data.ip)
-        const sid = socket.id
-        socket.emit('login', ip, sid, username, password)
-    })
+    // $.getJSON("https://api.ipify.org?format=json", function(data) {
+    //     const ip = (data.ip)
+    const sid = socket.id
+    socket.emit('login', sid, username, password)
+    // })
 })
 
 $("#content").on("click", "#trotButton", function(){
-    $.getJSON("https://api.ipify.org?format=json", function(data) {
-        const ip = (data.ip)
-        socket.emit('start trotting', ip)
-        exploreState()
-    })
+    // $.getJSON("https://api.ipify.org?format=json", function(data) {
+    //     const ip = (data.ip)
+    socket.emit('start trotting')
+    exploreState()
+    // })
 })
 
 
 $("#content").on("click", "#stopTrotButton", function(){
-    $.getJSON("https://api.ipify.org?format=json", function(data) {
-        const ip = (data.ip)
-        socket.emit('stop trotting', ip)
-        idleState()
-    })
+    // $.getJSON("https://api.ipify.org?format=json", function(data) {
+    //     const ip = (data.ip)
+    socket.emit('stop trotting')
+    idleState()
+    // })
 })
 
 $("#content").on("click", ".accept", function() {
-    $.getJSON("https://api.ipify.org?format=json", function(data) {
-        const ip = (data.ip)
-        const sid = socket.id
-        socket.emit('combat loop', ip, sid)
-    })
+    // $.getJSON("https://api.ipify.org?format=json", function(data) {
+    //     const ip = (data.ip)
+    const sid = socket.id
+    socket.emit('combat loop', sid)
+    // })
 })
 
 $("#content").on("click", ".nextTurn", function() {
-    $.getJSON("https://api.ipify.org?format=json", function(data) {
-        const ip = (data.ip)
-        const sid = socket.id
-        socket.emit('combat loop', ip, sid)
-    })
+    // $.getJSON("https://api.ipify.org?format=json", function(data) {
+    //     const ip = (data.ip)
+    const sid = socket.id
+    socket.emit('combat loop', sid)
+    // })
 })
 
 $("#content").on("click", ".decline", function() {
-    $.getJSON("https://api.ipify.org?format=json", function(data) {
-        const ip = (data.ip)
-        socket.emit('start trotting', ip)
-        exploreState()
-    })
+    // $.getJSON("https://api.ipify.org?format=json", function(data) {
+    //     const ip = (data.ip)
+    socket.emit('start trotting')
+    exploreState()
+    // })
 })
 
 $("#content").on("click", ".run", function() {
-    $.getJSON("https://api.ipify.org?format=json", function(data) {
-        const ip = (data.ip)
-        socket.emit('start trotting', ip)
-        exploreState()
-    })
+    // $.getJSON("https://api.ipify.org?format=json", function(data) {
+    //     const ip = (data.ip)
+    socket.emit('start trotting')
+    exploreState()
+    // })
 })
 
 // General handlers for each new state.
@@ -290,11 +290,11 @@ function drawPhox(maxhp, hp, maxram, ram, pname, lvl, status){
 }
 
 function getInfoFromServer() {
-    $.getJSON("https://api.ipify.org?format=json", function(data) {
-        const ip = (data.ip)
-        const sid = socket.id
-        socket.emit('initialize encounter state', ip, sid)
-    })
+    // $.getJSON("https://api.ipify.org?format=json", function(data) {
+    //     const ip = (data.ip)
+    const sid = socket.id
+    socket.emit('initialize encounter state', sid)
+    // })
 }
 
 // Tells the client if its your turn, or tells you what the opponent did on its turn
