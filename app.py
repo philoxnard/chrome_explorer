@@ -83,6 +83,9 @@ def handle_combat_loop(ip, sid, methods=["GET"]):
                 socketio.emit('update readout', readout, room=sid)
             else:
                 socketio.emit('your turn readout', room=sid)
+            if game.state == "encounter cleanup":
+                pass
+                
 
 @socketio.on('initialize encounter state')
 def start_combat(ip, sid, methods=["GET"]):

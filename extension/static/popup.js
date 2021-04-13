@@ -121,6 +121,14 @@ $("#content").on("click", ".decline", function() {
     })
 })
 
+$("#content").on("click", ".run", function() {
+    $.getJSON("https://api.ipify.org?format=json", function(data) {
+        const ip = (data.ip)
+        socket.emit('start trotting', ip)
+        exploreState()
+    })
+})
+
 // General handlers for each new state.
 // Typically called when the popup is reopened
 // Also called when switching between explore and idle states

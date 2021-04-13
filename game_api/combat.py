@@ -6,9 +6,6 @@ from game_api.handle_attack import execute_attack
 ### Library for playing through every round of combat ###
 #########################################################
 
-# All of the randomization calculations can probably be simplified way down.
-
-
 # Start of the combat chain
 def combat(self):
     self.combat_info_dict = None
@@ -33,8 +30,9 @@ def combat(self):
 
 def execute_player_attack(self):
     self.combat_info_dict = player_phox_takes_turn(self.active_phoxes, self.player_attack)
-    self.combat_state = None
-    self.player_attack = None
+    if self.combat_info_dict:
+        self.combat_state = None
+        self.player_attack = None
 
 
 
@@ -118,7 +116,6 @@ def get_defender(attacker, phoxes):
             return phox
 
 def upkeep(phox, phoxes):
-    update_RAM(phox)
     defender = get_defender(phox, phoxes)
     return defender
 
@@ -136,7 +133,7 @@ def wild_phox_take_turn(phox, phoxes):
         return info_dict
     else:
         print("Not enough RAM")
-        wild_phox_take_turn(phox, defender)
+        wild_phox_take_turn(phox, phoxes)
         
 def player_phox_takes_turn(phoxes, attack_name):
     # if all(not phox.disconnected for phox in phoxes):
@@ -150,12 +147,14 @@ def player_phox_takes_turn(phoxes, attack_name):
                     if attack.cost<= phox.RAM:
                         print(f'executing attack {attack.name}')
                         info_dict = execute_attack(phox, defender, attack)
+                        update_RAM(phox)
                         phox.is_attacking = False
                         phox.AS -= phox.AS_threshold
                         phox.can_act = False
                         return info_dict
                     else:
                         print("Not enough RAM")
+                        return None
 
 def check_shutdown(party):
     if all(phox.disconnected for phox in party):
