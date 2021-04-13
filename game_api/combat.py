@@ -15,6 +15,7 @@ def combat(self):
     elif self.wild_phox.disconnected:
         self.handle_experience(self.active_phoxes[0], self.wild_phox, self.player, self.players)
         self.state = "encounter cleanup"
+        self.encounter_cleanup
     elif is_swap_needed(self.active_phoxes):
         swap_phoxes(self.active_phoxes, self.player.party)
     else:

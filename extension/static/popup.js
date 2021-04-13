@@ -16,7 +16,7 @@ socket.on('update state', function(state){
         initializeState()
     } else if (state == "explore") {
         exploreState()
-    } else if (state == "encounter" || state == "initialize encounter"){
+    } else if (state.includes("encounter")){
         encounterState(state)
     }
 })
@@ -43,6 +43,17 @@ socket.on('update readout', function(readout) {
 
 socket.on('your turn readout', function(){
     $(".readout").html("It's your turn!")
+})
+
+socket.on('display cleanup', function(info_dict){
+    $('.readout').html('Your '+info_dict["phox"]+ " gained "+info_dict["experience"]+" experience!")
+    if (info_dict["level"]){
+        $('.readout').append('<br>'+info_dict["phox"]+" grew to level "+info_dict["level"]+"!")
+    }
+    if (info_dict["newPhox"]){
+        $('.readout').append('<br>Congratulations! You added '+info_dict["newPhox"]+' to your collection!')
+    }
+    $('.readout').append('<br>Click "Run" to continue trotting.')
 })
 
 $("#content").on('mouseover', '.attackOption', function(){
@@ -146,6 +157,10 @@ function encounterState(state) {
     {
         const sid = socket.id
         socket.emit('get attack menu', sid)
+    }
+    else if (state == "encounter cleanup"){
+        const sid = socket.id
+        socket.emit('get cleanup info', sid)
     }
 }
 

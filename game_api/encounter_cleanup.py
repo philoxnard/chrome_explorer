@@ -8,12 +8,14 @@ def encounter_cleanup(self):
         phox.is_attacking = False
         phox.RAM = phox.max_RAM
     print("Returning to explore state")
-    add_to_collection(self.wild_phox.species, self.player, self.players)
-    self.state = "explore"
+    new_phox = add_to_collection(self.wild_phox.species, self.player, self.players)
+    if new_phox:
+        self.cleanup_info_dict["newPhox"] = new_phox.title()
 
 def add_to_collection(phox_name, player, playerDB):
     collection = get_collection(player, playerDB)
-    check_if_in_collection(phox_name, collection, player, playerDB)
+    new_phox = check_if_in_collection(phox_name, collection, player, playerDB)
+    return new_phox
 
 def get_collection(player, playerDB):
     player_db_info = playerDB.find({"username": player.username})
@@ -29,12 +31,9 @@ def check_if_in_collection(phox_name, collection, player, playerDB):
         print(f"You already have a {phox_name}")
     else:
         print(f"Adding {phox_name} to your collection.")
-        nickname = get_nickname()
+        nickname = "sample nickname" # to be changed when integrated with front end
         add_phox(phox_name, playerDB, player, nickname)
-
-def get_nickname():
-    nickname = input("What do you want to name it?")
-    return nickname
+        return phox_name
 
 # Eventually gonna need to make it so that, if your party isn't full, the new phox
 # goes into your party instead of your collection

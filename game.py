@@ -56,7 +56,11 @@ class Game:
         self.player_attack = None
 
         # Pushed to client to display information in the combat readout
-        self.combat_info_dict = None
+        self.combat_info_dict = {}
+
+        # Dictionary pushed to client after combat to display experience gain and
+        # possible new phox addition
+        self.cleanup_info_dict = {}
 
     # Import the high level functions from the different API libraries
     from game_api.handle_login import handle_login, terminal_test_login

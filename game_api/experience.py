@@ -11,12 +11,17 @@ def handle_experience(self, phox, enemy, player, playerDB):
     exp_gained = round(enemy.level*exp_constant*phox.exp_mod)
     phox.experience += int(exp_gained)
     print(f"{phox.name.title()} gained {exp_gained} experience.")
-    check_level(phox, player, playerDB)
+    self.cleanup_info_dict["phox"] = phox.name.title()
+    self.cleanup_info_dict["experience"] = exp_gained
+    level = check_level(phox, player, playerDB)
+    if level:
+        self.cleanup_info_dict["level"] = level
 
 def check_level(phox, player, playerDB):
     level = round(phox.experience**(1/3))
     if not phox.level == level:
         level_up(phox, level, player, playerDB)
+        return level
         
 def level_up(phox, level, player, playerDB):
     phox.level = level

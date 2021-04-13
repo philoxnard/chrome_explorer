@@ -84,7 +84,7 @@ def handle_combat_loop(ip, sid, methods=["GET"]):
             else:
                 socketio.emit('your turn readout', room=sid)
             if game.state == "encounter cleanup":
-                pass
+                game.encounter_cleanup()
                 
 
 @socketio.on('initialize encounter state')
@@ -104,25 +104,7 @@ def get_attack_menu(sid, methods=["GET"]):
                     json_list = []
                     for attack in phox.attacks:
                         json_list.append(attack.serialize())
-                    socketio.emit('generate attack menu', json_list, room=sid)
-
-@socketio.on('get turn info')
-def get_turn_info(sid, methods=["GET"]):
-    ip = "100.0.28.103" # request.remote_addr
-    for game in games:
-        if game.ip == ip:
-            pass
-        # This will eventually have to get some info and emit it to a new function
-        # on the client side. Info will have to be either: 
-            # If its the player's turn, just say It's your turn!
-            # If the player just acted, say what happened, then have a button
-            # to progress to the next turn
-            # If its the other player's turn, show them what they did, then have
-            # a button to progress to the next turn
-            # Maybe display each phox's AS? 
-        # The "NEXT" button will go through another combat loop, which will be
-        # basically just game.combat()
-        # idk this will actually take some work                        
+                    socketio.emit('generate attack menu', json_list, room=sid)                      
 
 @socketio.on('click attack')
 def handle_attack_click(attack_name, sid, methods=["GET"]):
@@ -137,9 +119,15 @@ def handle_attack_click(attack_name, sid, methods=["GET"]):
                 socketio.emit('draw details', info_dict, room=sid)
                 readout = game.combat_info_dict
                 socketio.emit('update readout', readout, room=sid)
-                # if the above properly draws the changes in health and RAM
-                # then emit something that shows those changes in text in the readout
-                # and also gives a button to start the next attack loop
+
+@socketio.on('get cleanup info')
+def handle_combat_cleanup(sid, methods=["GET"]):
+    ip = "100.0.28.103" # request.remote_addr
+    for game in games:
+        if game.ip == ip:
+            if game.state == "encounter cleanup":
+                info_dict = game.cleanup_info_dict
+                socketio.emit('display cleanup', info_dict, room=sid)
 
 if __name__ == "__main__":
     socketio.run(app, port=5000, debug=True)
