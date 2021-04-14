@@ -7,7 +7,6 @@ def encounter_cleanup(self):
         phox.can_act = False
         phox.is_attacking = False
         phox.RAM = phox.max_RAM
-    print("Returning to explore state")
     new_phox = add_to_collection(self.wild_phox.species, self.player, self.players)
     if new_phox:
         self.cleanup_info_dict["newPhox"] = new_phox.title()

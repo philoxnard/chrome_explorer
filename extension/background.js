@@ -26,3 +26,25 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
         })
     }
 })
+
+
+chrome.tabs.onRemoved.addListener(function(tabid, removed){
+    fetch('http://127.0.0.1:5000/exit')
+    .then(function() {
+        console.log('Closing response detected')
+    })
+})
+
+addEventListener('unload', function(){
+    fetch('http://127.0.0.1:5000/exit')
+    .then(function() {
+        console.log('Closing response detected')
+    })
+})
+
+addEventListener('beforeunload', function(){
+    fetch('http://127.0.0.1:5000/exit')
+    .then(function() {
+        console.log('Closing response detected')
+    })
+})
