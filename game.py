@@ -62,6 +62,9 @@ class Game:
         # possible new phox addition
         self.cleanup_info_dict = {}
 
+        # The max level for phoxes. If the game goes live, this may be increased
+        self.level_cap = 5
+
     # Import the high level functions from the different API libraries
     from game_api.handle_login import handle_login, terminal_test_login
     from game_api.handle_new_url import new_url_handler
