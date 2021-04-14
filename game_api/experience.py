@@ -15,6 +15,7 @@ def handle_experience(self, phox, enemy, player, playerDB):
         print(f"{phox.name.title()} gained {exp_gained} experience.")
         self.cleanup_info_dict["experience"] = exp_gained
         level = check_level(phox, player, playerDB)
+        store_phox_in_db(phox, player, playerDB)
         if level:
             self.cleanup_info_dict["level"] = level
     else:
@@ -30,7 +31,7 @@ def level_up(phox, level, player, playerDB):
     phox.level = level
     print(f"{phox.name.title()} grew to level {level}!")
     combine_phox_stats(phox)
-    store_phox_in_db(phox, player, playerDB)
+    
 
 def store_phox_in_db(phox, player, playerDB):
     exp_string = "collection." + phox.species + ".experience"
