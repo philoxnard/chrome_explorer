@@ -9,5 +9,8 @@
     "action": {
         "default_popup": "templates/popup.html"
     },
+    "web_accessible_resources": [{
+        "resources": ["notification.png"]
+    }],
     "manifest_version": 3
 }
