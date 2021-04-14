@@ -28,7 +28,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
                 if (data.state == "initialize encounter"){
                     console.log("You did it")
                     registration.showNotification('Phoxtrot', {
-                        body: "You found a phox! Click the extention to fight it!"
+                        body: "You found a phox! Click the extention to fight it!",
                     })
                 }
             })
