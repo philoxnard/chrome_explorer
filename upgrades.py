@@ -20,9 +20,6 @@ def get_upgrade_effects(upgrade_string, phox, upgradeDB):
     for doc in upgrade:
         for title, effect in doc["effect"].items():
 
-            if title == "win_speed_tie":
-                phox.photo_finish = effect
-
             if title == "vis_boost":
                 phox.stats["vis"] += effect
             

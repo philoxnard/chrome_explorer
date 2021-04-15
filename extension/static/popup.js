@@ -56,6 +56,10 @@ socket.on('display cleanup', function(info_dict){
     $('.readout').append('<br>Click "Run" to continue trotting.')
 })
 
+socket.on('draw party', function(data){
+    drawParty(data)
+})
+
 $("#content").on('mouseover', '.attackOption', function(){
     for (i=0; i<globalAttacks.length; i++){
         if (this.innerHTML == globalAttacks[i]["name"]){
@@ -140,6 +144,11 @@ $("#content").on("click", ".run", function() {
     // })
 })
 
+$("#content").on('click', "#viewParty", function(){
+    const sid = socket.id
+    socket.emit('view party', sid)
+})
+
 // General handlers for each new state.
 // Typically called when the popup is reopened
 // Also called when switching between explore and idle states
@@ -165,33 +174,35 @@ function encounterState(state) {
 }
 
 function exploreState() {
-    $("#content").css("height", "35px")
+    $("#content").css("height", "75px")
     $("#content").css("width", "80px")
     $('#content').html("<div id='exploreWrapper'>\
                             <button id='stopTrotButton'>\
                                 Stop Trotting\
                             </button>\
                         </div>") 
+    drawPartyButton()
 }
 
 function idleState() {
-    $("#content").css("height", "35px")
+    $("#content").css("height", "75px")
     $("#content").css("width", "80px")
     $('#content').html("<div id='idleWrapper'>\
                             <button id='trotButton'>\
                                 Start Trotting\
                             </button>\
                         </div>") 
+    drawPartyButton()
 }
 
 function initializeState() {
-    $('#content').css("height", "80px")
+    $('#content').css("height", "60px")
     $('#content').css("width", "400px")
     $("#content").html('<div id="login">\
                             <form action="" id="getPlayer" method="POST">\
                                 <input type="text" id="username" placeholder="Username"/>\
                                 <input type="password" id="password" placeholder="Password"/>\
-                            </form>\
+                            </form><br>\
                             <button id="loginButton">Log In</button>\
                         </div>')
 }
@@ -218,7 +229,7 @@ function renderEncounter() {
 function drawGeneralCombatBlueprint() {
     $('#content').html("<div id='encounterWrapper'>\
                             <div id='enemyInfo'></div>\
-                            <div id='enemyArt'>enemy art</div>\
+                            <div id='enemyArt'><img src='https://static.thenounproject.com/png/166439-200.png'></div>\
                             <div id='playerArt'>player art</div>\
                             <div id='playerInfo'></div>\
                             <div id='info'></div>\
@@ -301,4 +312,14 @@ function getInfoFromServer() {
 function getTurnInfo() {
     const sid = socket.id
     socket.emit('get turn info', sid)
+}
+
+function drawPartyButton() {
+    $('#content').append('<br><button id="viewParty">\
+                            View Party\
+                            </button>')
+}
+
+function drawParty(data) {
+    console.log(data)
 }

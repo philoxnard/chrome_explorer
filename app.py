@@ -148,5 +148,26 @@ def handle_combat_cleanup(sid, methods=["GET"]):
                 info_dict = game.cleanup_info_dict
                 socketio.emit('display cleanup', info_dict, room=sid)
 
+@socketio.on('view party')
+def handle_party_view(sid, methods=["GET"]):
+    ip = "100.0.28.103" # request.remote_addr
+    for game in games:
+        if game.ip == ip:
+            json_list = []
+            for phox in game.player.party:
+                json_attacks = []
+                json_upgrades = []
+                for attack in phox.attacks:
+                    json_attacks.append(attack.serialize())
+                # Eventually gonna have to do something similar for upgrades
+                # for lvl in phox.upgrade_tree:
+                #     for upgrade in lvl:
+                #         json_upgrades.append(upgrade.serialize())
+                # json_phox["upgrade tree"] = json_upgrades
+                json_phox = phox.serialize()
+                json_phox["attacks"] = json_attacks
+                json_list.append(json_phox)
+            socketio.emit('draw party', json_list, room=sid)
+
 if __name__ == "__main__":
     socketio.run(app, port=5000, debug=True)

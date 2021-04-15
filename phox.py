@@ -52,4 +52,13 @@ class Phox:
         # Set to true whenever a wild phox is instantiated
         self.is_wild = False
 
-        self.photo_finish = False
+    def serialize(self):
+        stats = self.stats
+        stats["max health"]=self.max_health
+        return {
+            "species": self.species.title(),
+            "nickname": self.nickname.title(),
+            "family": self.family,
+            "stats": stats,
+            "upgrade tree": self.upgrade_tree,
+            "upgrade indexes": self.upgrade_indexes}
