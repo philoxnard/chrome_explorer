@@ -321,5 +321,26 @@ function drawPartyButton() {
 }
 
 function drawParty(data) {
-    console.log(data)
+    $("#content").css("height", "100px")
+    $("#content").css("width", "300px")
+    $("#content").html("<div class='phox leader'>leader</div>")
+    $("#content").append("<div class='phox'>None</div>")
+    $("#content").append("<div class='phox'>None</div>")
+    drawPartyDetails(data)
+}
+
+function drawPartyDetails(data){
+    for (i=0; i<3; i++) {
+        if (data[i]){
+            if (i == 0){
+                console.log(i)
+                const phoxInfo = document.querySelectorAll("#content .phox")
+                phox = data[i]
+                phoxInfo[i].innerHTML = phox["species"]+"<br>\
+                                        "+phox["nickname"]+"<br>\
+                                        "+phox["stats"]["health"]+" /\
+                                        "+phox["stats"]["max health"]+"HP"
+            }
+        }
+    }
 }

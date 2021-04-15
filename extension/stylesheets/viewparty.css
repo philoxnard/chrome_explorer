@@ -1,0 +1,22 @@
+.phox{
+    border-style: solid;
+    background: rgb(74, 212, 247);
+    width: 130px;
+    height: 40px;    
+    margin: 5px;
+}
+
+.leader {
+    position: absolute;
+    height: 80px;
+    right: 8px;
+}
+
+.phox:hover{
+    cursor: pointer;
+    background: rgb(165, 237, 255);
+}
+
+.phox:active{
+    background: rgb(16, 144, 177);
+}
