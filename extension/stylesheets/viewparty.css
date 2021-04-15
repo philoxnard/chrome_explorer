@@ -1,15 +1,19 @@
 .phox{
+    text-align: center;
     border-style: solid;
     background: rgb(74, 212, 247);
-    width: 130px;
-    height: 40px;    
+    width: 120px;
+    height: 50px;    
     margin: 5px;
+    padding: 4px;
 }
 
 .leader {
     position: absolute;
-    height: 80px;
+    top: 13px;
+    height: 100px;
     right: 8px;
+    line-height: 33px;
 }
 
 .phox:hover{

@@ -1,5 +1,6 @@
 var socket = io.connect('http://127.0.0.1:5000');
 var globalAttacks = []
+var globalData = []
 
 socket.on('connect', function() {
     // $.getJSON("https://api.ipify.org?format=json", function(data) {
@@ -57,7 +58,12 @@ socket.on('display cleanup', function(info_dict){
 })
 
 socket.on('draw party', function(data){
+    globalData = data
     drawParty(data)
+})
+
+socket.on('view phox', function(phoxSpecies){
+    displayPhox(phoxSpecies)
 })
 
 $("#content").on('mouseover', '.attackOption', function(){
@@ -147,6 +153,12 @@ $("#content").on("click", ".run", function() {
 $("#content").on('click', "#viewParty", function(){
     const sid = socket.id
     socket.emit('view party', sid)
+})
+
+$("#content").on('click', '.phox', function(){
+    let raw_phox = this.innerHTML
+    let sid = socket.id
+    socket.emit('select phox', raw_phox, sid)
 })
 
 // General handlers for each new state.
@@ -321,26 +333,43 @@ function drawPartyButton() {
 }
 
 function drawParty(data) {
-    $("#content").css("height", "100px")
+    $("#content").css("height", "135px")
     $("#content").css("width", "300px")
     $("#content").html("<div class='phox leader'>leader</div>")
-    $("#content").append("<div class='phox'>None</div>")
-    $("#content").append("<div class='phox'>None</div>")
+    if (data[1]){
+        $("#content").append("<div class='phox'>None</div>") 
+    }
+    if (data[2]){
+        $("#content").append("<div class='phox'>None</div>")
+    }
     drawPartyDetails(data)
 }
 
 function drawPartyDetails(data){
     for (i=0; i<3; i++) {
         if (data[i]){
-            if (i == 0){
-                console.log(i)
-                const phoxInfo = document.querySelectorAll("#content .phox")
-                phox = data[i]
-                phoxInfo[i].innerHTML = phox["species"]+"<br>\
-                                        "+phox["nickname"]+"<br>\
-                                        "+phox["stats"]["health"]+" /\
-                                        "+phox["stats"]["max health"]+"HP"
-            }
+            console.log(i)
+            const phoxInfo = document.querySelectorAll("#content .phox")
+            phox = data[i]
+            phoxInfo[i].innerHTML = phox["species"]+"<br>\
+                                    "+phox["nickname"]+"<br>\
+                                    "+phox["stats"]["health"]+" /\
+                                    "+phox["stats"]["max health"]+"HP"
         }
     }
+}
+
+function displayPhox(phoxSpecies){
+    $("#content").css("height", "300px")
+    $("#content").css("width", "300px")
+    for (i=0; i<globalData.length; i++) {
+        const phox = globalData[i]
+        if (phox["species"] == phoxSpecies){
+            displayPhoxDetails(phox)
+        }
+    }
+}
+
+function displayPhoxDetails(phox){
+    console.log(phox)
 }

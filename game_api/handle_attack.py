@@ -1,4 +1,4 @@
-
+import random
 
 
 #################################################################
@@ -30,12 +30,18 @@ def execute_attack(attacker, defender, attack):
 
 def calculate_damage(attacker, defender, attack):
     global_mod = 9
+    random_mod = get_random_mod()
     lvl_mod = get_lvl_mod(attacker)
     attacker_stat = get_attacker_stat(attacker, defender, attack)
     defender_stat = get_defender_stat(attacker, defender, attack)
     other = get_other_mod(attacker, defender, attack)
-    damage = lvl_mod*attack.damage*attacker_stat/defender_stat*other/global_mod
+    damage = lvl_mod*attack.damage*attacker_stat/defender_stat*other/global_mod*random_mod
     return damage
+
+def get_random_mod():
+    num = random.randint(85, 115)
+    num = float(num/100)
+    return num
 
 def get_lvl_mod(attacker):
     mod = 1

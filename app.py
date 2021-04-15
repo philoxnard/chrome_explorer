@@ -169,5 +169,25 @@ def handle_party_view(sid, methods=["GET"]):
                 json_list.append(json_phox)
             socketio.emit('draw party', json_list, room=sid)
 
+@socketio.on('select phox')
+def handle_select_phox(raw_phox, sid, methods=["GET"]):
+    ip = "100.0.28.103" # request.remote_addr
+    for game in games:
+        if game.ip == ip:
+            selected_phox = raw_phox.partition("<")[0].lower()
+            print(selected_phox)
+            for phox in game.player.party:
+                if phox.species == selected_phox:
+                    if game.state == "encounter":
+                        # Code here to swap phoxes
+                        # pop the current active phox from active phoxes
+                        # add this phox to active phoxes
+                        # emit something so the readout says "Go get em, newphox"
+                        # And give them a button to start a new combat loop
+                        pass
+                    elif game.state == "idle" or game.state == "explore":
+                        socketio.emit('view phox', selected_phox.title(), room=sid)
+
+
 if __name__ == "__main__":
     socketio.run(app, port=5000, debug=True)
