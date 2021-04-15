@@ -67,6 +67,8 @@ socket.on('view phox', function(phoxSpecies){
 })
 
 $("#content").on('mouseover', '.attackOption', function(){
+    console.log('mouseover found for '+this.innerHTML)
+    console.log(globalAttacks)
     for (i=0; i<globalAttacks.length; i++){
         if (this.innerHTML == globalAttacks[i]["name"]){
             let atk = globalAttacks[i]
@@ -80,8 +82,31 @@ $("#content").on('mouseover', '.attackOption', function(){
     }
 })
 
+// Used while viewing a Phox in the menu
+$("#content").on('mouseover', '.attack', function(){
+    console.log('mouseover found for '+this.innerHTML)
+    console.log(globalAttacks.length)
+    for (i=0; i<globalAttacks.length; i++){
+        console.log(globalAttacks[i])
+        if (this.innerHTML == globalAttacks[i]["name"]){
+            console.log('found')
+            let atk = globalAttacks[i]
+            $("#content").append("<div id='tooltipViewPhox'></div>")
+            $("#tooltipViewPhox").html("Damage: "+atk["damage"]+"<br> \
+                                Cost: "+atk["cost"]+"<br> \
+                                Family: "+atk["family"]+"<br> \
+                                Style: "+atk["style"]+"<br> \
+                                "+atk["effect"])
+        }
+    }
+})
+
 $("#content").on('mouseout', '.attackOption', function(){
     $("#tooltip").remove()
+})
+
+$("#content").on('mouseout', '.attack', function(){
+    $("#tooltipViewPhox").remove()
 })
 
 $("#content").on('click', '.attackOption', function(){
@@ -371,5 +396,39 @@ function displayPhox(phoxSpecies){
 }
 
 function displayPhoxDetails(phox){
+    viewPhoxAttacks(phox)
+    viewPhoxBasicInfo(phox)
+    viewPhoxStats(phox)
+    viewPhoxUpgradesButton(phox)
+}
+
+function viewPhoxAttacks(phox) {
+    globalAttacks = phox["attacks"]
+    $("#content").html("<div id='attacks'></div>")
+    for (i=0; i<phox.attacks.length; i++){
+        $("#attacks").append("<div class='attack'>"+phox.attacks[i]["name"]+"</div>")
+    }
     console.log(phox)
+}
+
+function viewPhoxBasicInfo(phox) {
+    $("#content").append("<div id='basicInfo'></div>")
+    $("#basicInfo").append(phox["species"]+"<br>")
+    $("#basicInfo").append(phox["nickname"]+"<br>")
+    $("#basicInfo").append(phox["stats"]["health"]+"/"+phox["stats"]["max health"]+" health")
+}
+
+function viewPhoxStats(phox) {
+    $("#content").append("<div id='stats'></div>")
+    $("#stats").append("CPOW: "+phox["stats"]["cpow"]+"<br>")
+    $("#stats").append("LPOW: "+phox["stats"]["lpow"]+"<br>")
+    $("#stats").append("CSEC: "+phox["stats"]["csec"]+"<br>")
+    $("#stats").append("LSEC: "+phox["stats"]["lsec"]+"<br>")
+    $("#stats").append("SPD: "+phox["stats"]["speed"]+"<br>")
+    $("#stats").append("RR: "+phox["stats"]["rr"]+"<br>")
+    $("#stats").append("VIS: "+phox["stats"]["vis"]+"<br>")
+}
+
+function viewPhoxUpgradesButton(phox) {
+    $("#content").append("<div id='viewUpgrades'>Upgrades</div>")
 }
