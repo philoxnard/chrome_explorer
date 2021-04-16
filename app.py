@@ -157,14 +157,18 @@ def handle_party_view(sid, methods=["GET"]):
             for phox in game.player.party:
                 json_attacks = []
                 json_upgrades = []
+                json_base_upgrades = []
                 for attack in phox.attacks:
                     json_attacks.append(attack.serialize())
-                # Eventually gonna have to do something similar for upgrades
-                # for lvl in phox.upgrade_tree:
-                #     for upgrade in lvl:
-                #         json_upgrades.append(upgrade.serialize())
-                # json_phox["upgrade tree"] = json_upgrades
+                for index, row in enumerate(phox.upgrade_tree):
+                    json_upgrades.append([])
+                    for upgrade in row:
+                        json_upgrades[index].append(upgrade.serialize())
+                for upgrade in phox.base_upgrades:
+                    json_base_upgrades.append(upgrade.serialize())
                 json_phox = phox.serialize()
+                json_phox["base upgrades"]= json_base_upgrades
+                json_phox["upgrade tree"] = json_upgrades
                 json_phox["attacks"] = json_attacks
                 json_list.append(json_phox)
             socketio.emit('draw party', json_list, room=sid)

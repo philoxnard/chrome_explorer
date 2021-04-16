@@ -1,6 +1,7 @@
 var socket = io.connect('http://127.0.0.1:5000');
 var globalAttacks = []
 var globalData = []
+var globalPhox = null
 
 socket.on('connect', function() {
     // $.getJSON("https://api.ipify.org?format=json", function(data) {
@@ -58,6 +59,7 @@ socket.on('display cleanup', function(info_dict){
 
 socket.on('draw party', function(data){
     globalData = data
+    console.log(data)
     drawParty(data)
 })
 
@@ -176,6 +178,13 @@ $("#content").on('click', '.phox', function(){
     let raw_phox = this.innerHTML
     let sid = socket.id
     socket.emit('select phox', raw_phox, sid)
+})
+
+$("#content").on('click', '#viewUpgrades', function(){
+    $("#content").css("height", "450px")
+    $("#content").css("width", "600px")
+    $("#content").html("")
+    drawUpgradeMenu()
 })
 
 // General handlers for each new state.
@@ -387,6 +396,7 @@ function displayPhox(phoxSpecies){
 }
 
 function displayPhoxDetails(phox){
+    globalPhox = phox
     viewPhoxAttacks(phox)
     viewPhoxBasicInfo(phox)
     viewPhoxStats(phox)

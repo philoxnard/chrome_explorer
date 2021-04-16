@@ -91,6 +91,13 @@ def get_upgrade_objects(phox, upgradeDB):
                 upgrade_object.plain_text_effect = doc["plain text effect"]
             upgrade = upgrade_object
             phox.upgrade_tree[index1].append(upgrade_object)
+    for string in phox.upgrades:
+        upgrade_object = Upgrade()
+        db_info = upgradeDB.find({"name": string})
+        for doc in db_info:
+            upgrade_object.name = doc["name"]
+            upgrade_object.plain_text_effect = doc["plain text effect"]
+        phox.base_upgrades.append(upgrade_object)
     
 # Function to give the phox its talents. Gets looped through entire party.
 # Calls function from the talent.py module to flesh out the talents

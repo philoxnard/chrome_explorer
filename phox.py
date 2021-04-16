@@ -20,6 +20,7 @@ class Phox:
         self.upgrade_tree_strings = []
         self.attack_strings = []
         self.upgrades = []
+        self.base_upgrades = []
 
         self.stats = {}
 
@@ -61,5 +62,4 @@ class Phox:
             "nickname": self.nickname.title(),
             "family": self.family,
             "stats": stats,
-            "upgrade tree": self.upgrade_tree,
             "upgrade indexes": self.upgrade_indexes}
