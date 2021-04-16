@@ -109,3 +109,23 @@
     margin: 3px;
     left: 2px;
 }
+
+#baseUpgrades {
+    border-style: solid;
+    border-width: 2px;
+    position: absolute;
+    left: 5px;
+    height: 440px;
+    width: 175px;
+    overflow: scroll;
+}
+
+#upgradeTree {
+    border-style: solid;
+    border-width: 2px;
+    position: absolute;
+    right: 5px;
+    height: 440px;
+    width: 420px;
+    overflow: scroll;
+}

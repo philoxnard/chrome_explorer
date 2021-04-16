@@ -432,3 +432,12 @@ function viewPhoxStats(phox) {
 function viewPhoxUpgradesButton(phox) {
     $("#content").append("<div id='viewUpgrades'>Upgrades</div>")
 }
+
+function drawUpgradeMenu() {
+    $("#content").append("<div id='baseUpgrades'></div>")
+    $("#content").append("<div id='upgradeTree'></div>")
+    upgradeTree = globalPhox["upgrade tree"]
+    baseUpgrades = globalPhox["base upgrades"]
+    drawBaseUpgrades(baseUpgrades)
+    drawUpgradeTree(upgradeTree)
+}
