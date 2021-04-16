@@ -1,5 +1,6 @@
 from phox import Phox
 from attack import Attack
+from upgrade import Upgrade
 from upgrades import get_upgrade_effects
 
 
@@ -39,7 +40,7 @@ def get_base_phox(phox, phoxDB):
         new_phox.family = doc["family"]
         new_phox.base_stats = doc["base stats"]
         new_phox.stat_growth = doc["stat growth"]
-        new_phox.upgrade_tree = doc["upgrade tree"]
+        new_phox.upgrade_tree_strings = doc["upgrade tree"]
         new_phox.attack_strings = doc["base attacks"]
         new_phox.upgrades = doc["base upgrades"]
         return new_phox
@@ -60,6 +61,7 @@ def get_collection_info(phox, collection, attackDB, upgradeDB, familyDB):
 # how to mix the blueprint data with the collection data
 def combine_phox_info(phox, attackDB, upgradeDB, familyDB):
     combine_phox_stats(phox)
+    get_upgrade_objects(phox, upgradeDB)
     get_phox_upgrades(phox, upgradeDB)
     get_phox_attacks(phox, attackDB, familyDB)
 
@@ -75,6 +77,20 @@ def combine_phox_stats(phox):
     phox.stats["rr"] = phox.base_stats["rr"]+phox.level*phox.stat_growth["rr"]
     phox.stats["vis"] = phox.base_stats["vis"]+phox.level*phox.stat_growth["vis"]
     
+# This method will take the upgrade_tree_strings and convert each one into 
+# an actual object with a descriptor so that they can be fed to the client and tell
+# the user what each one does in plain text
+def get_upgrade_objects(phox, upgradeDB):
+    for index1, row in enumerate(phox.upgrade_tree_strings):
+        phox.upgrade_tree.append([])
+        for index2, upgrade in enumerate(row):
+            upgrade_object = Upgrade()
+            db_info = upgradeDB.find({"name": upgrade})
+            for doc in db_info:
+                upgrade_object.name = doc["name"]
+                upgrade_object.plain_text_effect = doc["plain text effect"]
+            upgrade = upgrade_object
+            phox.upgrade_tree[index1].append(upgrade_object)
     
 # Function to give the phox its talents. Gets looped through entire party.
 # Calls function from the talent.py module to flesh out the talents
@@ -84,7 +100,7 @@ def get_phox_upgrades(phox, upgradeDB):
         for i in range(len(phox.upgrade_indexes)):
             index = phox.upgrade_indexes[i]
             upgrade_options = phox.upgrade_tree[i]
-            phox.upgrades.append(upgrade_options[index])
+            phox.upgrades.append(upgrade_options[index].name)
     for upgrade in phox.upgrades:
         get_upgrade_effects(upgrade, phox, upgradeDB)
 

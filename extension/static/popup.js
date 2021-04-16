@@ -36,7 +36,6 @@ socket.on('generate attack menu', function(attacks){
 })
 
 socket.on('update readout', function(readout) {
-    console.log('attempting to update readout')
     $(".readout").html(readout["ownership"]+" "+readout["attacker"]+" used " +readout["attack"]+".")
     $(".readout").append("<br>It dealt "+readout["damage"]+" damage.")
     $(".readout").append("<div class='nextTurn btn'>Continue</div>")
@@ -67,8 +66,6 @@ socket.on('view phox', function(phoxSpecies){
 })
 
 $("#content").on('mouseover', '.attackOption', function(){
-    console.log('mouseover found for '+this.innerHTML)
-    console.log(globalAttacks)
     for (i=0; i<globalAttacks.length; i++){
         if (this.innerHTML == globalAttacks[i]["name"]){
             let atk = globalAttacks[i]
@@ -84,12 +81,8 @@ $("#content").on('mouseover', '.attackOption', function(){
 
 // Used while viewing a Phox in the menu
 $("#content").on('mouseover', '.attack', function(){
-    console.log('mouseover found for '+this.innerHTML)
-    console.log(globalAttacks.length)
     for (i=0; i<globalAttacks.length; i++){
-        console.log(globalAttacks[i])
         if (this.innerHTML == globalAttacks[i]["name"]){
-            console.log('found')
             let atk = globalAttacks[i]
             $("#content").append("<div id='tooltipViewPhox'></div>")
             $("#tooltipViewPhox").html("Damage: "+atk["damage"]+"<br> \
@@ -112,7 +105,6 @@ $("#content").on('mouseout', '.attack', function(){
 $("#content").on('click', '.attackOption', function(){
     let attackName = this.innerHTML
     let sid = socket.id
-    console.log(attackName)
     socket.emit('click attack', attackName, sid)
 })
 
@@ -373,7 +365,6 @@ function drawParty(data) {
 function drawPartyDetails(data){
     for (i=0; i<3; i++) {
         if (data[i]){
-            console.log(i)
             const phoxInfo = document.querySelectorAll("#content .phox")
             phox = data[i]
             phoxInfo[i].innerHTML = phox["species"]+"<br>\
@@ -408,7 +399,6 @@ function viewPhoxAttacks(phox) {
     for (i=0; i<phox.attacks.length; i++){
         $("#attacks").append("<div class='attack'>"+phox.attacks[i]["name"]+"</div>")
     }
-    console.log(phox)
 }
 
 function viewPhoxBasicInfo(phox) {

@@ -78,6 +78,7 @@
     border-style: solid;
     width: 140px;
     height: 140px;
+    overflow: scroll;
 }
 
 .attack {

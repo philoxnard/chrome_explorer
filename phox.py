@@ -16,7 +16,8 @@ class Phox:
         self.base_stats = {}
         self.stat_growth = {}
         self.upgrade_indexes = []
-        self.upgrade_tree = {}
+        self.upgrade_tree = []
+        self.upgrade_tree_strings = []
         self.attack_strings = []
         self.upgrades = []
 
