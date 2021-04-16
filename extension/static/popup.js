@@ -439,8 +439,9 @@ function viewPhoxAttacks(phox) {
 
 function viewPhoxBasicInfo(phox) {
     $("#content").append("<div id='basicInfo'></div>")
+    $("#basicInfo").append(phox["nickname"]+" the level "+phox["level"]+" ")
     $("#basicInfo").append(phox["species"]+"<br>")
-    $("#basicInfo").append(phox["nickname"]+"<br>")
+    $("#basicInfo").append(phox["family"]+"<br>")
     $("#basicInfo").append(phox["stats"]["health"]+"/"+phox["stats"]["max health"]+" health")
 }
 

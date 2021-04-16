@@ -57,9 +57,13 @@ class Phox:
     def serialize(self):
         stats = self.stats
         stats["max health"]=self.max_health
+        family = ""
+        for fam in self.family:
+            family += fam.title()
         return {
             "species": self.species.title(),
             "nickname": self.nickname.title(),
-            "family": self.family,
+            "family": family,
             "stats": stats,
+            "level": self.level,
             "upgrade indexes": self.upgrade_indexes}
