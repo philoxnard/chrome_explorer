@@ -66,6 +66,11 @@ socket.on('view phox', function(phoxSpecies){
     displayPhox(phoxSpecies)
 })
 
+socket.on('display reset upgrades', function(){
+    globalPhox["upgrade indexes"] = []
+    drawUpgradeTree(globalPhox["upgrade tree"])
+})
+
 $("#content").on('mouseover', '.attackOption', function(){
     for (i=0; i<globalAttacks.length; i++){
         if (this.innerHTML == globalAttacks[i]["name"]){
@@ -211,6 +216,11 @@ $("#content").on('mouseout', '.upgrade', function(){
     $("#upgradeTooltip").remove()
     $("#upgradeTooltip").remove()
     $("#upgradeTooltip").remove()
+})
+
+$("#content").on('click', '#resetUpgrades', function(){
+    const sid = socket.id
+    socket.emit('reset upgrades', globalPhox["species"], sid)
 })
 
 // General handlers for each new state.
@@ -463,7 +473,6 @@ function viewPhoxUpgradesButton(phox) {
 function drawUpgradeMenu() {
     $("#content").append("<div id='baseUpgrades'></div>")
     $("#content").append("<div id='upgradeTree'></div>")
-    $("#upgradeTree").append("<div id='resetUpgrades'>Reset Upgrades</div>")
     const upgradeTree = globalPhox["upgrade tree"]
     const baseUpgrades = globalPhox["base upgrades"]
     drawBaseUpgrades(baseUpgrades)
@@ -478,11 +487,22 @@ function drawBaseUpgrades(baseUpgrades){
 }
 
 function drawUpgradeTree(upgradeTree) {
+    $("#upgradeTree").html("")
+    $("#upgradeTree").append("<div id='resetUpgrades'>Reset Upgrades</div>")
     for (i=0; i<upgradeTree.length; i++){
         $("#upgradeTree").append("<div class='upgradeTreeRow row"+i+"'>"+(i+1)+"</div>")
         for (n=0; n<upgradeTree[i].length; n++) {
             $(".row"+i).append("<div class='upgrade'>"+upgradeTree[i][n]["name"]+"</div>")
         }
     }
-    // checkForAcitavtedUpgrades()
+    checkForAcitavtedUpgrades()
+}
+function checkForAcitavtedUpgrades(){
+    console.log(globalPhox["upgrade indexes"].length)
+    for (i =0; i<globalPhox["upgrade indexes"].length; i++){
+        const row = document.getElementsByClassName("row"+i)
+        const adujusted_index = 1 + globalPhox["upgrade indexes"][i]
+        const div = row[0].childNodes[adujusted_index]
+        div.classList.add('activated')
+    }
 }

@@ -192,6 +192,20 @@ def handle_select_phox(raw_phox, sid, methods=["GET"]):
                     elif game.state == "idle" or game.state == "explore":
                         socketio.emit('view phox', selected_phox.title(), room=sid)
 
+@socketio.on('reset upgrades')
+def handle_upgrade_reset(phox_species, sid, methods=["GET"]):
+    ip = "100.0.28.103" # request.remote_addr
+    for game in games:
+        if game.ip == ip:
+            for phox in game.player.party:
+                if phox.species.title() == phox_species.title():
+                    print('found')
+                    phox.upgrade_indexes = []
+                    db_friendly_string = "collection." + phox.species + ".upgrade indexes"
+                    game.players.update_one({"username": game.player.username}, 
+                    {"$set":{db_friendly_string: []}})
+                    socketio.emit('display reset upgrades', room=sid)
+
 
 if __name__ == "__main__":
     socketio.run(app, port=5000, debug=True)
