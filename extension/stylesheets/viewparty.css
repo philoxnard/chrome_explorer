@@ -129,3 +129,66 @@
     width: 420px;
     overflow: scroll;
 }
+
+#resetUpgrades {
+    border-style: solid;
+    border-width: 2px;
+    width: 395px;
+    background-color: red;
+    height: 50px;
+    line-height: 50px;
+    font-size: 38px;
+    text-align: center;
+    margin: 3px;
+}
+
+#resetUpgrades:hover{
+    cursor: pointer;
+    background-color: rgb(255, 85, 85);    
+}
+
+#resetUpgrades:active{
+    background-color: rgb(143, 19, 19); 
+}
+
+.upgrade {
+    text-align: center;
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 3px;
+    background-color: gray;
+    border-style: solid;
+    border-width: 2px;
+    width: 130px;
+    height: 130px;
+    line-height: 130px;
+    font-size: 20px;
+    margin-left: 20px;
+    display: inline-block;
+}
+
+.activated {
+    background-color: rgb(42, 211, 42);
+}
+
+#upgradeTooltip {
+    position: relative;
+    background: white;
+    padding: 10px;
+    font-size: 12px;
+    text-align: center;
+    border-style: solid;
+    border-width: 2px;
+    width: 100px;
+    left: 150px;
+}
+
+.upgradeTreeRow {
+    border-style: solid;
+    border-width: 2px;
+    margin: 2px;
+    height: 140px;
+    line-height: 130px;
+    font-size: 40px;
+    padding: 10px;
+}

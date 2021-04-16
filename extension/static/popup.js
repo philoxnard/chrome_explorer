@@ -59,7 +59,6 @@ socket.on('display cleanup', function(info_dict){
 
 socket.on('draw party', function(data){
     globalData = data
-    console.log(data)
     drawParty(data)
 })
 
@@ -185,6 +184,33 @@ $("#content").on('click', '#viewUpgrades', function(){
     $("#content").css("width", "600px")
     $("#content").html("")
     drawUpgradeMenu()
+})
+
+$("#content").on('mouseover', '.upgrade', function(){
+    const baseUpgrades = globalPhox["base upgrades"]
+    const upgradeTree = globalPhox["upgrade tree"]
+    const upgradeTreeUpgrades = []
+    for (i=0; i<upgradeTree.length; i++){
+        for (n=0; n<upgradeTree[i].length; n++){
+            upgradeTreeUpgrades.push(upgradeTree[i][n])
+        }
+    }
+    const upgrades = baseUpgrades.concat(upgradeTreeUpgrades)
+    for (i=0; i<upgrades.length; i++) {
+        if (this.innerHTML == upgrades[i]["name"]) {
+            $("#content").append("<div id='upgradeTooltip'></div>")
+            $("#upgradeTooltip").html(upgrades[i]["effect"])
+        }
+    }
+})
+
+//This will be truncated once phoxes are given unique upgrade options for every level
+$("#content").on('mouseout', '.upgrade', function(){
+    $("#upgradeTooltip").remove()
+    $("#upgradeTooltip").remove()
+    $("#upgradeTooltip").remove()
+    $("#upgradeTooltip").remove()
+    $("#upgradeTooltip").remove()
 })
 
 // General handlers for each new state.
@@ -436,8 +462,26 @@ function viewPhoxUpgradesButton(phox) {
 function drawUpgradeMenu() {
     $("#content").append("<div id='baseUpgrades'></div>")
     $("#content").append("<div id='upgradeTree'></div>")
-    upgradeTree = globalPhox["upgrade tree"]
-    baseUpgrades = globalPhox["base upgrades"]
+    $("#upgradeTree").append("<div id='resetUpgrades'>Reset Upgrades</div>")
+    const upgradeTree = globalPhox["upgrade tree"]
+    const baseUpgrades = globalPhox["base upgrades"]
     drawBaseUpgrades(baseUpgrades)
     drawUpgradeTree(upgradeTree)
+}
+
+function drawBaseUpgrades(baseUpgrades){
+    for (i=0; i<baseUpgrades.length; i++){
+        const upgrade = baseUpgrades[i]
+        $("#baseUpgrades").append("<div class='upgrade activated'>"+upgrade["name"]+"</div>")
+    }
+}
+
+function drawUpgradeTree(upgradeTree) {
+    for (i=0; i<upgradeTree.length; i++){
+        $("#upgradeTree").append("<div class='upgradeTreeRow row"+i+"'>"+(i+1)+"</div>")
+        for (n=0; n<upgradeTree[i].length; n++) {
+            $(".row"+i).append("<div class='upgrade'>"+upgradeTree[i][n]["name"]+"</div>")
+        }
+    }
+    // checkForAcitavtedUpgrades()
 }
