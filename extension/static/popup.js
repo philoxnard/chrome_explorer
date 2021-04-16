@@ -191,6 +191,17 @@ $("#content").on('click', '#viewUpgrades', function(){
     drawUpgradeMenu()
 })
 
+$('#content').on('click', '.upgrade', function(){
+    const splitParent = this.parentElement.className.split(" ")
+    const row = splitParent[1]
+    const rowIndex = row.substring(3)
+    const splitSelf = this.className.split(" ")
+    const option = splitSelf[1]
+    const optionIndex = option.substring(6)
+    const sid = socket.id
+    socket.emit('select upgrade', rowIndex, optionIndex, sid)
+})
+
 $("#content").on('mouseover', '.upgrade', function(){
     const baseUpgrades = globalPhox["base upgrades"]
     const upgradeTree = globalPhox["upgrade tree"]
@@ -492,7 +503,7 @@ function drawUpgradeTree(upgradeTree) {
     for (i=0; i<upgradeTree.length; i++){
         $("#upgradeTree").append("<div class='upgradeTreeRow row"+i+"'>"+(i+1)+"</div>")
         for (n=0; n<upgradeTree[i].length; n++) {
-            $(".row"+i).append("<div class='upgrade'>"+upgradeTree[i][n]["name"]+"</div>")
+            $(".row"+i).append("<div class='upgrade option"+n+"'>"+upgradeTree[i][n]["name"]+"</div>")
         }
     }
     checkForAcitavtedUpgrades()
