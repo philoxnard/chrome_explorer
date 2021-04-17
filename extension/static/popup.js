@@ -42,6 +42,12 @@ socket.on('update readout', function(readout) {
     $(".readout").append("<div class='nextTurn btn'>Continue</div>")
 })
 
+socket.on('swapped phox', function(phox) {
+    encounterState("encounter")
+    $(".readout").html("Go get 'em, "+phox+"!!")
+    $(".readout").append("<div class='nextTurn btn'>Continue</div>")
+})
+
 socket.on('your turn readout', function(){
     $(".readout").html("It's your turn!")
 })
@@ -178,6 +184,11 @@ $("#content").on("click", ".run", function() {
     // })
 })
 
+$("#content").on('click', '.swap', function(){
+    const sid = socket.id
+    socket.emit('view party', sid)
+})
+
 $("#content").on('click', "#viewParty", function(){
     const sid = socket.id
     socket.emit('view party', sid)
@@ -218,6 +229,7 @@ $("#content").on('mouseover', '.upgrade', function(){
         }
     }
     const upgrades = baseUpgrades.concat(upgradeTreeUpgrades)
+    console.log(upgrades)
     for (i=0; i<upgrades.length; i++) {
         if (this.innerHTML == upgrades[i]["name"]) {
             $("#content").append("<div id='upgradeTooltip'></div>")
@@ -228,20 +240,6 @@ $("#content").on('mouseover', '.upgrade', function(){
 
 //This will be truncated once phoxes are given unique upgrade options for every level
 $("#content").on('mouseout', '.upgrade', function(){
-    $("#upgradeTooltip").remove()
-    $("#upgradeTooltip").remove()
-    $("#upgradeTooltip").remove()
-    $("#upgradeTooltip").remove()
-    $("#upgradeTooltip").remove()
-    $("#upgradeTooltip").remove()
-    $("#upgradeTooltip").remove()
-    $("#upgradeTooltip").remove()
-    $("#upgradeTooltip").remove()
-    $("#upgradeTooltip").remove()
-    $("#upgradeTooltip").remove()
-    $("#upgradeTooltip").remove()
-    $("#upgradeTooltip").remove()
-    $("#upgradeTooltip").remove()
     $("#upgradeTooltip").remove()
 })
 

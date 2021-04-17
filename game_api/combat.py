@@ -35,13 +35,11 @@ def execute_player_attack(self):
         self.combat_state = None
         self.player_attack = None
 
-
-
-
 # Increment speed in the background
 def increment_speed(phoxes):
     for phox in phoxes:
         phox.AS += phox.temp_speed
+        print(f"{phox.name} increments to {phox.AS} AS")
     
 
 # Check to see if any phox has passed their speed threshold and gets to act

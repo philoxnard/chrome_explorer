@@ -183,12 +183,17 @@ def handle_select_phox(raw_phox, sid, methods=["GET"]):
             for phox in game.player.party:
                 if phox.species == selected_phox:
                     if game.state == "encounter":
+                        for active_phox in game.active_phoxes:
+                            if not phox.is_wild:
+                                game.active_phoxes.remove(active_phox)
+                                game.active_phoxes.append(phox)
+                                socketio.emit('swapped phox', phox.name, room=sid)
                         # Code here to swap phoxes
                         # pop the current active phox from active phoxes
                         # add this phox to active phoxes
                         # emit something so the readout says "Go get em, newphox"
                         # And give them a button to start a new combat loop
-                        pass
+                        print(f'swapping to {phox.name}')
                     elif game.state == "idle" or game.state == "explore":
                         socketio.emit('view phox', selected_phox.title(), room=sid)
 
