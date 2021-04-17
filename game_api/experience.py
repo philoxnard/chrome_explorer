@@ -34,9 +34,11 @@ def level_up(phox, level, player, playerDB):
     
 
 def store_phox_in_db(phox, player, playerDB):
+    upgrade_string = "collection." + phox.species + ".upgrade indexes"
     exp_string = "collection." + phox.species + ".experience"
     lvl_string = "collection." + phox.species + ".level"
     playerDB.update({"username": player.username}, 
     {"$set":{
     exp_string: phox.experience,
-    lvl_string: phox.level}})
+    lvl_string: phox.level,
+    upgrade_string: phox.upgrade_indexes}})

@@ -71,6 +71,11 @@ socket.on('display reset upgrades', function(){
     drawUpgradeTree(globalPhox["upgrade tree"])
 })
 
+socket.on('update upgrades', function(new_indexes){
+    globalPhox["upgrade indexes"] = new_indexes
+    drawUpgradeTree(globalPhox["upgrade tree"])
+})
+
 $("#content").on('mouseover', '.attackOption', function(){
     for (i=0; i<globalAttacks.length; i++){
         if (this.innerHTML == globalAttacks[i]["name"]){
@@ -199,7 +204,8 @@ $('#content').on('click', '.upgrade', function(){
     const option = splitSelf[1]
     const optionIndex = option.substring(6)
     const sid = socket.id
-    socket.emit('select upgrade', rowIndex, optionIndex, sid)
+    const species = globalPhox["species"]
+    socket.emit('select upgrade', species, rowIndex, optionIndex, sid)
 })
 
 $("#content").on('mouseover', '.upgrade', function(){
@@ -222,6 +228,16 @@ $("#content").on('mouseover', '.upgrade', function(){
 
 //This will be truncated once phoxes are given unique upgrade options for every level
 $("#content").on('mouseout', '.upgrade', function(){
+    $("#upgradeTooltip").remove()
+    $("#upgradeTooltip").remove()
+    $("#upgradeTooltip").remove()
+    $("#upgradeTooltip").remove()
+    $("#upgradeTooltip").remove()
+    $("#upgradeTooltip").remove()
+    $("#upgradeTooltip").remove()
+    $("#upgradeTooltip").remove()
+    $("#upgradeTooltip").remove()
+    $("#upgradeTooltip").remove()
     $("#upgradeTooltip").remove()
     $("#upgradeTooltip").remove()
     $("#upgradeTooltip").remove()

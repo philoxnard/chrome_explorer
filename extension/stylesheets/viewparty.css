@@ -167,6 +167,10 @@
     display: inline-block;
 }
 
+.upgrade:hover {
+    cursor: pointer;
+}
+
 .activated {
     background-color: rgb(42, 211, 42);
 }

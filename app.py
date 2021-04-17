@@ -206,6 +206,17 @@ def handle_upgrade_reset(phox_species, sid, methods=["GET"]):
                     {"$set":{db_friendly_string: []}})
                     socketio.emit('display reset upgrades', room=sid)
 
+@socketio.on('select upgrade')
+def handle_upgrade_select(phox_species, row, option, sid, methods=["GET"]):
+    ip = "100.0.28.103" # request.remote_addr
+    for game in games:
+        if game.ip == ip:
+            for phox in game.player.party:
+                if phox.species.title() == phox_species:
+                    success = game.select_upgrade(phox, int(row), int(option))
+                    if success:
+                        socketio.emit('update upgrades', phox.upgrade_indexes, room=sid)
+
 
 if __name__ == "__main__":
     socketio.run(app, port=5000, debug=True)
