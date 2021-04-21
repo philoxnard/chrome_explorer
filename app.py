@@ -189,6 +189,7 @@ def handle_select_phox(raw_phox, sid, methods=["GET"]):
                         if not phox.disconnected:
                             for active_phox in game.active_phoxes:
                                 if not active_phox.is_wild:
+                                    # function to reset phox's AS and temp stats
                                     game.active_phoxes.remove(active_phox)
                                     game.active_phoxes.insert(0, phox)
                                     print(f'Swapping out {active_phox.name} for {phox.name}')

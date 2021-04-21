@@ -14,10 +14,6 @@ A lot of this project is really difficult to test while in development. Things t
 
 * The way that new URLs are currently handled is very wonky. It attempts to take the IP address from whoever contacted the server, but it is currently replying with the IP address of localhost... which isn't right. This may right itself upon deployment, but it may not. For now, a dummy IP address (mine) will be hard-coded into the program to allow for testing and development.
 
-* Apparently Manifest V3 doesn't work with notification displays yet... Not super relevant, as the game still should run fine, this is just a QoL thing. There's a possible issue that the information isn't going to/from the right client/game instance, but I think its all structured properly. Once V3 is not broken, and once the game is live, this can be tested. See the stackoverflow page: Google Chrome Extensions v3 - Error in event handler: ReferenceError: Image is not defined
-
-* have the IP address be collected from flask request.addr not on client side
-
 ## General Structure
 
 When a user turns on the Chrome Explorer extension, it will start pinging the Phoxtrot server every time a new web address is visited (probably only listening on one tab to avoid confusion/errors). The server will take the URL and identify the domain name, which it will then check against a pre-made list of "Regions" such as Social Media, Video Streaming, News, Search Engine, etc. Much like how different regions of Pokemon have different Pokemon living in them, so too will the different Regions have different Phoxes lurking as potential encounters.
@@ -116,21 +112,32 @@ Like in Pokemon, a player will be able to spend their action to swap between the
 
 The immediate goal is to get the game up and running so that a player can have a single player experience. This includes:
 
-* Account creation and login ability
-* Generate encounters as they go through the internet
-* Full combat in those encounters
-* Adding defeated Phoxes to player collection
-* Leveling up and choosing talents for Phoxes
+* (IN PROGRESS) Account creation and login ability 
+* (COMPLETE) Generate encounters as they go through the internet
+* (COMPLETE) Full combat in those encounters
+* (COMPLETE) Adding defeated Phoxes to player collection
+* (COMPLETE) Leveling up and choosing talents for Phoxes
 * Ability to swap out Phoxes in your party/collection
-* Display basic info about each Phox
+* (COMPLETE) Display basic info about each Phox
 
-When all of this is accomplished, phase 1 of the game development will be complete. However, I have multiple extended goals for what I want to be in the game:
+When all of this is accomplished, phase 1 of the game development will be complete. 
+
+Phase 2 involves fleshing out the game and making it not just playable, but enjoyable. This includes fleshing out the list of Phoxes, attacks, and upgrades so that there are no fewer than 50 playable Phoxes to collect and train. An extended piece of this goal is to have graphics for each Phox, both a front and back (like in Pokemon). The last part of phase 2 is to flesh out the new player experience - much like in Pokemon, new players will need to be given a starter Phox. How exactly this will be implemented is TBD, but my current idea is to give players three choices of three different phoxes each. The options for Phoxes would be as follows:
+
+1) Virus, Antivirus, Piracy (like the fire, water, grass starters)
+2) Meme (three different Meme Phoxes)
+3) Blockchain, Assembly, Troll (or perhaps three different Data Phoxes - unsure)
+
+Beyond phase 2, I have multiple extended goals for what I want to be in the game:
+
 
 ### PvP
 If a player chooses to do so, they can flag themselves for PvP (perhaps will be mandatory in some regions). If they do so, they will be able to encounter other actual players who are in their same region.
 
 ### Gyms
 The game would be much more fun with some sense of story or progression through it. Eventually, it would be cool for each region to have their own gym like in Pokemon, and for players to be able to progress from region to region.
+
+The form that gyms would likely take would be as follows: Instead of simply going into a gym like in Pokemon, each region will have some sort of test that a user will need to pass, such as battling 10 wild phoxes in the region without going back to phoxtrot.com to heal. Once a player passes this test, they will then gain access to that region's gym leader. What exactly this will look like is TBD.
 
 ### Trading and Challenging
 Players should be able to interact with their friends! It would be great if they can challenge each other. Trading would be neat too, but I think it may not make sense considering how collection works.
