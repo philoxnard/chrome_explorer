@@ -17,7 +17,7 @@ def combat(self):
         self.state = "encounter cleanup"
         self.encounter_cleanup
     elif is_swap_needed(self.active_phoxes):
-        swap_phoxes(self.active_phoxes, self.player.party)
+        self.combat_state = "waiting"
     else:
         phox = check_for_turn(self.active_phoxes)
         if phox:
@@ -51,8 +51,8 @@ def check_for_turn(phoxes):
     tie = check_for_tie(phoxes)
     # If both phoxes can act
     if tie:
-        phox = settle_tie(phoxes)
-        return phox
+        active_phox = settle_tie(phoxes)
+        return active_phox
     # If neither phox can act
     elif not phoxes[0].can_act and not phoxes[1].can_act:
         return None
@@ -131,6 +131,9 @@ def wild_phox_take_turn(phox, phoxes):
         phox.AS -= phox.AS_threshold
         phox.can_act = False
         update_RAM(phox)
+        if defender.disconnected:
+            info_dict["swap needed"] = "Your phox has disconnected. \
+                                        Swap to a different phox in your party."
         return info_dict
     else:
         print("Not enough RAM")

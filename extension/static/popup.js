@@ -39,7 +39,11 @@ socket.on('generate attack menu', function(attacks){
 socket.on('update readout', function(readout) {
     $(".readout").html(readout["ownership"]+" "+readout["attacker"]+" used " +readout["attack"]+".")
     $(".readout").append("<br>It dealt "+readout["damage"]+" damage.")
+    if (readout["swap needed"]) {
+        $(".readout").append("<br>"+readout["swap needed"])
+    } else {
     $(".readout").append("<div class='nextTurn btn'>Continue</div>")
+    }
 })
 
 socket.on('swapped phox', function(phox) {
