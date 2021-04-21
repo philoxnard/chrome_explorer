@@ -14,6 +14,8 @@ A lot of this project is really difficult to test while in development. Things t
 
 * The way that new URLs are currently handled is very wonky. It attempts to take the IP address from whoever contacted the server, but it is currently replying with the IP address of localhost... which isn't right. This may right itself upon deployment, but it may not. For now, a dummy IP address (mine) will be hard-coded into the program to allow for testing and development.
 
+* The way that upgrades are stored currently has an issue. When selecting an upgrade, such as "Influencer", for example, which gives your Phox +20 VIS, the bonuses from the upgrade are saved to the Phox object even after the Phox's upgrade indexes change. So, a player can give their Phox the Influencer upgrade, then reset their upgrades and give that Phox the Influencer upgrade again, and the instance of the Phox will maintain both instances of the upgrade instead of just the one. The problem resets itself when the game is closed because the Phox that comes from the database is the correct version of the Phox. Fixing this will be simple: Just need to re-instantiate the Phox after a new upgrade has been selected.
+
 ## General Structure
 
 When a user turns on the Chrome Explorer extension, it will start pinging the Phoxtrot server every time a new web address is visited (probably only listening on one tab to avoid confusion/errors). The server will take the URL and identify the domain name, which it will then check against a pre-made list of "Regions" such as Social Media, Video Streaming, News, Search Engine, etc. Much like how different regions of Pokemon have different Pokemon living in them, so too will the different Regions have different Phoxes lurking as potential encounters.
