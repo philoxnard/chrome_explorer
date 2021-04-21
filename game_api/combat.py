@@ -46,6 +46,7 @@ def increment_speed(phoxes):
 def check_for_turn(phoxes):
     for phox in phoxes:
         if phox.AS >= phox.AS_threshold:
+            print(f'{phox.name} can act')
             phox.can_act = True
     tie = check_for_tie(phoxes)
     # If both phoxes can act
@@ -129,6 +130,7 @@ def wild_phox_take_turn(phox, phoxes):
         phox.is_attacking = False
         phox.AS -= phox.AS_threshold
         phox.can_act = False
+        update_RAM(phox)
         return info_dict
     else:
         print("Not enough RAM")

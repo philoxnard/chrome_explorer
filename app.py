@@ -29,6 +29,9 @@ def handle_new_connection(sid, methods=['GET', "POST"]):
                 if game.combat_info_dict:
                     readout = game.combat_info_dict
                     socketio.emit('update readout', readout, room=sid)
+                if game.combat_state == "waiting":
+                    socketio.emit('your turn readout', room=sid)
+
 
 @socketio.on('login')
 def handle_login(sid, username, password, methods=['GET', "POST"]):
@@ -184,16 +187,14 @@ def handle_select_phox(raw_phox, sid, methods=["GET"]):
                 if phox.species == selected_phox:
                     if game.state == "encounter":
                         for active_phox in game.active_phoxes:
-                            if not phox.is_wild:
+                            if not active_phox.is_wild:
                                 game.active_phoxes.remove(active_phox)
-                                game.active_phoxes.append(phox)
+                                game.active_phoxes.insert(0, phox)
+                                print(f'Swapping out {active_phox.name} for {phox.name}')
+                                active_phox.can_act = False
+                                game.combat_state = None
                                 socketio.emit('swapped phox', phox.name, room=sid)
-                        # Code here to swap phoxes
-                        # pop the current active phox from active phoxes
-                        # add this phox to active phoxes
-                        # emit something so the readout says "Go get em, newphox"
-                        # And give them a button to start a new combat loop
-                        print(f'swapping to {phox.name}')
+                                print(f'swapping to {phox.name}')
                     elif game.state == "idle" or game.state == "explore":
                         socketio.emit('view phox', selected_phox.title(), room=sid)
 
