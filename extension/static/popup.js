@@ -77,6 +77,10 @@ socket.on('draw party', function(data){
     drawParty(data)
 })
 
+socket.on('draw collection', function(){
+    drawCollection()
+})
+
 socket.on('view phox', function(phoxSpecies){
     displayPhox(phoxSpecies)
 })
@@ -451,6 +455,15 @@ function drawPartyDetails(data){
                                     "+phox["stats"]["health"]+" /\
                                     "+phox["stats"]["max health"]+"HP"
         }
+    }
+}
+
+function drawCollection() {
+    console.log(globalData)
+    $("#content").css("height", "300px")
+    $("#content").append("<div id='collection'></div>")
+    for (i=0; i<globalData.length; i++) {
+        $("#content").append("<div class='swap phox"+i+"'></div>")
     }
 }
 

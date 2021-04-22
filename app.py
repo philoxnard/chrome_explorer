@@ -183,6 +183,8 @@ def handle_party_view(sid, methods=["GET"]):
                 json_phox["attacks"] = json_attacks
                 json_list.append(json_phox)
             socketio.emit('draw party', json_list, room=sid)
+            if game.at_phoxtrot:
+                socketio.emit('draw collection', room=sid)
 
 @socketio.on('select phox')
 def handle_select_phox(raw_phox, sid, methods=["GET"]):
