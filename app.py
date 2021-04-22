@@ -184,7 +184,13 @@ def handle_party_view(sid, methods=["GET"]):
                 json_list.append(json_phox)
             socketio.emit('draw party', json_list, room=sid)
             if game.at_phoxtrot:
-                socketio.emit('draw collection', room=sid)
+                collection = []
+                player = game.players.find({"username": game.player.username})
+                for doc in player:
+                    for phox in doc["collection"]:
+                        collection.append(phox.title())
+                    print(collection)
+                socketio.emit('draw collection', collection, room=sid)
 
 @socketio.on('select phox')
 def handle_select_phox(raw_phox, sid, methods=["GET"]):
@@ -236,6 +242,12 @@ def handle_upgrade_select(phox_species, row, option, sid, methods=["GET"]):
                         socketio.emit('update upgrades', phox.upgrade_indexes, room=sid)
                         game.reload_needed = True
 
+@socketio.on('swap collection')
+def handle_collection_swap(phox_species, sid, methods=["GET"]):
+    ip = "100.0.28.103" # request.remote_addr
+    for game in games:
+        if game.ip == ip:
+            game.swap_collection(phox_species)
 
 if __name__ == "__main__":
     socketio.run(app, port=5000, debug=True)

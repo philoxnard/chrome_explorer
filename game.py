@@ -83,6 +83,7 @@ class Game:
     from game_api.encounter_cleanup import encounter_cleanup
     from game_api.handle_phoxtrot_site import handle_phoxtrot_site, get_collection_data
     from game_api.handle_upgrades import select_upgrade
+    from game_api.handle_collection_swap import swap_collection
     
 
     # Runs when a game session is instantiated to grab the potential regions from the DB

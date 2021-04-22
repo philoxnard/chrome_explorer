@@ -28,9 +28,9 @@ def instantiate_party(self):
     for doc in player:
         self.player.collection = doc["collection"]
     for phox, dictionary in self.player.collection.items():
-        if dictionary["in_party"]:
+        if dictionary["in_party"] < 4:
             base_phox = get_base_phox(phox, self.phoxes)
-            self.player.party.append(base_phox)
+            self.player.party.append(dictionary["in_party"], base_phox)
     for phox in self.player.party:
         get_collection_info(phox, self.player.collection, self.attacks, self.upgrades, self.families)
 

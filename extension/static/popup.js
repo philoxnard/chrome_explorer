@@ -77,8 +77,8 @@ socket.on('draw party', function(data){
     drawParty(data)
 })
 
-socket.on('draw collection', function(){
-    drawCollection()
+socket.on('draw collection', function(collection){
+    drawCollection(collection)
 })
 
 socket.on('view phox', function(phoxSpecies){
@@ -251,7 +251,6 @@ $("#content").on('mouseover', '.upgrade', function(){
     }
 })
 
-//This will be truncated once phoxes are given unique upgrade options for every level
 $("#content").on('mouseout', '.upgrade', function(){
     $("#upgradeTooltip").remove()
 })
@@ -259,6 +258,12 @@ $("#content").on('mouseout', '.upgrade', function(){
 $("#content").on('click', '#resetUpgrades', function(){
     const sid = socket.id
     socket.emit('reset upgrades', globalPhox["species"], sid)
+})
+
+$("#content").on('click', '.collectionPhox', function(){
+    const phox = this.innerHTML
+    const sid = socket.id
+    socket.emit('swap collection', phox, sid)
 })
 
 // General handlers for each new state.
@@ -458,12 +463,12 @@ function drawPartyDetails(data){
     }
 }
 
-function drawCollection() {
-    console.log(globalData)
+function drawCollection(collection) {
+    console.log(collection)
     $("#content").css("height", "300px")
     $("#content").append("<div id='collection'></div>")
-    for (i=0; i<globalData.length; i++) {
-        $("#content").append("<div class='swap phox"+i+"'></div>")
+    for (i=0; i<collection.length; i++){
+        $("#collection").append("<div class='collectionPhox'>"+collection[i]+"</div>")
     }
 }
 
