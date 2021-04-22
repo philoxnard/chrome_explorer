@@ -31,6 +31,14 @@ def handle_new_connection(sid, methods=['GET', "POST"]):
                     socketio.emit('update readout', readout, room=sid)
                 if game.combat_state == "waiting":
                     socketio.emit('your turn readout', room=sid)
+                if game.reload_needed:
+                    print('trying to reload party')
+                    playerinfo = game.players.find({"username": game.player.username})
+                    for doc in playerinfo:
+                        print(doc["collection"]["twitwat"]["upgrade indexes"])
+                    game.player.party = []
+                    game.instantiate_party()
+                    game.reload_needed = False
 
 
 @socketio.on('login')
@@ -53,7 +61,7 @@ def handle_test():
     ip = "100.0.28.103" # request.remote_addr
     for game in games:
         if game.ip == ip:
-            if game.state == "explore":
+            if game.state == "explore" or game.state == "idle":
                 raw_url = request.get_data()
                 url = str(raw_url, 'UTF-8')
                 game.player.url = url
@@ -206,13 +214,13 @@ def handle_upgrade_reset(phox_species, sid, methods=["GET"]):
     for game in games:
         if game.ip == ip:
             for phox in game.player.party:
-                if phox.species.title() == phox_species.title():
-                    print('found')
+                if phox.species.title() == phox_species.title() and game.at_phoxtrot:
                     phox.upgrade_indexes = []
                     db_friendly_string = "collection." + phox.species + ".upgrade indexes"
                     game.players.update_one({"username": game.player.username}, 
                     {"$set":{db_friendly_string: []}})
                     socketio.emit('display reset upgrades', room=sid)
+                    game.reload_needed = True
 
 @socketio.on('select upgrade')
 def handle_upgrade_select(phox_species, row, option, sid, methods=["GET"]):
@@ -220,10 +228,11 @@ def handle_upgrade_select(phox_species, row, option, sid, methods=["GET"]):
     for game in games:
         if game.ip == ip:
             for phox in game.player.party:
-                if phox.species.title() == phox_species:
+                if phox.species.title() == phox_species and game.at_phoxtrot:
                     success = game.select_upgrade(phox, int(row), int(option))
                     if success:
                         socketio.emit('update upgrades', phox.upgrade_indexes, room=sid)
+                        game.reload_needed = True
 
 
 if __name__ == "__main__":

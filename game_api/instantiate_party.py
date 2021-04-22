@@ -22,6 +22,11 @@ from upgrades import get_upgrade_effects
 # Third, reads the user-specific information for each phox
 # Finally, adds the user-specific info to each base phox
 def instantiate_party(self):
+    # This first chunk is used to reload the player collection so that phoxes
+    # are re-instantiated properly after altering their upgrades
+    player = self.players.find({"username": self.player.username})
+    for doc in player:
+        self.player.collection = doc["collection"]
     for phox, dictionary in self.player.collection.items():
         if dictionary["in_party"]:
             base_phox = get_base_phox(phox, self.phoxes)
@@ -54,6 +59,7 @@ def get_collection_info(phox, collection, attackDB, upgradeDB, familyDB):
     phox.experience = phox_info["experience"]
     # Get the array of indexes that determine which upgrades have been selected
     phox.upgrade_indexes = phox_info["upgrade indexes"]
+    print(f"upgrade indexes within the function are: {phox.upgrade_indexes}")
     phox.nickname = phox_info["nickname"]
     combine_phox_info(phox, attackDB, upgradeDB, familyDB)
 
@@ -100,7 +106,7 @@ def get_upgrade_objects(phox, upgradeDB):
         phox.base_upgrades.append(upgrade_object)
     
 # Function to give the phox its talents. Gets looped through entire party.
-# Calls function from the talent.py module to flesh out the talents
+# Calls function from the upgrade.py module to flesh out the talents
 # and actually make them mean something
 def get_phox_upgrades(phox, upgradeDB):
     if phox.upgrade_indexes:

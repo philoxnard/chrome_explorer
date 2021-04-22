@@ -9,7 +9,7 @@ import validators
 def new_url_handler(self):
     for phox in self.player.party:
         phox.RAM = phox.max_RAM
-    if self.state == "explore":
+    if self.state == "explore" or self.state == "idle":
         valid = validators.url(self.player.url)
         if valid:
             full_domain = get_domain(self.player.url)
@@ -20,7 +20,11 @@ def new_url_handler(self):
             if self.region == "phoxtrot":
                 self.handle_phoxtrot_site()
             else:
-                self.determine_encounter()
+                self.at_phoxtrot = False
+                print('at phoxtrot is false')
+                if self.state == "explore":
+                    self.determine_encounter()
+
 
 # Takes the url and returns the full domain
 def get_domain(url):

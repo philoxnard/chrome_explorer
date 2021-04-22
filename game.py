@@ -65,6 +65,13 @@ class Game:
         # The max level for phoxes. If the game goes live, this may be increased
         self.level_cap = 5
 
+        # Set to true whenever a phox gets a change to its upgrade so that the game
+        # knows to reinstantiate it when the popup closes
+        self.reload_needed = False
+
+        # Used to determine whether or not the player is currently at phoxtrot.com
+        self.at_phoxtrot = False
+
     # Import the high level functions from the different API libraries
     from game_api.handle_login import handle_login, terminal_test_login
     from game_api.handle_new_url import new_url_handler
@@ -74,7 +81,7 @@ class Game:
     from game_api.combat import combat, execute_player_attack
     from game_api.experience import handle_experience
     from game_api.encounter_cleanup import encounter_cleanup
-    from game_api.handle_phoxtrot_site import handle_phoxtrot_site
+    from game_api.handle_phoxtrot_site import handle_phoxtrot_site, get_collection_data
     from game_api.handle_upgrades import select_upgrade
     
 
@@ -107,3 +114,7 @@ class Game:
                     info_dict["phox_level"]=phox.level
                     info_dict["phox_status"]=phox.status
         return info_dict
+
+    def refresh_player(self):
+        print('firing')
+        self.players = db.players

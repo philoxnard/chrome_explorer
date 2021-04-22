@@ -11,6 +11,11 @@ socket.on('connect', function() {
     // })    
 });
 
+socket.on('disconnect', function() {
+    const sid = socket.id
+    socket.emit('disconnection', sid)
+})
+
 socket.on('update state', function(state){
     if (state == "idle") {
         idleState()
