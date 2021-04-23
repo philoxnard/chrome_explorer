@@ -30,7 +30,7 @@ def instantiate_party(self):
     for phox, dictionary in self.player.collection.items():
         if dictionary["in_party"] < 4:
             base_phox = get_base_phox(phox, self.phoxes)
-            self.player.party.append(dictionary["in_party"], base_phox)
+            self.player.party.insert(dictionary["in_party"], base_phox)
     for phox in self.player.party:
         get_collection_info(phox, self.player.collection, self.attacks, self.upgrades, self.families)
 
@@ -59,7 +59,6 @@ def get_collection_info(phox, collection, attackDB, upgradeDB, familyDB):
     phox.experience = phox_info["experience"]
     # Get the array of indexes that determine which upgrades have been selected
     phox.upgrade_indexes = phox_info["upgrade indexes"]
-    print(f"upgrade indexes within the function are: {phox.upgrade_indexes}")
     phox.nickname = phox_info["nickname"]
     combine_phox_info(phox, attackDB, upgradeDB, familyDB)
 

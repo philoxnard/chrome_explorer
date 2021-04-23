@@ -32,10 +32,7 @@ def handle_new_connection(sid, methods=['GET', "POST"]):
                 if game.combat_state == "waiting":
                     socketio.emit('your turn readout', room=sid)
                 if game.reload_needed:
-                    print('trying to reload party')
                     playerinfo = game.players.find({"username": game.player.username})
-                    for doc in playerinfo:
-                        print(doc["collection"]["twitwat"]["upgrade indexes"])
                     game.player.party = []
                     game.instantiate_party()
                     game.reload_needed = False
@@ -247,7 +244,9 @@ def handle_collection_swap(phox_species, sid, methods=["GET"]):
     ip = "100.0.28.103" # request.remote_addr
     for game in games:
         if game.ip == ip:
-            game.swap_collection(phox_species)
+            game.swap_collection(phox_species.lower())
+            socketio.emit('callback view party', room=sid)
+
 
 if __name__ == "__main__":
     socketio.run(app, port=5000, debug=True)

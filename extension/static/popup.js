@@ -95,6 +95,11 @@ socket.on('update upgrades', function(new_indexes){
     drawUpgradeTree(globalPhox["upgrade tree"])
 })
 
+socket.on('callback view party', function(){
+    const sid = socket.id
+    socket.emit('view party', sid)
+})
+
 $("#content").on('mouseover', '.attackOption', function(){
     for (i=0; i<globalAttacks.length; i++){
         if (this.innerHTML == globalAttacks[i]["name"]){
