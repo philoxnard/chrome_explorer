@@ -6,19 +6,25 @@ Phoxtrot is an in-development online game that will take place in a Chrome exten
 
 Phoxtrot is a game that exists somewhere between Pokemon, Pokemon-GO, and Skannerz. It is a Pokemon-style game that uses the internet as its game map. As players traverse the web and hop from site to site, they will encounter different monsters (called Phoxes). Players can then use their own Phoxes to battle the ones they encounter in the wild, strenghtening their own Phoxes while also adding to their collection each time they find a new one.
 
+## AWS and Extention Store Update
+
+BIG UPDATE
+
+The server for the game is now live via AWS. The Chrome Extention is currently under review with Google, but the actual files for the extention can be shared and downloaded manually. All aspects of multiplayer work perfectly! There's still an issue where, because the server creates games based on IP addresses, only one person on a home network can be playing at a time, but that's an issue that is far down the list of priorities.
+
 ## KNOWN ISSUES THAT NEED TESTING
 
 A lot of this project is really difficult to test while in development. Things that need to be tested once its live:
 
-* With the use of sockets, the game is theoretically playable by different people on different computers at the same time. Unfortunately, this is hard/impossible to test without having multiple people with multiple IPs. Similarly, multiple people in the same house/network cannot play at the same time if they have the same IP.
+* Since the move to AWS, some of the functionality of the service worker seem to not be functioning. Notifications are no longer being sent to the client when a new Phox is found, and closed tabs/browsers no longer seem to be triggering the server to end that client's game. This may not end up being important, but I'll keep an eye on whether or not lots of games end up slowing things down. Including a "log-off" button may be necessary.
 
-* The way that new URLs are currently handled is very wonky. It attempts to take the IP address from whoever contacted the server, but it is currently replying with the IP address of localhost... which isn't right. This may right itself upon deployment, but it may not. For now, a dummy IP address (mine) will be hard-coded into the program to allow for testing and development.
+* Unidentified combat bug. When I was playing with Dojokun earlier, something happened where combat just came to a standstill. I couldn't swap or attack, I could only run. It didn't seem to be related to RAM, as both my Dojokun and the enemy Twitwat had enough RAM to attack. I was clicking very quickly - maybe that was why it happened?
 
-* The way that upgrades are stored currently has an issue. When selecting an upgrade, such as "Influencer", for example, which gives your Phox +20 VIS, the bonuses from the upgrade are saved to the Phox object even after the Phox's upgrade indexes change. So, a player can give their Phox the Influencer upgrade, then reset their upgrades and give that Phox the Influencer upgrade again, and the instance of the Phox will maintain both instances of the upgrade instead of just the one. The problem resets itself when the game is closed because the Phox that comes from the database is the correct version of the Phox. Fixing this will be simple: Just need to re-instantiate the Phox after a new upgrade has been selected.
+
 
 ## General Structure
 
-When a user turns on the Chrome Explorer extension, it will start pinging the Phoxtrot server every time a new web address is visited (probably only listening on one tab to avoid confusion/errors). The server will take the URL and identify the domain name, which it will then check against a pre-made list of "Regions" such as Social Media, Video Streaming, News, Search Engine, etc. Much like how different regions of Pokemon have different Pokemon living in them, so too will the different Regions have different Phoxes lurking as potential encounters.
+When a user turns on the Phoxtrot extension, it will start pinging the Phoxtrot server every time a new web address is visited (probably only listening on one tab to avoid confusion/errors). The server will take the URL and identify the domain name, which it will then check against a pre-made list of "Regions" such as Social Media, Video Streaming, News, Search Engine, etc. Much like how different regions of Pokemon have different Pokemon living in them, so too will the different Regions have different Phoxes lurking as potential encounters.
 
 When the server decides that an encounter with a wild Phox will happen, the user will be given the option to engage it or run away. If the user engages, they will find themselves in a Pokemon-style battle (with slight tweaks to mechanics as I see fit). Defeating wild Phoxes will give your active Phox more experience so they can level up, get stronger, and learn new attacks. It will also add any newly encountered Phoxes to the user's collection.
 
@@ -114,24 +120,29 @@ Like in Pokemon, a player will be able to spend their action to swap between the
 
 The immediate goal is to get the game up and running so that a player can have a single player experience. This includes:
 
-* (IN PROGRESS) Account creation and login ability 
+* (COMPLETE) Account creation and login ability 
 * (COMPLETE) Generate encounters as they go through the internet
 * (COMPLETE) Full combat in those encounters
 * (COMPLETE) Adding defeated Phoxes to player collection
 * (COMPLETE) Leveling up and choosing talents for Phoxes
-* Ability to swap out Phoxes in your party/collection
+* (COMPLETE) Ability to swap out Phoxes in your party/collection
 * (COMPLETE) Display basic info about each Phox
 
-When all of this is accomplished, phase 1 of the game development will be complete. 
+UPDATE: Phase 1 is officially complete! 
 
-Phase 2 involves fleshing out the game and making it not just playable, but enjoyable. This includes fleshing out the list of Phoxes, attacks, and upgrades so that there are no fewer than 50 playable Phoxes to collect and train. An extended piece of this goal is to have graphics for each Phox, both a front and back (like in Pokemon). The last part of phase 2 is to flesh out the new player experience - much like in Pokemon, new players will need to be given a starter Phox. How exactly this will be implemented is TBD, but my current idea is to give players three choices of three different phoxes each. The options for Phoxes would be as follows:
+Phase 2 involves fleshing out the game and making it not just playable, but enjoyable. This means accomplishing the following:
 
-1) Virus, Antivirus, Piracy (like the fire, water, grass starters)
-2) Meme (three different Meme Phoxes)
-3) Blockchain, Assembly, Troll (or perhaps three different Data Phoxes - unsure)
+* Creating an experience for new players (account creation as well as giving starter Phox(es))
+
+* Creating 50-60 phoxes
+
+* Give front and back art for each Phox
+
+* Flesh out attacks and their code
+
+* Flesh out upgrades and their code
 
 Beyond phase 2, I have multiple extended goals for what I want to be in the game:
-
 
 ### PvP
 If a player chooses to do so, they can flag themselves for PvP (perhaps will be mandatory in some regions). If they do so, they will be able to encounter other actual players who are in their same region.

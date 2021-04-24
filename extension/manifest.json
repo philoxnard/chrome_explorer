@@ -1,8 +1,8 @@
 {
     "name": "Phoxtrot",
-    "version": "0.1.0",
+    "version": "0.0.0.1",
     "description": "Front end for the Phoxtrot app",
-    "permissions": ["storage", "declarativeContent", "scripting", "tabs", "notifications"],
+    "permissions": ["tabs", "notifications"],
     "background": {
         "service_worker": "background.js"
     },
