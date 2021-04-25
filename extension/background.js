@@ -1,6 +1,6 @@
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
     if (changeInfo.url){
-        fetch('http://18.222.237.192:8000/newUrl', {
+        fetch('http://127.0.0.1:5000/newUrl', {
             method: "post",
             body: changeInfo.url,
             headers: new Headers({

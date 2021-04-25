@@ -1,9 +1,18 @@
 from flask import Flask, request, json, Response, render_template, session, jsonify
 from flask_cors import CORS
 from flask_socketio import SocketIO, send
+import logging
 
 from game import Game
 games = []
+
+__logger = logging.getLogger(__name__)
+__logger.setLevel(logging.DEBUG)
+handler = logging.StreamHandler()
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(funcName)s - %(message)s')
+handler.setFormatter(formatter)
+__logger.addHandler(handler)
 
 app = Flask(__name__)
 CORS(app)
@@ -12,19 +21,19 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 @socketio.on('connection')
 def handle_new_connection(sid, methods=['GET', "POST"]):
-    print("new connection")
+    __logger.info("new connection")
     ip = "100.0.28.103" # request.remote_addr
     if not any(game.ip == ip for game in games):
         games.append(Game(ip))
-        print(f"Creating new game with IP {ip}")
+        __logger.info(f"Creating new game with IP {ip}")
         state = "initialize"
         socketio.emit('update state', state, room=sid)
     else:
-        print(f"Game already exists with IP {ip}")  
+        __logger.info(f"Game already exists with IP {ip}")  
         for game in games:
             if game.ip == ip:
                 state = game.state
-                print(f"Current state is {state}")
+                __logger.info(f"Current state is {state}")
                 socketio.emit('update state', state, room=sid)
                 if game.combat_info_dict:
                     readout = game.combat_info_dict
@@ -47,11 +56,11 @@ def handle_login(sid, username, password, methods=['GET', "POST"]):
             game.password = password
             game.handle_login()
             if game.state == "idle":
-                print('login successful')
+                __logger.info('login successful')
                 state = game.state
                 socketio.emit('update state', state, room=sid)
             else:
-                print('login not successful')
+                __logger.info('login not successful')
 
 @app.route('/newUrl', methods=["POST"])
 def handle_test():
@@ -64,7 +73,7 @@ def handle_test():
                 game.player.url = url
                 game.new_url_handler()
             elif game.state == "idle":
-                print("Start trotting to find a phox!")
+                __logger.info("Start trotting to find a phox!")
             return jsonify({"state": game.state}), 200
     return jsonify('none'), 200
 
@@ -74,8 +83,8 @@ def handle_exit():
     for game in games:
         if game.ip == ip:
             games.remove(game)
-            print(games)
-            print('found exit')
+            __logger.info(games)
+            __logger.info('found exit')
             return 'success', 200
     return 'no exit', 200
 
@@ -86,7 +95,7 @@ def start_trotting(methods=["GET"]):
         if game.ip == ip:
             game.cleanup_info_dict = {}
             game.state = "explore"
-            print(f"The current state is {game.state}")
+            __logger.info(f"The current state is {game.state}")
 
 @socketio.on('stop trotting')
 def stop_trotting(methods=["GET"]):
@@ -94,7 +103,7 @@ def stop_trotting(methods=["GET"]):
     for game in games:
         if game.ip == ip:
             game.state = "idle"
-            print(f"The current state is {game.state}")
+            __logger.info(f"The current state is {game.state}")
 
 @socketio.on('combat loop')
 def handle_combat_loop(sid, methods=["GET"]):
@@ -139,7 +148,7 @@ def handle_attack_click(attack_name, sid, methods=["GET"]):
     for game in games:
         if game.ip == ip:
             if game.combat_state == "waiting":
-                print(attack_name)
+                __logger.info(attack_name)
                 game.player_attack = attack_name.lower()
                 game.execute_player_attack()
                 info_dict = game.get_info_dict()
@@ -186,7 +195,7 @@ def handle_party_view(sid, methods=["GET"]):
                 for doc in player:
                     for phox in doc["collection"]:
                         collection.append(phox.title())
-                    print(collection)
+                    __logger.info(collection)
                 socketio.emit('draw collection', collection, room=sid)
 
 @socketio.on('select phox')
@@ -195,7 +204,7 @@ def handle_select_phox(raw_phox, sid, methods=["GET"]):
     for game in games:
         if game.ip == ip:
             selected_phox = raw_phox.partition("<")[0].lower()
-            print(selected_phox)
+            __logger.info(selected_phox)
             for phox in game.player.party:
                 if phox.species == selected_phox:
                     if game.state == "encounter" and game.combat_state == "waiting":
@@ -205,11 +214,11 @@ def handle_select_phox(raw_phox, sid, methods=["GET"]):
                                     # function to reset phox's AS and temp stats
                                     game.active_phoxes.remove(active_phox)
                                     game.active_phoxes.insert(0, phox)
-                                    print(f'Swapping out {active_phox.name} for {phox.name}')
+                                    __logger.info(f'Swapping out {active_phox.name} for {phox.name}')
                                     active_phox.can_act = False
                                     game.combat_state = None
                                     socketio.emit('swapped phox', phox.name, room=sid)
-                                    print(f'swapping to {phox.name}')
+                                    __logger.info(f'swapping to {phox.name}')
                     elif game.state == "idle" or game.state == "explore":
                         socketio.emit('view phox', selected_phox.title(), room=sid)
 
