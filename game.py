@@ -105,6 +105,7 @@ class Game:
         info_dict["wild_phox_name"]=self.wild_phox.name.title()
         info_dict["wild_phox_level"]=self.wild_phox.level
         info_dict["wild_phox_status"]=self.wild_phox.status
+        info_dict["wild_phox_art"]=self.wild_phox.enemy_art
         for phox in self.active_phoxes:
             if not phox.is_wild:
                     info_dict["phox_max_hp"]=phox.max_health
@@ -114,6 +115,7 @@ class Game:
                     info_dict["phox_name"]=phox.name.title()
                     info_dict["phox_level"]=phox.level
                     info_dict["phox_status"]=phox.status
+                    info_dict["phox_art"]=phox.player_art
         return info_dict
 
     def refresh_player(self):

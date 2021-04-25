@@ -1,4 +1,5 @@
-var socket = io.connect('http://127.0.0.1:5000');
+// var socket = io.connect('http://18.222.237.192:8000'); //host for AWS server
+var socket = io.connect('http://127.0.0.1:5000'); // host for local test server
 var globalAttacks = []
 var globalData = []
 var globalPhox = null
@@ -351,8 +352,8 @@ function renderEncounter() {
 function drawGeneralCombatBlueprint() {
     $('#content').html("<div id='encounterWrapper'>\
                             <div id='enemyInfo'></div>\
-                            <div id='enemyArt'><img src='https://static.thenounproject.com/png/166439-200.png'></div>\
-                            <div id='playerArt'>player art</div>\
+                            <div id='enemyArt'></div>\
+                            <div id='playerArt'></div>\
                             <div id='playerInfo'></div>\
                             <div id='info'></div>\
                         </div>") 
@@ -385,7 +386,8 @@ function drawCombatDetails(infoDict) {
     const wildPhoxName = infoDict["wild_phox_name"]
     const wildPhoxLevel = infoDict["wild_phox_level"]
     const wildPhoxStatus = infoDict["wild_phox_status"]
-    drawWildPhox(wildPhoxMaxHP, wildPhoxCurrentHP, wildPhoxMaxRAM, wildPhoxCurrentRAM, wildPhoxName, wildPhoxLevel, wildPhoxStatus)
+    const wildPhoxArt = infoDict["wild_phox_art"]
+    drawWildPhox(wildPhoxMaxHP, wildPhoxCurrentHP, wildPhoxMaxRAM, wildPhoxCurrentRAM, wildPhoxName, wildPhoxLevel, wildPhoxStatus, wildPhoxArt)
     const phoxMaxHP = infoDict["phox_max_hp"]
     const phoxCurrentHP = infoDict["phox_current_hp"]
     const phoxMaxRAM = infoDict["phox_max_RAM"]
@@ -393,10 +395,12 @@ function drawCombatDetails(infoDict) {
     const phoxName = infoDict["phox_name"]
     const phoxLevel = infoDict["phox_level"]
     const phoxStatus = infoDict["phox_status"]
-    drawPhox(phoxMaxHP, phoxCurrentHP, phoxMaxRAM, phoxCurrentRAM, phoxName, phoxLevel, phoxStatus)
+    const phoxArt = infoDict["phox_art"]
+    drawPhox(phoxMaxHP, phoxCurrentHP, phoxMaxRAM, phoxCurrentRAM, phoxName, phoxLevel, phoxStatus, phoxArt)
 }
 
-function drawWildPhox(maxhp, hp, maxram, ram, pname, lvl, status) {
+function drawWildPhox(maxhp, hp, maxram, ram, pname, lvl, status, art) {
+    $("#enemyArt").html(art)
     var nameInfo = document.querySelectorAll("#enemyInfo .name")
     nameInfo[0].innerHTML = "Level "+lvl+ " "+pname
     var healthInfo = document.querySelectorAll("#enemyInfo .health")
@@ -409,7 +413,8 @@ function drawWildPhox(maxhp, hp, maxram, ram, pname, lvl, status) {
     }
 }
 
-function drawPhox(maxhp, hp, maxram, ram, pname, lvl, status){
+function drawPhox(maxhp, hp, maxram, ram, pname, lvl, status, art){
+    $("#playerArt").html(art)
     var nameInfo = document.querySelectorAll("#playerInfo .name")
     nameInfo[0].innerHTML = "Level "+lvl+ " "+pname
     var healthInfo = document.querySelectorAll("#playerInfo .health")

@@ -10,6 +10,9 @@ class Phox:
         self.level = 0
         self.experience = 0
 
+        self.player_art= ""
+        self.enemy_art = ""
+
         self.max_health = 0
         self.max_RAM = 100
         self.RAM = self.max_RAM
@@ -66,4 +69,6 @@ class Phox:
             "family": family,
             "stats": stats,
             "level": self.level,
-            "upgrade indexes": self.upgrade_indexes}
+            "upgrade indexes": self.upgrade_indexes,
+            "player art": self.player_art,
+            "enemy art": self.enemy_art}

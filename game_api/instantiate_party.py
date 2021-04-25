@@ -48,6 +48,8 @@ def get_base_phox(phox, phoxDB):
         new_phox.upgrade_tree_strings = doc["upgrade tree"]
         new_phox.attack_strings = doc["base attacks"]
         new_phox.upgrades = doc["base upgrades"]
+        new_phox.player_art = doc["player art"]
+        new_phox.enemy_art = doc["enemy art"]
         return new_phox
 
 # Goes through the player's collection and grabs data for a
