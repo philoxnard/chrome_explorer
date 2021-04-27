@@ -18,20 +18,20 @@
 
 
 def pre_attack_effect(attacker, defender, attack):
-    pre_effect_dict = {}
+    pre_effect_dict = {"pre effect": ""}
     for title, effect in attack.effect.items():
 
         # Code for handling clashes and their effects
         if title == "clash":
             clash = determine_clash(attacker, defender, effect)
             if clash:
-                for clash_title, clash_effect in effect[2]:
+                for clash_title, clash_effect in effect[2].items():
                     if clash_title == "cpow_mod":
                         attacker.temp_cpow *= clash_effect
-                        pre_effect_dict["effect"].append(f"CPOW multipled by {clash_effect}!")
+                        pre_effect_dict["pre effect"]+=(f"CPOW multipled by {clash_effect}! ")
 
                     elif clash_title == "lpow_mod":
-                        pre_effect_dict["effect"].append(f"LPOW multipled by {clash_effect}!")
+                        pre_effect_dict["pre effect"]+=(f"LPOW multipled by {clash_effect}! ")
                         attacker.temp_lpow *= clash_effect
 
                 pre_effect_dict["clash"] = "You passed the clash!"
@@ -39,19 +39,26 @@ def pre_attack_effect(attacker, defender, attack):
                 pre_effect_dict["clash"] = "You failed the clash!"
 
         # Code for handling non clash effects
-        elif title == "as_boost":
-            attacker.AS += effect
+
 
     return pre_effect_dict
 
 
 
 def post_attack_effect(attacker, defender, attack):
-    post_effect_dict = {}
+    post_effect_dict = {"post effect": ""}
+    for title, effect in attack.effect.items():
+
+        if title == "as_boost":
+                attacker.AS += effect
+                post_effect_dict["post effect"]= f"Gained 20 {effect} AS!"
+
     return post_effect_dict
     
 def determine_clash(attacker, defender, effect):
     attacker_stat = effect[0]
     defender_stat = effect[1]
-    if attacker.stats["attacker_stat"] > defender.stats["defender_stat"]:
-        clash = True
+    print(attacker.stats[attacker_stat])
+    print(defender.stats[defender_stat])
+    if attacker.stats[attacker_stat] > defender.stats[defender_stat]:
+        return True

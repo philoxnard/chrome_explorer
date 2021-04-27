@@ -44,7 +44,16 @@ socket.on('generate attack menu', function(attacks){
 
 socket.on('update readout', function(readout) {
     $(".readout").html(readout["ownership"]+" "+readout["attacker"]+" used " +readout["attack"]+".")
+    if (readout["clash"]) {
+        $(".readout").append("<br>"+readout["clash"])
+    }
+    if (readout["pre effect"]) {
+        $(".readout").append("<br>"+readout["pre effect"])
+    }
     $(".readout").append("<br>It dealt "+readout["damage"]+" damage.")
+    if (readout["post effect"]) {
+        $(".readout").append("<br>"+readout["post effect"])
+    }
     if (readout["swap needed"]) {
         $(".readout").append("<br>"+readout["swap needed"])
     } else {
