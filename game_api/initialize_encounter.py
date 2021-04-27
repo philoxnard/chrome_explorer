@@ -32,6 +32,7 @@ def initialize_encounter(self):
             set_temp_stats(phox)
             phox.name = phox.nickname
             phox.RAM = phox.max_RAM
+            phox.AS = phox.base_AS
         self.active_phoxes = get_active_phoxes(self.player.party, self.wild_phox)
         # some function should probably be here to send info to the client
         # to draw everything

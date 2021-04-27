@@ -50,6 +50,7 @@ def check_disconnect_and_shutdown(self):
 # Increment speed in the background
 def increment_speed(phoxes):
     for phox in phoxes:
+        print(f"{phox.name} currently has {phox.AS} AS, with a speed stat of {phox.temp_speed}")
         phox.AS += phox.temp_speed
         print(f"{phox.name} increments to {phox.AS} AS")
     

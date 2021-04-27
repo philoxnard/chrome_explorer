@@ -30,4 +30,7 @@ def get_upgrade_effects(upgrade_string, phox, upgradeDB):
                 effect /= 100
                 phox.exp_mod *= effect
 
+            if title == "AS_boost":
+                phox.base_AS += effect
+
             

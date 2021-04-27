@@ -39,6 +39,7 @@ class Phox:
         self.status = None
 
         self.AS = 0
+        self.base_AS = 0
         self.AS_threshold = 100
 
         # Used to help determine who goes in the case of speed ties

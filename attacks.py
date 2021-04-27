@@ -17,9 +17,41 @@
 # This doc will get updated when combat is further in development
 
 
-def get_attack_effects(title, effect, phox):
+def pre_attack_effect(attacker, defender, attack):
+    pre_effect_dict = {}
+    for title, effect in attack.effect.items():
 
-    if title == "cha_boost":
-        pass
+        # Code for handling clashes and their effects
+        if title == "clash":
+            clash = determine_clash(attacker, defender, effect)
+            if clash:
+                for clash_title, clash_effect in effect[2]:
+                    if clash_title == "cpow_mod":
+                        attacker.temp_cpow *= clash_effect
+                        pre_effect_dict["effect"].append(f"CPOW multipled by {clash_effect}!")
 
+                    elif clash_title == "lpow_mod":
+                        pre_effect_dict["effect"].append(f"LPOW multipled by {clash_effect}!")
+                        attacker.temp_lpow *= clash_effect
+
+                pre_effect_dict["clash"] = "You passed the clash!"
+            else:
+                pre_effect_dict["clash"] = "You failed the clash!"
+
+        # Code for handling non clash effects
+        elif title == "as_boost":
+            attacker.AS += effect
+
+    return pre_effect_dict
+
+
+
+def post_attack_effect(attacker, defender, attack):
+    post_effect_dict = {}
+    return post_effect_dict
     
+def determine_clash(attacker, defender, effect):
+    attacker_stat = effect[0]
+    defender_stat = effect[1]
+    if attacker.stats["attacker_stat"] > defender.stats["defender_stat"]:
+        clash = True

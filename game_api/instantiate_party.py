@@ -132,6 +132,7 @@ def get_phox_attacks(phox, attackDB, familyDB):
             attack.style = doc["style"]
             attack.damage = doc["damage"]
             attack.cost = doc["cost"]
+            attack.effect = doc["effect"]
             attack.plain_text_effect = doc["plain text effect"]
             get_advantages(attack, familyDB)
             phox.attacks.append(attack)

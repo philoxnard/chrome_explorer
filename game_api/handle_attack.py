@@ -1,5 +1,7 @@
 import random
 
+from attacks import pre_attack_effect, post_attack_effect
+
 
 #################################################################
 ### Library for dealing with an attack and calculating damage ###
@@ -9,11 +11,13 @@ def execute_attack(attacker, defender, attack):
     print(attacker)
     print(defender)
     print(attack)
+    pre_effect_dict = pre_attack_effect(attacker, defender, attack)
     print(f"{attacker.name.title()} is attacking {defender.name.title()} with {attack.name.title()}")
     attacker.RAM -= attack.cost
     print(f"{attacker.name.title()} spent {attack.cost} RAM and now has {attacker.RAM}")
     damage = int(calculate_damage(attacker, defender, attack))
     deal_damage(damage, attacker, defender)
+    post_effect_dict = post_attack_effect(attacker, defender, attack)
     if attacker.is_wild:
         ownership = "Wild"
     else:
@@ -25,6 +29,7 @@ def execute_attack(attacker, defender, attack):
         "attacker": attacker.name.title(),
         "defender": defender.name.title(),
     }
+    info_dict = {**info_dict, **pre_effect_dict, **post_effect_dict}
     return info_dict
     
 
