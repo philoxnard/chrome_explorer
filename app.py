@@ -116,6 +116,11 @@ def handle_combat_loop(sid, methods=["GET"]):
             if not game.combat_state == "waiting":
                 readout = game.combat_info_dict
                 socketio.emit('update readout', readout, room=sid)
+                if game.active_phoxes[0].disconnected:
+                    game.check_disconnect_and_shutdown()
+                    # if game.player.shutdown:
+                    #     socketio.emit('update state', game.state, room=sid)
+
             else:
                 socketio.emit('your turn readout', room=sid)
             if game.state == "encounter cleanup":
@@ -207,8 +212,15 @@ def handle_select_phox(raw_phox, sid, methods=["GET"]):
             __logger.info(selected_phox)
             for phox in game.player.party:
                 if phox.species == selected_phox:
+                    __logger.info("found the selected phox")
+                    __logger.info(game.state)
+                    __logger.info(game.combat_state)
+                    if phox.disconnected:
+                        __logger.info("disconnected")
                     if game.state == "encounter" and game.combat_state == "waiting":
+                        __logger.info("game state is correct")
                         if not phox.disconnected:
+                            __logger.info("the selected phox is not disconnected")
                             for active_phox in game.active_phoxes:
                                 if not active_phox.is_wild:
                                     # function to reset phox's AS and temp stats

@@ -78,7 +78,7 @@ class Game:
     from game_api.determine_encounter import determine_encounter
     from game_api.instantiate_party import instantiate_party
     from game_api.initialize_encounter import initialize_encounter
-    from game_api.combat import combat, execute_player_attack
+    from game_api.combat import combat, execute_player_attack, check_disconnect_and_shutdown
     from game_api.experience import handle_experience
     from game_api.encounter_cleanup import encounter_cleanup
     from game_api.handle_phoxtrot_site import handle_phoxtrot_site, get_collection_data

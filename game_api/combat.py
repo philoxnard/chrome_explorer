@@ -9,20 +9,23 @@ from game_api.handle_attack import execute_attack
 # Start of the combat chain
 def combat(self):
     self.combat_info_dict = None
-    if check_shutdown(self.player.party):
-        self.player.shutdown = True
-        self.state = "explore"
-    elif self.wild_phox.disconnected:
+    if self.wild_phox.disconnected:
         self.handle_experience(self.active_phoxes[0], self.wild_phox, self.player, self.players)
         self.state = "encounter cleanup"
         self.encounter_cleanup
-    elif is_swap_needed(self.active_phoxes):
-        self.combat_state = "waiting"
     else:
         phox = check_for_turn(self.active_phoxes)
         if phox:
             if phox.is_wild:
                 self.combat_info_dict = wild_phox_take_turn(phox, self.active_phoxes)
+                if all(phox.disconnected for phox in self.player.party):
+                    self.player.shutdown = True
+                    self.combat_info_dict["swap needed"] = \
+                        "You have disconnected! Hit 'Run' and go to \
+                        Phoxtrot.com to heal your Phoxes"
+                # elif is_swap_needed(self.active_phoxes):
+                #     print("swap needed")
+                #     self.combat_state = "waiting"
             else:
                 self.combat_state = "waiting" 
         else:
@@ -34,6 +37,15 @@ def execute_player_attack(self):
     if self.combat_info_dict:
         self.combat_state = None
         self.player_attack = None
+
+def check_disconnect_and_shutdown(self):
+    if all(phox.disconnected for phox in self.player.party):
+        print("Shutdown!")
+        self.player.shutdown = True
+    elif self.active_phoxes[0].disconnected:
+        print("swap needed")
+        self.combat_state = "waiting"
+
 
 # Increment speed in the background
 def increment_speed(phoxes):
@@ -166,7 +178,8 @@ def check_shutdown(party):
         return True
 
 def is_swap_needed(active_phoxes):
-    for index, phox in enumerate(active_phoxes):
+    print("detecting if a swap is needed")
+    for phox in active_phoxes:
         if not phox.is_wild:
             if phox.disconnected:
                 return True
