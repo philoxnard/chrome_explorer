@@ -245,6 +245,7 @@ $('#content').on('click', '.upgrade', function(){
     const sid = socket.id
     const species = globalPhox["species"]
     socket.emit('select upgrade', species, rowIndex, optionIndex, sid)
+    $("#upgradeTooltip").remove()
 })
 
 $("#content").on('mouseover', '.upgrade', function(){
