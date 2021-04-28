@@ -8,9 +8,12 @@ from game_api.instantiate_party import  combine_phox_stats
 
 def handle_experience(self, phox, enemy, player, playerDB):
     self.cleanup_info_dict["phox"] = phox.name.title()
-    exp_constant = 2
+    exp_constant = 1
+    same_phox_exp_constant = 4
     if phox.level < self.level_cap:
         exp_gained = round(enemy.level*exp_constant*phox.exp_mod)
+        if phox.species == enemy.species:
+            exp_gained *= same_phox_exp_constant
         phox.experience += int(exp_gained)
         print(f"{phox.name.title()} gained {exp_gained} experience.")
         self.cleanup_info_dict["experience"] = exp_gained

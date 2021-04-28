@@ -8,9 +8,6 @@ from attacks import pre_attack_effect, post_attack_effect
 #################################################################
 
 def execute_attack(attacker, defender, attack):
-    print(attacker)
-    print(defender)
-    print(attack)
     pre_effect_dict = pre_attack_effect(attacker, defender, attack)
     print(f"{attacker.name.title()} is attacking {defender.name.title()} with {attack.name.title()}")
     attacker.RAM -= attack.cost
