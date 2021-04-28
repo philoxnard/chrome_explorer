@@ -83,7 +83,7 @@ def get_active_phoxes(party, wild_phox):
 
 def reset_phox(phox):
     set_temp_stats(phox)
-    phox.name = phox.nickname
+    phox.name = phox.species
     phox.RAM = phox.max_RAM
     phox.AS = phox.base_AS
     phox.repost_mod = 1
