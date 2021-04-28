@@ -48,6 +48,10 @@ class Phox:
         # Used to help determine who goes in the case of speed ties
         self.can_act = False
 
+        # Set to false after the phox makes its first attack, set to True
+        # if the phox switches out
+        self.first_attack = True
+
         # When a phox loses all of its HP, it disconnects
         self.disconnected = False
 

@@ -31,6 +31,7 @@ def execute_attack(attacker, defender, attack):
     }
     info_dict = {**info_dict, **pre_effect_dict, **post_effect_dict}
     attacker.temp_damage_mod = 1
+    attacker.first_attack = False
     return info_dict
     
 

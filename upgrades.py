@@ -25,6 +25,9 @@ def get_upgrade_effects(upgrade_string, phox, upgradeDB):
 
             if title == "lpow_boost":
                 phox.stats["lpow"] += effect
+
+            if title == "spd_boost":
+                phox.stats["speed"] += effect
             
             if title == "new_attack":
                 phox.attack_strings.append(effect)

@@ -64,7 +64,11 @@ def pre_attack_effect(attacker, defender, attack):
                 pre_effect_dict["clash"] = "Clash failed..."
 
         # Code for handling non clash effects
-
+        if title == "first_attack":
+            if attacker.first_attack:
+                attack.damage = effect
+            elif not attacker.first_attack:
+                attack.damage = 0
 
     return pre_effect_dict
 
