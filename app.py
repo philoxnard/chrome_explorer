@@ -68,6 +68,11 @@ def handle_test():
     for game in games:
         if game.ip == ip:
             if game.state == "explore" or game.state == "idle":
+                if game.reload_needed:
+                    playerinfo = game.players.find({"username": game.player.username})
+                    game.player.party = []
+                    game.instantiate_party()
+                    game.reload_needed = False
                 raw_url = request.get_data()
                 url = str(raw_url, 'UTF-8')
                 game.player.url = url

@@ -40,4 +40,12 @@ def get_upgrade_effects(upgrade_string, phox, upgradeDB):
                 phox.copypaste = True
                 print('giving the phox copy/paste')
 
+            if title == "spd_mod":
+                phox.stats["speed"] = int(phox.stats["speed"] * effect)
+
+            if title == "data_mod":
+                phox.data_mod *= effect
+                print(phox.data_mod)
+
+
             

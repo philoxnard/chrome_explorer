@@ -78,7 +78,8 @@ def get_defender_stat(attacker, defender, attack):
 def get_other_mod(attacker, defender, attack):
     family_mod = get_family_mod(attacker, defender, attack)
     STAB = get_STAB(attacker, attack)
-    mod = float(STAB*family_mod*attacker.temp_damage_mod)
+    special_family_mod = get_special_family_mod(attacker, attack)
+    mod = float(STAB*family_mod*attacker.temp_damage_mod*special_family_mod)
     return mod
 
 def get_family_mod(attacker, defender, attack):
@@ -97,6 +98,14 @@ def get_STAB(attacker, attack):
     if attack.family in attacker.family:
         mod *= 1.5
     return mod
+
+def get_special_family_mod(attacker, attack):
+    mod = float(1)
+    if attack.family == "data":
+        mod *= attacker.data_mod
+        [print('boosting Data attack')]
+    return mod
+
 
 def deal_damage(damage, attacker, defender):
     print(f"The attack dealt {damage} damage")

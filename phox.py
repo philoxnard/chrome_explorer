@@ -58,6 +58,9 @@ class Phox:
         # Modifier on exp gained, some upgrades will modify this
         self.exp_mod = 1
 
+        # Modifiers for specific family attacks
+        self.data_mod = 1
+
         # Set to true whenever a wild phox is instantiated
         self.is_wild = False
 
