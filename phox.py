@@ -32,6 +32,9 @@ class Phox:
         # Populated with the actual class instances, not just strings
         self.attacks = []
 
+        # Modifed by some attacks, then set back to 1 after the attack resolves
+        self.temp_damage_mod = 1
+
         # Set to true when a phox takes their turn, helps in passing information
         # to the functions that calculate damage
         self.is_attacking = False
@@ -57,6 +60,9 @@ class Phox:
 
         # Set to true whenever a wild phox is instantiated
         self.is_wild = False
+
+        ##### List of possible passive upgrade abilities 
+        self.copypaste = False
 
     def serialize(self):
         stats = self.stats

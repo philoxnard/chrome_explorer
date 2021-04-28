@@ -141,6 +141,7 @@
 }
 
 .readout {
+    font-size: 11px;
     width: 280px;
     height: 85px;
     position: absolute;

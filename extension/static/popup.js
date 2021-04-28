@@ -45,7 +45,7 @@ socket.on('generate attack menu', function(attacks){
 socket.on('update readout', function(readout) {
     $(".readout").html(readout["ownership"]+" "+readout["attacker"]+" used " +readout["attack"]+".")
     if (readout["clash"]) {
-        $(".readout").append("<br>"+readout["clash"])
+        $(".readout").append("  "+readout["clash"])
     }
     if (readout["pre effect"]) {
         $(".readout").append("<br>"+readout["pre effect"])

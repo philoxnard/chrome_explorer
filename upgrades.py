@@ -22,6 +22,9 @@ def get_upgrade_effects(upgrade_string, phox, upgradeDB):
 
             if title == "vis_boost":
                 phox.stats["vis"] += effect
+
+            if title == "lpow_boost":
+                phox.stats["lpow"] += effect
             
             if title == "new_attack":
                 phox.attack_strings.append(effect)
@@ -32,5 +35,9 @@ def get_upgrade_effects(upgrade_string, phox, upgradeDB):
 
             if title == "AS_boost":
                 phox.base_AS += effect
+
+            if title == "copypaste":
+                phox.copypaste = True
+                print('giving the phox copy/paste')
 
             

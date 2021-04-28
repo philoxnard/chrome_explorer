@@ -1,6 +1,7 @@
 import random
 
-from game_api.instantiate_party import get_base_phox, combine_phox_info
+from game_api.instantiate_party import get_base_phox, combine_phox_info, get_phox_attacks
+from upgrades import get_upgrade_effects
 
 ###########################################
 ### Library for setting up an encounter ###
@@ -19,8 +20,13 @@ def initialize_encounter(self):
         self.wild_phox.level = get_wild_phox_level(self.region, self.regions)
         # Then, increment the phox based on its assigned level
         combine_phox_info(self.wild_phox, self.attacks, self.upgrades, self.families)
-        # Get the randomized talents for the wild phox
-        get_phox_talents(self.wild_phox)
+        # Get the randomized upgrades for the wild phox
+        get_phox_upgrades(self.wild_phox)
+        # Get the upgrade effects into the wild phox
+        for upgrade in self.wild_phox.upgrades:
+            get_upgrade_effects(upgrade, self.wild_phox, self.upgrades)
+        # Get the actual attack effects into the wild phox
+        get_phox_attacks(self.wild_phox, self.attacks, self.families)
         # Set the temp stats for the wild phox
         set_temp_stats(self.wild_phox)
         # Set the name for the wild phox
@@ -53,12 +59,13 @@ def get_wild_phox_level(region, regionsDB):
     return level
 
 # Randomize talents according to the phox's level
-def get_phox_talents(phox):
+def get_phox_upgrades(phox):
     # num_talents may change if the rate of talent acquisition changes
-    for i in range(phox.level-1):
+    for i in range(phox.level):
         index = random.randint(0, 1)
         upgrade_options = phox.upgrade_tree[i]
-        phox.upgrades.append(upgrade_options[index])
+        phox.upgrades.append(upgrade_options[index].name)
+        print(phox.upgrades)
 
 # Gives the phox its temporary stats that will be used and manipulated in combat
 # Looped through every phox in the party, as well as the wild phox

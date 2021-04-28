@@ -30,6 +30,7 @@ def execute_attack(attacker, defender, attack):
         "defender": defender.name.title(),
     }
     info_dict = {**info_dict, **pre_effect_dict, **post_effect_dict}
+    attacker.temp_damage_mod = 1
     return info_dict
     
 
@@ -77,7 +78,7 @@ def get_defender_stat(attacker, defender, attack):
 def get_other_mod(attacker, defender, attack):
     family_mod = get_family_mod(attacker, defender, attack)
     STAB = get_STAB(attacker, attack)
-    mod = float(STAB*family_mod)
+    mod = float(STAB*family_mod*attacker.temp_damage_mod)
     return mod
 
 def get_family_mod(attacker, defender, attack):
