@@ -75,9 +75,11 @@ socket.on('display cleanup', function(info_dict){
     $('.readout').html('Your '+info_dict["phox"]+ " gained "+info_dict["experience"]+" experience!")
     if (info_dict["level"]){
         $('.readout').append('<br>'+info_dict["phox"]+" grew to level "+info_dict["level"]+"!")
+        $('.readout').append('<br>Go to phoxtrot.com to select your new upgrade!')
     }
     if (info_dict["newPhox"]){
         $('.readout').append('<br>Congratulations! You added '+info_dict["newPhox"]+' to your collection!')
+        $('.readout').append('<br>Go to phoxtrot.com to add it to your party!')
     }
     $('.readout').append('<br>Click "Run" to continue trotting.')
 })

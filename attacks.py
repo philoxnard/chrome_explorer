@@ -34,14 +34,14 @@ def pre_attack_effect(attacker, defender, attack):
                         pre_effect_dict["pre effect"]+=(f"CPOW multipled by {clash_effect}! ")
                         if defender.copypaste:
                             defender.temp_cpow *= clash_effect
-                            pre_effect_dict["pre effect"]+=(f"Opponent copied the stat boost! ")
+                            pre_effect_dict["pre effect"]+=(f"{defender.name.title()} copied the stat boost! ")
 
                     if clash_title == "lpow_mod":
                         pre_effect_dict["pre effect"]+=(f"LPOW multipled by {clash_effect}! ")
                         attacker.temp_lpow *= clash_effect
                         if defender.copypaste:
                             defender.temp_lpow *= clash_effect
-                            pre_effect_dict["pre effect"]+=(f"Opponent copied the stat boost! ")
+                            pre_effect_dict["pre effect"]+=(f"{defender.name.title()} copied the stat boost! ")
 
                     if clash_title == "damage_mod":
                         pre_effect_dict["pre effect"]+=(f"Damage multipled by {clash_effect}! ")
@@ -51,7 +51,7 @@ def pre_attack_effect(attacker, defender, attack):
             else:
 
                 # Code for handling unsuccessful clashes
-                if effect[3]:
+                if len(effect)>3:
                     for clash_title, clash_effect in effect[3].items():
 
                         if clash_title == "vis_mod":
@@ -59,7 +59,7 @@ def pre_attack_effect(attacker, defender, attack):
                             attacker.temp_vis *= clash_effect
                             if defender.copypaste:
                                 defender.temp_vis *= clash_effect
-                                pre_effect_dict["pre effect"]+=(f"Opponent copied the stat boost! ")
+                                pre_effect_dict["pre effect"]+=(f"{defender.name.title()} copied the stat boost! ")
 
                 pre_effect_dict["clash"] = "Clash failed..."
 
