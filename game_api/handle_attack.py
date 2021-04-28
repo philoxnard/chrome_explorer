@@ -62,6 +62,11 @@ def get_attacker_stat(attacker, defender, attack):
         attacker_stat = attacker.temp_cpow
     else:
         attacker_stat = 1
+    if "attack_style" in attack.effect:
+        if attack.effect["attack_style"] == "vis":
+            print('using vis as attack stat')
+            attacker_stat = attacker.temp_vis
+    print(attacker_stat)
     return attacker_stat
 
 # This will eventually get conditionals like:
