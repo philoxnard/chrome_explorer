@@ -34,11 +34,9 @@ def initialize_encounter(self):
         # Make sure the game knows that the phox is wild
         self.wild_phox.is_wild = True
         # Set the temp stats, RAM, and name for the phoxes in your party
+        # Also resets some other aspects of combat
         for phox in self.player.party:
-            set_temp_stats(phox)
-            phox.name = phox.nickname
-            phox.RAM = phox.max_RAM
-            phox.AS = phox.base_AS
+            reset_phox(phox)
         self.active_phoxes = get_active_phoxes(self.player.party, self.wild_phox)
         # some function should probably be here to send info to the client
         # to draw everything
@@ -82,3 +80,10 @@ def get_active_phoxes(party, wild_phox):
     for phox in party:
         if not phox.disconnected:
             return [phox, wild_phox]
+
+def reset_phox(phox):
+    set_temp_stats(phox)
+    phox.name = phox.nickname
+    phox.RAM = phox.max_RAM
+    phox.AS = phox.base_AS
+    phox.repost_mod = 1

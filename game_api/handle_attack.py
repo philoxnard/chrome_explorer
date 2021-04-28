@@ -60,6 +60,8 @@ def get_attacker_stat(attacker, defender, attack):
         attacker_stat = attacker.temp_lpow
     elif attack.style == "cloud":
         attacker_stat = attacker.temp_cpow
+    elif attack.style == "vis":
+        attacker_stat = attacker.temp_vis
     else:
         attacker_stat = 1
     if "attack_style" in attack.effect:
@@ -77,6 +79,8 @@ def get_defender_stat(attacker, defender, attack):
         defender_stat = defender.temp_lsec
     elif attack.style == "cloud":
         defender_stat = defender.temp_csec
+    elif attack.style == "vis":
+        defender_stat = defender.temp_vis
     else:
         defender_stat = 1
     return defender_stat
@@ -85,7 +89,7 @@ def get_other_mod(attacker, defender, attack):
     family_mod = get_family_mod(attacker, defender, attack)
     STAB = get_STAB(attacker, attack)
     special_family_mod = get_special_family_mod(attacker, attack)
-    mod = float(STAB*family_mod*attacker.temp_damage_mod*special_family_mod)
+    mod = float(STAB*family_mod*attacker.temp_damage_mod*special_family_mod*attacker.repost_mod)
     return mod
 
 def get_family_mod(attacker, defender, attack):

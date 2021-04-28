@@ -71,6 +71,10 @@ class Phox:
         ##### List of possible passive upgrade abilities 
         self.copypaste = False
 
+        ##### List of possible mods for specific attakcs
+        self.repost_mod = 1
+        
+
     def serialize(self):
         stats = self.stats
         stats["max health"]=self.max_health

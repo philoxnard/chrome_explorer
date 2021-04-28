@@ -66,9 +66,15 @@ def pre_attack_effect(attacker, defender, attack):
         # Code for handling non clash effects
         if title == "first_attack":
             if attacker.first_attack:
+                pre_effect_dict["pre effect"]+=(f"{attacker.name.title()} made the first post! ")
                 attack.damage = effect
             elif not attacker.first_attack:
+                pre_effect_dict["pre effect"]+=(f"Too late... ")
                 attack.damage = 0
+
+        if title == "repost_ramp":
+            pre_effect_dict["pre effect"]+=(f"{attack.name.title()} damage multiplied by {effect}! ")
+            attacker.repost_mod *= effect
 
     return pre_effect_dict
 
