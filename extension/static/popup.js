@@ -525,8 +525,10 @@ function viewPhoxBasicInfo(phox) {
     $("#content").append("<div id='basicInfo'></div>")
     $("#basicInfo").append(phox["nickname"]+" the level "+phox["level"]+" ")
     $("#basicInfo").append(phox["species"]+"<br>")
-    $("#basicInfo").append(phox["family"]+"<br>")
-    $("#basicInfo").append(phox["stats"]["health"]+"/"+phox["stats"]["max health"]+" health")
+    for (i=0 ; i<phox["family"].length; i++){
+        $("#basicInfo").append(phox["family"][i].toUpperCase()+"  ")
+    }   
+    $("#basicInfo").append("<br>"+phox["stats"]["health"]+"/"+phox["stats"]["max health"]+" health")
 }
 
 function viewPhoxStats(phox) {

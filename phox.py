@@ -84,7 +84,7 @@ class Phox:
         return {
             "species": self.species.title(),
             "nickname": self.nickname.title(),
-            "family": family,
+            "family": self.family,
             "stats": stats,
             "level": self.level,
             "upgrade indexes": self.upgrade_indexes,
