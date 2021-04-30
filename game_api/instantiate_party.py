@@ -50,7 +50,7 @@ def get_base_phox(phox, phoxDB):
         new_phox.upgrades = doc["base upgrades"]
         new_phox.player_art = doc["player art"]
         new_phox.enemy_art = doc["enemy art"]
-        return new_phox
+    return new_phox
 
 # Goes through the player's collection and grabs data for a
 # phox in the current party.
@@ -71,6 +71,7 @@ def combine_phox_info(phox, attackDB, upgradeDB, familyDB):
     get_upgrade_objects(phox, upgradeDB)
     get_phox_upgrades(phox, upgradeDB)
     get_phox_attacks(phox, attackDB, familyDB)
+    get_phox_immunities(phox, familyDB)
 
 # Function to increment and implement changes to the stat block
 def combine_phox_stats(phox):
@@ -146,3 +147,12 @@ def get_advantages(attack, familyDB):
         attack.advantages = doc["advantages"]
         attack.disadvantages = doc["disadvantages"]
         attack.zero_effects = doc["zero effects"]
+
+def get_phox_immunities(phox, familyDB):
+    for fam in phox.family:
+        famDBinfo = familyDB.find({"name": fam})
+        for doc in famDBinfo:
+            for immunity in doc["immunities"]:
+                phox.immunities.append(immunity)
+    print(f'Phox is immune to these afflictions: ')
+    print(phox.immunities)

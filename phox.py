@@ -27,7 +27,8 @@ class Phox:
 
         self.stats = {}
 
-        self.status = None
+        self.status = []
+        self.immunities = []
 
         # Populated with the actual class instances, not just strings
         self.attacks = []
@@ -38,8 +39,6 @@ class Phox:
         # Set to true when a phox takes their turn, helps in passing information
         # to the functions that calculate damage
         self.is_attacking = False
-
-        self.status = None
 
         self.AS = 0
         self.base_AS = 0

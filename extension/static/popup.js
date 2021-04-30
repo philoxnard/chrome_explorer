@@ -420,9 +420,11 @@ function drawWildPhox(maxhp, hp, maxram, ram, pname, lvl, status, art) {
     var ramInfo = document.querySelectorAll("#enemyInfo .ram")
     ramInfo[0].innerHTML = "RAM: "+ram+"/"+maxram
     var statusInfo = document.querySelectorAll("#enemyInfo .status")
-    if (status == true){
-        statusInfo[0].innerHTML = "Status: "+status
+    let statusArray = ""
+    for (i=0; i<status.length; i++){
+        statusArray+=status[i].toUpperCase() + " "
     }
+    statusInfo[0].innerHTML = "Status: "+statusArray
 }
 
 function drawPhox(maxhp, hp, maxram, ram, pname, lvl, status, art){
@@ -434,9 +436,12 @@ function drawPhox(maxhp, hp, maxram, ram, pname, lvl, status, art){
     var ramInfo = document.querySelectorAll("#playerInfo .ram")
     ramInfo[0].innerHTML = "RAM: "+ram+"/"+maxram
     var statusInfo = document.querySelectorAll("#playerInfo .status")
-    if (status == true){
-        statusInfo[0].innerHTML = "Status: "+status
+    let statusArray = ""
+    console.log(status)
+    for (i=0; i<status.length; i++){
+        statusArray+=status[i].toUpperCase() + " "
     }
+    statusInfo[0].innerHTML = "Status: "+statusArray
 }
 
 function getInfoFromServer() {

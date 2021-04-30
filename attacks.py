@@ -130,6 +130,15 @@ def pre_attack_effect(attacker, defender, attack):
         if title == "turn_ramp":
             attacker.PoW_mod = effect*(attacker.turns_active+defender.turns_active)
 
+        if title == "status":
+            if not effect in defender.status and not effect in defender.immunities:
+                defender.status.append(effect)
+                pre_effect_dict["pre effect"]+=(f"{defender.name.title()} afflicted by {effect}! ")
+            elif effect in defender.immunities:
+                pre_effect_dict["pre effect"]+=(f"{defender.name.title()} is immune to {effect}! ")
+            elif effect in defender.status:
+                pre_effect_dict["pre effect"]+=(f"{defender.name.title()} was already afflicted by {effect}! ")
+
     return pre_effect_dict
 
 
