@@ -64,6 +64,34 @@ def pre_attack_effect(attacker, defender, attack):
                 pre_effect_dict["clash"] = "Clash failed..."
 
         # Code for handling non clash effects
+        if title == "csec_mod":
+            attacker.temp_csec *= effect
+            pre_effect_dict["pre effect"]+=(f"CSEC multipled by {effect}! ")
+            if defender.copypaste:
+                defender.temp_csec *= effect
+                pre_effect_dict["pre effect"]+=(f"{defender.name.title()} copied the stat boost! ")
+
+        if title == "lsec_mod":
+            attacker.temp_lsec *= effect
+            pre_effect_dict["pre effect"]+=(f"LSEC multipled by {effect}! ")
+            if defender.copypaste:
+                defender.temp_lsec *= effect
+                pre_effect_dict["pre effect"]+=(f"{defender.name.title()} copied the stat boost! ")
+        
+        if title == "cpow_mod":
+            attacker.temp_cpow *= effect
+            pre_effect_dict["pre effect"]+=(f"CPOW multipled by {effect}! ")
+            if defender.copypaste:
+                defender.temp_cpow *= effect
+                pre_effect_dict["pre effect"]+=(f"{defender.name.title()} copied the stat boost! ")
+        
+        if title == "lpow_mod":
+            attacker.temp_lpow *= effect
+            pre_effect_dict["pre effect"]+=(f"LPOW multipled by {effect}! ")
+            if defender.copypaste:
+                defender.temp_lpow *= effect
+                pre_effect_dict["pre effect"]+=(f"{defender.name.title()} copied the stat boost! ")
+
         if title == "first_attack":
             if attacker.first_attack:
                 pre_effect_dict["pre effect"]+=(f"{attacker.name.title()} made the first post! ")
@@ -86,7 +114,14 @@ def post_attack_effect(attacker, defender, attack):
 
         if title == "as_boost":
                 attacker.AS += effect
-                post_effect_dict["post effect"]= f"Gained {effect} AS!"
+                post_effect_dict["post effect"]+=(f"Gained {effect} AS!")
+
+    if defender.regenerate > 0:
+        health_gain = defender.regenerate * defender.max_health
+        defender.stats["health"]+=health_gain
+        if defender.stats["health"] > defender.max_health:
+            defender.stats["health"] = defender.max_health
+        post_effect_dict["post effect"]+=(f'{defender.name.title()} restored {health_gain} health!')
 
     return post_effect_dict
     

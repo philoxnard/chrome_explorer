@@ -144,6 +144,7 @@ def wild_phox_take_turn(phox, phoxes):
         phox.AS -= phox.AS_threshold
         phox.can_act = False
         update_RAM(phox)
+        print('made it to the end of the wild_phoxs turn')
         if defender.disconnected:
             info_dict["swap needed"] = "Your phox has disconnected. \
                                         Swap to a different phox in your party."
@@ -168,6 +169,7 @@ def player_phox_takes_turn(phoxes, attack_name):
                         phox.is_attacking = False
                         phox.AS -= phox.AS_threshold
                         phox.can_act = False
+                        print('made it to the end of the players turn')
                         return info_dict
                     else:
                         print("Not enough RAM")

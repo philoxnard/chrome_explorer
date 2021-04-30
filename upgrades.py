@@ -29,6 +29,16 @@ def get_upgrade_effects(upgrade_string, phox, upgradeDB):
             if title == "cpow_boost":
                 phox.stats["cpow"] += effect
 
+            if title == "csec_boost":
+                phox.stats["csec"] += effect
+
+            if title == "lsec_boost":
+                phox.stats["lsec"] += effect
+
+            if title == "hp_boost":
+                phox.max_health += effect
+                phox.stats["health"] += effect
+
             if title == "spd_boost":
                 phox.stats["speed"] += effect
             
@@ -44,7 +54,9 @@ def get_upgrade_effects(upgrade_string, phox, upgradeDB):
 
             if title == "copypaste":
                 phox.copypaste = True
-                print('giving the phox copy/paste')
+
+            if title == "regenerate":
+                phox.regenerate += effect
 
             if title == "spd_mod":
                 phox.stats["speed"] = int(phox.stats["speed"] * effect)

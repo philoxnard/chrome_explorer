@@ -94,7 +94,9 @@ def get_family_mod(attacker, defender, attack):
     for family in defender.family:
         if family in attack.advantages:
             mod *= 2
+            print('multiplying damage by 2')
         if family in attack.disadvantages:
+            print('halving damage')
             mod /= 2
         if family in attack.zero_effects:
             mod *= 0
@@ -103,6 +105,7 @@ def get_family_mod(attacker, defender, attack):
 def get_STAB(attacker, attack):
     mod = float(1)
     if attack.family in attacker.family:
+        print('multiplying damage by 1.5')
         mod *= 1.5
     return mod
 

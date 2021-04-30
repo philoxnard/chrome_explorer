@@ -33,6 +33,8 @@ def initialize_encounter(self):
         self.wild_phox.name = self.wild_phox.species
         # Make sure the game knows that the phox is wild
         self.wild_phox.is_wild = True
+        for attack in self.wild_phox.attacks:
+            print(attack.name)
         # Set the temp stats, RAM, and name for the phoxes in your party
         # Also resets some other aspects of combat
         for phox in self.player.party:
