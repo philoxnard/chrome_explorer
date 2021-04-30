@@ -27,7 +27,9 @@ def combat(self):
                 #     print("swap needed")
                 #     self.combat_state = "waiting"
             else:
-                self.combat_state = "waiting" 
+                self.combat_state = "waiting"
+            for phox in self.active_phoxes:
+                phox.turns_active += 1 
         else:
             increment_speed(self.active_phoxes)
             combat(self)

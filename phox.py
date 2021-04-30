@@ -52,6 +52,16 @@ class Phox:
         # if the phox switches out
         self.first_attack = True
 
+        # How many turns a phox has been active for
+        self.turns_active = 0
+
+        # Stats that alter the effectiveness of super effective and not very 
+        # effective moves used by this Phox and against this Phox
+        self.advantage_mod = 1
+        self.disadvantage_mod = 1
+        self.weakness_mod = 1
+        self.resistance_mod = 1
+
         # When a phox loses all of its HP, it disconnects
         self.disconnected = False
 

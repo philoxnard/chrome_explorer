@@ -86,18 +86,19 @@ def get_other_mod(attacker, defender, attack):
     family_mod = get_family_mod(attacker, defender, attack)
     STAB = get_STAB(attacker, attack)
     special_family_mod = get_special_family_mod(attacker, attack)
-    mod = float(STAB*family_mod*attacker.temp_damage_mod*special_family_mod*attacker.repost_mod)
+    attack_specific_mod = get_attack_specific_mod(attacker, attack)
+    mod = float(STAB*family_mod*attacker.temp_damage_mod*special_family_mod*attack_specific_mod)
     return mod
 
 def get_family_mod(attacker, defender, attack):
     mod = float(1)
     for family in defender.family:
         if family in attack.advantages:
-            mod *= 2
+            mod *= 2*attacker.advantage_mod*defender.weakness_mod
             print('multiplying damage by 2')
         if family in attack.disadvantages:
             print('halving damage')
-            mod /= 2
+            mod *= 1/(2*attacker.disadvantage_mod*defender.resistance_mod)
         if family in attack.zero_effects:
             mod *= 0
     return mod
@@ -113,7 +114,15 @@ def get_special_family_mod(attacker, attack):
     mod = float(1)
     if attack.family == "data":
         mod *= attacker.data_mod
-        [print('boosting Data attack')]
+        print('boosting Data attack')
+    return mod
+
+def get_attack_specific_mod(attacker, attack):
+    mod = float(1)
+    if attack.name == "proof of work":
+        mod = attacker.PoW_mod
+    if attack.name == "repost":
+        mod = attacker.repost_mod
     return mod
 
 

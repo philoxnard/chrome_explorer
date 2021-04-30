@@ -88,4 +88,8 @@ def reset_phox(phox):
     phox.name = phox.species
     phox.RAM = phox.max_RAM
     phox.AS = phox.base_AS
+    phox.turns_active = 0
+
+    # Attack specific modifiers
     phox.repost_mod = 1
+    phox.PoW_mod = 1

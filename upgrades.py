@@ -41,6 +41,18 @@ def get_upgrade_effects(upgrade_string, phox, upgradeDB):
 
             if title == "spd_boost":
                 phox.stats["speed"] += effect
+
+            if title == "res_mod":
+                phox.resistance_mod *= effect
+
+            if title == "weak_mod":
+                phox.weakness_mod *= effect
+
+            if title == "adv_mod":
+                phox.advantage_mod *= effect
+
+            if title == "dadv_mod":
+                phox.disadvantage_mod *= effect
             
             if title == "new_attack":
                 phox.attack_strings.append(effect)
