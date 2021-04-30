@@ -149,14 +149,26 @@ def post_attack_effect(attacker, defender, attack):
 
         if title == "as_boost":
                 attacker.AS += effect
-                post_effect_dict["post effect"]+=(f"Gained {effect} AS!")
+                post_effect_dict["post effect"]+=(f"Gained {effect} AS! ")
 
     if defender.regenerate > 0:
         health_gain = int(defender.regenerate * defender.max_health)
         defender.stats["health"]+=health_gain
         if defender.stats["health"] > defender.max_health:
             defender.stats["health"] = defender.max_health
-        post_effect_dict["post effect"]+=(f'{defender.name.title()} restored {health_gain} health!')
+        post_effect_dict["post effect"]+=(f'{defender.name.title()} restored {health_gain} health! ')
+
+
+    # Status effects
+    if "node" in attacker.status:
+        attacker.turns_node += 1
+        health_lost = int(attacker.max_health*attacker.turns_node*.05)
+        attacker.stats["health"] -= health_lost
+        if attacker.stats["health"] <= 0:
+            attacker.stats["health"] = 0
+            attacker.disconnected = True
+        post_effect_dict["post effect"]+=(f'{attacker.name.title()} lost {health_lost} health to NODE! ')
+
 
     return post_effect_dict
     

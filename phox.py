@@ -29,6 +29,7 @@ class Phox:
 
         self.status = []
         self.immunities = []
+        self.turns_node = 0
 
         # Populated with the actual class instances, not just strings
         self.attacks = []
