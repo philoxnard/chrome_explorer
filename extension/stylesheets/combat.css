@@ -133,11 +133,12 @@
 
 .nextTurn {
     position: absolute;
-    left: 140px;
+    right: 5px;
     font-size: 14px;
     height: 20px;
     line-height: 20px;
     bottom: 5px;
+    width: 80px;
 }
 
 .readout {
