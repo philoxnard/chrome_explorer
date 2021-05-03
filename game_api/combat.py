@@ -8,7 +8,7 @@ from game_api.handle_attack import execute_attack
 
 # Start of the combat chain
 def combat(self):
-    self.combat_info_dict = None
+    self.combat_info_dict = {}
     if self.wild_phox.disconnected:
         self.handle_experience(self.active_phoxes[0], self.wild_phox, self.player, self.players)
         self.state = "encounter cleanup"
@@ -47,7 +47,8 @@ def execute_player_attack(self):
         self.combat_info_dict["swap needed"] = \
            "Your phox has disconnected. \
             Swap to a different phox in your party."
-    if self.combat_info_dict:
+        self.combat_state = "waiting"
+    if not "swap needed" in self.combat_info_dict:
         self.combat_state = None
         self.player_attack = None
 
@@ -180,7 +181,7 @@ def player_phox_takes_turn(phoxes, attack_name):
                         return info_dict
                     else:
                         print("Not enough RAM")
-                        return None
+                        # return None
 
 def check_shutdown(party):
     if all(phox.disconnected for phox in party):

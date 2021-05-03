@@ -112,6 +112,11 @@ socket.on('callback view party', function(){
     socket.emit('view party', sid)
 })
 
+socket.on('not enough RAM', function(){
+    $(".readout").html("It's your turn!")
+    $('.readout').append('<br>Not enough RAM! ')
+})
+
 $("#content").on('mouseover', '.attackOption', function(){
     for (i=0; i<globalAttacks.length; i++){
         if (this.innerHTML == globalAttacks[i]["name"]){

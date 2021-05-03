@@ -162,11 +162,16 @@ def handle_attack_click(attack_name, sid, methods=["GET"]):
                 __logger.info(attack_name)
                 if not game.active_phoxes[0].disconnected:
                     game.player_attack = attack_name.lower()
-                    game.execute_player_attack()
-                    info_dict = game.get_info_dict()
-                    socketio.emit('draw details', info_dict, room=sid)
-                    readout = game.combat_info_dict
-                    socketio.emit('update readout', readout, room=sid)
+                    for attack in game.active_phoxes[0].attacks:
+                        if attack.name == game.player_attack:
+                            if game.active_phoxes[0].RAM >= attack.cost:
+                                game.execute_player_attack()
+                                info_dict = game.get_info_dict()
+                                socketio.emit('draw details', info_dict, room=sid)
+                                readout = game.combat_info_dict
+                                socketio.emit('update readout', readout, room=sid)
+                            else:
+                                socketio.emit('not enough RAM', room=sid)
                 else:
                     print('the phox is disconnected ')
 
