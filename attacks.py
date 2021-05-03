@@ -144,7 +144,7 @@ def pre_attack_effect(attacker, defender, attack):
         for phox_fam in defender.family:
             if phox_fam in attack.advantages:
                 null_field_success = True
-        if not null_field_success:
+        if not null_field_success and attack.damage > 0:
             attacker.temp_damage_mod = 0
             pre_effect_dict["pre effect"]+=(f"{defender.name.title()}'s Null Field warped the attack!")
 
