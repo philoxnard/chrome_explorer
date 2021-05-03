@@ -26,7 +26,7 @@ def combat(self):
                 if all(phox.disconnected for phox in self.player.party):
                     self.player.shutdown = True
                     self.combat_info_dict["swap needed"] = \
-                        "You have disconnected! Hit 'Run' and go to \
+                        "You have shut down! Hit 'Run' and go to \
                         Phoxtrot.com to heal your Phoxes"
                 # elif is_swap_needed(self.active_phoxes):
                 #     print("swap needed")
@@ -43,7 +43,13 @@ def combat(self):
 
 def execute_player_attack(self):
     self.combat_info_dict = player_phox_takes_turn(self.active_phoxes, self.player_attack)
-    if self.active_phoxes[0].disconnected:
+    if all(phox.disconnected for phox in self.player.party):
+        print("Shutdown!")
+        self.player.shutdown = True
+        self.combat_info_dict["swap needed"] = \
+            "You have shut down! Hit 'Run' and go to \
+            Phoxtrot.com to heal your Phoxes"
+    elif self.active_phoxes[0].disconnected:
         self.combat_info_dict["swap needed"] = \
            "Your phox has disconnected. \
             Swap to a different phox in your party."

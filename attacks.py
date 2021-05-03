@@ -139,6 +139,15 @@ def pre_attack_effect(attacker, defender, attack):
             elif effect in defender.status:
                 pre_effect_dict["pre effect"]+=(f"{defender.name.title()} was already afflicted by {effect}! ")
 
+    if defender.null_field:
+        null_field_success = False
+        for phox_fam in defender.family:
+            if phox_fam in attack.advantages:
+                null_field_success = True
+        if not null_field_success:
+            attacker.temp_damage_mod = 0
+            pre_effect_dict["pre effect"]+=(f"{defender.name.title()}'s Null Field warped the attack!")
+
     return pre_effect_dict
 
 

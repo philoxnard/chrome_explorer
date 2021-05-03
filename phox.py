@@ -81,6 +81,7 @@ class Phox:
         ##### List of possible passive upgrade abilities 
         self.copypaste = False
         self.regenerate = 0
+        self.null_field = False
 
         ##### List of possible mods for specific attakcs
         self.repost_mod = 1

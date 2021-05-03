@@ -64,12 +64,6 @@ def get_upgrade_effects(upgrade_string, phox, upgradeDB):
             if title == "AS_boost":
                 phox.base_AS += effect
 
-            if title == "copypaste":
-                phox.copypaste = True
-
-            if title == "regenerate":
-                phox.regenerate += effect
-
             if title == "spd_mod":
                 phox.stats["speed"] = int(phox.stats["speed"] * effect)
 
@@ -77,5 +71,17 @@ def get_upgrade_effects(upgrade_string, phox, upgradeDB):
                 phox.data_mod *= effect
                 print(phox.data_mod)
 
+            if title == "copypaste":
+                phox.copypaste = True
+
+            if title == "regenerate":
+                phox.regenerate += effect
+
+            if title == "null_field":
+                phox.null_field = True
+
+            if title == "immunity":
+                for status in effect:
+                    phox.immunities.append(status)
 
             

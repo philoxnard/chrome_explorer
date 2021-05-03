@@ -88,6 +88,8 @@ def reset_phox(phox):
     phox.name = phox.species
     phox.RAM = phox.max_RAM
     phox.AS = phox.base_AS
+    phox.can_act = False
+    phox.is_attacking = False
     phox.turns_active = 0
 
     # Status effects
