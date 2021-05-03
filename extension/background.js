@@ -1,5 +1,5 @@
 const addr = 'http://127.0.0.1:5000'
-// "18.222.237.192:8000"
+// "http:18.222.237.192:8000"
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
     if (changeInfo.url){

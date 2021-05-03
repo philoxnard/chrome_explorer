@@ -91,6 +91,7 @@ def reset_phox(phox):
     phox.can_act = False
     phox.is_attacking = False
     phox.turns_active = 0
+    phox.first_attack = False
 
     # Status effects
     phox.turns_node = 0
