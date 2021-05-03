@@ -47,6 +47,7 @@ def snip_domain(domain):
 def get_region(domain, region_dict):
     for region, region_list in region_dict.items():
         if domain in region_list:
+            print(region)
             return region
-        else:
-            return "uncharted"
+    print('uncharted')
+    return "uncharted"

@@ -12,7 +12,7 @@ def handle_phoxtrot_site(self):
     for phox in self.player.party:
         phox.disconnected = False
         phox.stats["health"] = phox.max_health
-        phox.status = None
+        phox.status = []
     print('healing your phoxes')
 
 def get_collection_data(self):

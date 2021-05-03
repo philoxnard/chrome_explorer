@@ -13,6 +13,11 @@ def combat(self):
         self.handle_experience(self.active_phoxes[0], self.wild_phox, self.player, self.players)
         self.state = "encounter cleanup"
         self.encounter_cleanup
+    elif self.active_phoxes[0].disconnected:
+        print('detected disconnect')
+        self.combat_state = "waiting"
+        self.combat_info_dict = {"swap needed": "Your phox has disconnected. \
+                                            Swap to a different phox in your party."}
     else:
         phox = check_for_turn(self.active_phoxes)
         if phox:
@@ -33,9 +38,15 @@ def combat(self):
         else:
             increment_speed(self.active_phoxes)
             combat(self)
+    if self.combat_info_dict:
+        print(self.combat_info_dict)
 
 def execute_player_attack(self):
     self.combat_info_dict = player_phox_takes_turn(self.active_phoxes, self.player_attack)
+    if self.active_phoxes[0].disconnected:
+        self.combat_info_dict["swap needed"] = \
+           "Your phox has disconnected. \
+            Swap to a different phox in your party."
     if self.combat_info_dict:
         self.combat_state = None
         self.player_attack = None
@@ -137,23 +148,17 @@ def upkeep(phox, phoxes):
 def wild_phox_take_turn(phox, phoxes):
     # if all(not phox.disconnected for phox in phoxes):
     defender = upkeep(phox, phoxes)
-    random_max = len(phox.attacks) - 1
-    num = random.randint(0, random_max)
-    if phox.attacks[num].cost <= phox.RAM:
-        attack = phox.attacks[num]
-        info_dict = execute_attack(phox, defender, attack)
-        phox.is_attacking = False
-        phox.AS -= phox.AS_threshold
-        phox.can_act = False
-        update_RAM(phox)
-        print('made it to the end of the wild_phoxs turn')
-        if defender.disconnected:
-            info_dict["swap needed"] = "Your phox has disconnected. \
-                                        Swap to a different phox in your party."
-        return info_dict
-    else:
-        print("Not enough RAM")
-        wild_phox_take_turn(phox, phoxes)
+    attack = determine_wild_phox_attack(phox, defender)
+    info_dict = execute_attack(phox, defender, attack)
+    phox.is_attacking = False
+    phox.AS -= phox.AS_threshold
+    phox.can_act = False
+    update_RAM(phox)
+    print('made it to the end of the wild_phoxs turn')
+    if defender.disconnected:
+        info_dict["swap needed"] = "Your phox has disconnected. \
+                                    Swap to a different phox in your party."
+    return info_dict
         
 def player_phox_takes_turn(phoxes, attack_name):
     # if all(not phox.disconnected for phox in phoxes):
@@ -199,3 +204,46 @@ def swap_phoxes(active_phoxes, party):
     num = int(input("Which phox would you like to swap to? "))
     phox = party[num]
     active_phoxes.insert(0, phox)
+
+def determine_wild_phox_attack(attacker, defender):
+    attack = check_zero_cost_attack(attacker, defender)
+    if attack:
+        print(f'returning {attack}')
+        return attack
+    attack = not_zero_cost_attack(attacker, defender)
+    print(f'returning {attack}')
+    return attack
+
+def check_zero_cost_attack(attacker, defender):
+    attack_costs = []
+    for attack in attacker.attacks:
+        print(f'{attack.name} costs {attack.cost}')
+        attack_costs.append(attack.cost)
+    attack_costs.sort()
+    print(f' the attack costs are: {attack_costs}')
+    print(f'attacker ram: {attacker.RAM}')
+    if attacker.RAM < attack_costs[1]:
+        for attack in attacker.attacks:
+            if attack.cost == 0:
+                return attack
+
+def not_zero_cost_attack(attacker, defender):
+    attack_chosen = False
+    while attack_chosen == False:
+        potential_attacks = []
+        for attack in attacker.attacks:
+            if attack.cost > 0:
+                potential_attacks.append(attack)
+        random_max = len(potential_attacks) - 1
+        num = random.randint(0, random_max)
+        attack = potential_attacks[num]
+        if attacker.RAM >= attack.cost:
+            print('selected attack ' + attack.name.title())
+            attacker.RAM -= attack.cost
+            attack_chosen = True
+            return attack
+        else:
+            print('Not enough RAM')
+        # not_zero_cost_attack(attacker, defender)
+
+    

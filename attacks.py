@@ -167,6 +167,7 @@ def post_attack_effect(attacker, defender, attack):
         if attacker.stats["health"] <= 0:
             attacker.stats["health"] = 0
             attacker.disconnected = True
+            print('phox disconnected due to NODE')
         post_effect_dict["post effect"]+=(f'{attacker.name.title()} lost {health_lost} health to NODE! ')
 
 
@@ -179,9 +180,3 @@ def determine_clash(attacker, defender, effect):
     print(defender.stats[defender_stat])
     if attacker.stats[attacker_stat] > defender.stats[defender_stat]:
         return True
-
-# def check_copy_paste_pre(defender, pre_effect_dict, temp_stat, stat_mod):
-#     if defender.copypaste == True:
-#         defender.temp_stat *= stat_mod
-#         pre_effect_dict["pre effect"]+=(f"Opponent copied the stat boost! ")
-#     return pre_effect_dict

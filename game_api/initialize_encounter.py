@@ -96,3 +96,5 @@ def reset_phox(phox):
     # Attack specific modifiers
     phox.repost_mod = 1
     phox.PoW_mod = 1
+
+    print(f'phox status is {phox.status}')

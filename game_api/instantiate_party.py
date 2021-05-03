@@ -137,6 +137,7 @@ def get_phox_attacks(phox, attackDB, familyDB):
             attack.plain_text_effect = doc["plain text effect"]
             get_advantages(attack, familyDB)
             phox.attacks.append(attack)
+    phox.attack_strings = []
 
 # family = familyDB.find({"name": attack.name})
 # for doc in family:

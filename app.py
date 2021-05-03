@@ -158,13 +158,17 @@ def handle_attack_click(attack_name, sid, methods=["GET"]):
     for game in games:
         if game.ip == ip:
             if game.combat_state == "waiting":
+                print('found')
                 __logger.info(attack_name)
-                game.player_attack = attack_name.lower()
-                game.execute_player_attack()
-                info_dict = game.get_info_dict()
-                socketio.emit('draw details', info_dict, room=sid)
-                readout = game.combat_info_dict
-                socketio.emit('update readout', readout, room=sid)
+                if not game.active_phoxes[0].disconnected:
+                    game.player_attack = attack_name.lower()
+                    game.execute_player_attack()
+                    info_dict = game.get_info_dict()
+                    socketio.emit('draw details', info_dict, room=sid)
+                    readout = game.combat_info_dict
+                    socketio.emit('update readout', readout, room=sid)
+                else:
+                    print('the phox is disconnected ')
 
 @socketio.on('get cleanup info')
 def handle_combat_cleanup(sid, methods=["GET"]):
