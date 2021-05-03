@@ -38,7 +38,7 @@ def handle_new_connection(sid, methods=['GET', "POST"]):
                 if game.combat_info_dict:
                     readout = game.combat_info_dict
                     socketio.emit('update readout', readout, room=sid)
-                if game.combat_state == "waiting":
+                elif game.combat_state == "waiting":
                     socketio.emit('your turn readout', room=sid)
                 if game.reload_needed:
                     playerinfo = game.players.find({"username": game.player.username})

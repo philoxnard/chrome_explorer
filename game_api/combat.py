@@ -239,7 +239,6 @@ def not_zero_cost_attack(attacker, defender):
         attack = potential_attacks[num]
         if attacker.RAM >= attack.cost:
             print('selected attack ' + attack.name.title())
-            attacker.RAM -= attack.cost
             attack_chosen = True
             return attack
         else:
