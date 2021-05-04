@@ -42,7 +42,7 @@ def add_phox(phox_name, playerDB, player, nickname):
     phox_dict["level"] = 1
     phox_dict["upgrade indexes"] = []
     phox_dict["nickname"] = nickname
-    phox_dict["in_party"] = False
+    phox_dict["in_party"] = 10
     species_string = "collection." + phox_name
     playerDB.update({"username": player.username}, 
     {"$set":{

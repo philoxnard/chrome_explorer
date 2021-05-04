@@ -24,7 +24,7 @@ def swap_collection(self, phox_species):
 
 def pop_third_phox(party, player, playerDB):
     if len(party) == 3:
-        third_phox = self.player.party[2]
+        third_phox = player.party[2]
         party.pop(2)
         in_party_string = "collection." + third_phox.species + ".in_party"
         playerDB.update({"username": player.username},

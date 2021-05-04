@@ -118,10 +118,9 @@ def pre_attack_effect(attacker, defender, attack):
         if title == "first_attack":
             if attacker.first_attack:
                 pre_effect_dict["pre effect"]+=(f"{attacker.name.title()} made the first post! ")
-                attack.damage = effect
             elif not attacker.first_attack:
                 pre_effect_dict["pre effect"]+=(f"Too late... ")
-                attack.damage = 0
+                attacker.temp_damage_mod *= 0
 
         if title == "repost_ramp":
             pre_effect_dict["pre effect"]+=(f"{attack.name.title()} damage multiplied by {effect}! ")
@@ -145,7 +144,7 @@ def pre_attack_effect(attacker, defender, attack):
             if phox_fam in attack.advantages:
                 null_field_success = True
         if not null_field_success and attack.damage > 0:
-            attacker.temp_damage_mod = 0
+            attacker.temp_damage_mod *= 0
             pre_effect_dict["pre effect"]+=(f"{defender.name.title()}'s Null Field warped the attack!")
 
     return pre_effect_dict
@@ -161,11 +160,12 @@ def post_attack_effect(attacker, defender, attack):
                 post_effect_dict["post effect"]+=(f"Gained {effect} AS! ")
 
     if defender.regenerate > 0:
-        health_gain = int(defender.regenerate * defender.max_health)
-        defender.stats["health"]+=health_gain
-        if defender.stats["health"] > defender.max_health:
-            defender.stats["health"] = defender.max_health
-        post_effect_dict["post effect"]+=(f'{defender.name.title()} restored {health_gain} health! ')
+        if defender.stats["health"] > 0:
+            health_gain = int(defender.regenerate * defender.max_health)
+            defender.stats["health"]+=health_gain
+            if defender.stats["health"] > defender.max_health:
+                defender.stats["health"] = defender.max_health
+            post_effect_dict["post effect"]+=(f'{defender.name.title()} restored {health_gain} health! ')
 
 
     # Status effects
