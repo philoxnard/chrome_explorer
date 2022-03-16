@@ -2,6 +2,9 @@
 
 
 def encounter_cleanup(self):
+
+    self.state = "encounter cleanup"
+
     print('encounter is over')
     for phox in self.player.party:
         phox.can_act = False

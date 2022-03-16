@@ -8,80 +8,95 @@ from game_api.handle_attack import execute_attack
 
 # Start of the combat chain
 def combat(self):
+    """
+    An important thing to understand about this function is that it gets called whenever
+    the player clicks the "continue" button. That means that combat might "be over" before
+    the button even gets clicked - i.e. if a phox has already disconnected, so we check to
+    see if combat should end BEFORE we even get into the real meat of the combat code.
+    """
+
+    # Create an empty dictionary that will store information displayed to the user
     self.combat_info_dict = {}
+
+    # If the wild phox has disconnected, we process the end of the encounter
     if self.wild_phox.disconnected:
-        self.handle_experience(self.active_phoxes[0], self.wild_phox, self.player, self.players)
-        self.state = "encounter cleanup"
-        self.encounter_cleanup
+
+        processWildPhoxDisconnection(self)
+
+    # If the player's phox has disconnected, we process that
     elif self.active_phoxes[0].disconnected:
-        print('detected disconnect')
-        self.combat_state = "waiting"
-        self.combat_info_dict = {"swap needed": "Your phox has disconnected. \
-                                            Swap to a different phox in your party."}
+
+        processPlayerPhoxDisconnection(self)
+
     else:
+
+        # We check to see if there's a phox that's eligible to take its turn
         phox = check_for_turn(self.active_phoxes)
         if phox:
             if phox.is_wild:
                 self.combat_info_dict = wild_phox_take_turn(phox, self.active_phoxes)
-                if all(phox.disconnected for phox in self.player.party):
-                    self.player.shutdown = True
-                    self.combat_info_dict["swap needed"] = \
-                        "You have shut down! Hit 'Run' and go to \
-                        Phoxtrot.com to heal your Phoxes"
-                # elif is_swap_needed(self.active_phoxes):
-                #     print("swap needed")
-                #     self.combat_state = "waiting"
+
+                self.check_disconnect_and_shutdown()
+
             else:
                 self.combat_state = "waiting"
+
             for phox in self.active_phoxes:
-                phox.turns_active += 1 
+                phox.incrementTurns()
+
+        # If neither Phox is eligible to take a turn, we increment AS and repeat the combat loop
         else:
             increment_speed(self.active_phoxes)
-            combat(self)
+            self.combat()
+
     if self.combat_info_dict:
         print(self.combat_info_dict)
 
 def execute_player_attack(self):
     self.combat_info_dict = player_phox_takes_turn(self.active_phoxes, self.player_attack)
-    if all(phox.disconnected for phox in self.player.party):
-        print("Shutdown!")
-        self.player.shutdown = True
-        self.combat_info_dict["swap needed"] = \
-            "You have shut down! Hit 'Run' and go to \
-            Phoxtrot.com to heal your Phoxes"
-    elif self.active_phoxes[0].disconnected:
-        self.combat_info_dict["swap needed"] = \
-           "Your phox has disconnected. \
-            Swap to a different phox in your party."
-        self.combat_state = "waiting"
+    self.check_disconnect_and_shutdown()
+
+    # I think we need to check to see if the player phox d/c's on your own turn
+    # because it could die on its own turn to an effect like Node
+    if self.active_phoxes[0].disconnected:
+        processPlayerPhoxDisconnection
+
+    # Not sure exactly what this is for but it seems necessary
     if not "swap needed" in self.combat_info_dict:
         self.combat_state = None
         self.player_attack = None
 
 def check_disconnect_and_shutdown(self):
+
     if all(phox.disconnected for phox in self.player.party):
         print("Shutdown!")
         self.player.shutdown = True
+        self.combat_info_dict["swap needed"] = \
+                "You have shut down! Hit 'Run' and go to \
+                Phoxtrot.com to heal your Phoxes"
+
     elif self.active_phoxes[0].disconnected:
-        print("swap needed")
-        self.combat_state = "waiting"
+        processPlayerPhoxDisconnection()
 
 
 # Increment speed in the background
 def increment_speed(phoxes):
+
     for phox in phoxes:
         print(f"{phox.name} currently has {phox.AS} AS, with a speed stat of {phox.temp_speed}")
         phox.AS += phox.temp_speed
         print(f"{phox.name} increments to {phox.AS} AS")
-    
+
 
 # Check to see if any phox has passed their speed threshold and gets to act
 def check_for_turn(phoxes):
+
     for phox in phoxes:
         if phox.AS >= phox.AS_threshold:
             print(f'{phox.name} can act')
             phox.can_act = True
     tie = check_for_tie(phoxes)
+
     # If both phoxes can act
     if tie:
         active_phox = settle_tie(phoxes)
@@ -89,23 +104,24 @@ def check_for_turn(phoxes):
     # If neither phox can act
     elif not phoxes[0].can_act and not phoxes[1].can_act:
         return None
-    
+
     # If one phox can act
     else:
         for phox in phoxes:
             if phox.can_act:
                 return phox
-    
 
 # Determines if both phoxes have hit their threshold at the same time
 def check_for_tie(phoxes):
+
     if phoxes[0].can_act and phoxes[1].can_act:
         return True
     else:
         return False
 
-# In the event of a tie, decides who gets to act first   
+# In the event of a tie, decides who gets to act first
 def settle_tie(phoxes):
+
     if not phoxes[0].AS == phoxes[1].AS:
         phox = settle_tie_by_AS(phoxes)
     elif not phoxes[0].temp_speed == phoxes[1].temp_speed:
@@ -115,12 +131,14 @@ def settle_tie(phoxes):
     return phox
 
 def settle_tie_by_AS(phoxes):
+
     if phoxes[0].AS > phoxes[1].AS:
         return phoxes[0]
     if phoxes[1].AS > phoxes[0].AS:
         return phoxes[1]
 
 def settle_tie_by_temp_speed(phoxes):
+
     if phoxes[0].temp_speed > phoxes[1].temp_speed:
         return phoxes[0]
     elif phoxes[1].temp_speed > phoxes[0].temp_speed:
@@ -128,13 +146,26 @@ def settle_tie_by_temp_speed(phoxes):
 
 # Randomize turn order for ties that can't be decided by speed or photo_finish
 def randomize_turn(phoxes):
+
     num = random.randint(0, 1)
     print(f"{phoxes[num].name.title()} won the speed tie")
     return phoxes[num]
 
+def processWildPhoxDisconnection(game):
+
+    game.handle_experience(game.active_phoxes[0], game.wild_phox, game.player, game.players)
+    game.encounter_cleanup()
+
+def processPlayerPhoxDisconnection(game):
+
+    game.combat_state = "waiting"
+    game.combat_info_dict = {"swap needed": "Your phox has disconnected. \
+                                            Swap to a different phox in your party."}
+
 # Currently gets called only when a phox takes its turn
 # May change to be called any time any turn is taken
 # Or maybe even on every AS incrementation
+# NOTE: This should be a method of the Phox class
 def update_RAM(phox):
     if phox.RAM < phox.max_RAM:
         phox.RAM += phox.temp_rr
@@ -154,21 +185,23 @@ def upkeep(phox, phoxes):
 
 def wild_phox_take_turn(phox, phoxes):
     # if all(not phox.disconnected for phox in phoxes):
+
     defender = upkeep(phox, phoxes)
     attack = determine_wild_phox_attack(phox, defender)
     info_dict = execute_attack(phox, defender, attack)
-    phox.is_attacking = False
-    phox.AS -= phox.AS_threshold
-    phox.can_act = False
+
+    phox.cleanupAttack()
+
     update_RAM(phox)
     print('made it to the end of the wild_phoxs turn')
     if defender.disconnected:
         info_dict["swap needed"] = "Your phox has disconnected. \
                                     Swap to a different phox in your party."
     return info_dict
-        
+
 def player_phox_takes_turn(phoxes, attack_name):
     # if all(not phox.disconnected for phox in phoxes):
+
     print(attack_name)
     for phox in phoxes:
         if not phox.is_wild:
@@ -180,9 +213,9 @@ def player_phox_takes_turn(phoxes, attack_name):
                         print(f'executing attack {attack.name}')
                         info_dict = execute_attack(phox, defender, attack)
                         update_RAM(phox)
-                        phox.is_attacking = False
-                        phox.AS -= phox.AS_threshold
-                        phox.can_act = False
+
+                        phox.cleanupAttack()
+
                         print('made it to the end of the players turn')
                         return info_dict
                     else:

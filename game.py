@@ -4,7 +4,8 @@ import pymongo
 import json
 
 load_dotenv()
-mongo_URI = os.getenv("mongo_URI")
+# In the future, I'll need to put this mongo_URI into a dotenv file.
+mongo_URI = "mongodb+srv://userphil:o8puwmVASyTiebHB@cluster0.hmrog.mongodb.net/my_database?retryWrites=true&w=majority"
 client = pymongo.MongoClient(mongo_URI)
 db = client.my_database
 
@@ -14,15 +15,16 @@ class Game:
     """
 
     def __init__(self, ip):
-
+        print('initializing')
         # Used to keep games seperate between users
         self.ip = ip
 
         # Game state! Very important
         self.state = "initialize"
 
-        # Get all the info from the databases
-        # This may get tweaked or removed, might be really work heavy
+        # On initialization, we grab all of the information from the database and store
+        # them into variables here. Might be too work intensive, could possibly improve
+        # in the future
         self.regions = db.regions
         self.players = db.players
         self.phoxes = db.phoxes
@@ -84,18 +86,39 @@ class Game:
     from game_api.handle_phoxtrot_site import handle_phoxtrot_site, get_collection_data
     from game_api.handle_upgrades import select_upgrade
     from game_api.handle_collection_swap import swap_collection
-    
+
+    def get_state(self):
+        return self.state
+
+    def getPlayerActivePhox(self):
+        for phox in self.active_phoxes:
+            if phox.is_wild == False:
+                return phox
+
+    def getPlayerCollection(self):
+        """
+        This function returns the names of all of the phoxes that the user has in their collection
+        """
+
+        collection = []
+
+        player_in_DB = game.players.find({"username": game.player.username})
+        for doc in player_in_DB:
+            for phox in doc["collection"]:
+                collection.append(phox.title())
+
+        return collection
 
     # Runs when a game session is instantiated to grab the potential regions from the DB
     def get_region_dict(self):
         regions_dict = {}
+        print(self.regions)
         for doc in self.regions.find():
             region = doc["region"]
             domains = doc["domains"]
             regions_dict[region] = domains
         return regions_dict
 
-    # Will eventually need to pull info for art
     def get_info_dict(self):
         info_dict = {}
         info_dict["wild_phox_max_hp"]=self.wild_phox.max_health
@@ -121,3 +144,6 @@ class Game:
     def refresh_player(self):
         print('firing')
         self.players = db.players
+
+if __name__ == '__main__':
+    game = Game("localhost")

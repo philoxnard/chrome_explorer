@@ -7,25 +7,35 @@ from cryptography.fernet import Fernet
 
 # General handler for taking and processing login attempts
 # This entire library will likely change a lot when the front end attaches
-# Upon sucessful login, set game.state to "explore"
-def handle_login(self):
-    if self.state == "initialize":
-        password = get_encrypted_password(self.players, self.username)
-        if password:
-            valid = compare_passwords(self.password, self.secret_key, password)
-            # password = encrypt_password(self.password, self.secret_key)
-            # ^^^^ will be used for sign up ^^^^^
-            if valid:
-                print("Passwords match")
-                user = get_account(self.players, self.username)
-                self.player = generate_player(user)
-                self.instantiate_party()
-                self.state = "idle"
+# Upon sucessful login, set game.state to "idle"
 
-            elif not valid:
-                print("Password does not match")
-        else:
-            print("Username not found")
+def handle_login(self):
+    """
+    For testing purposes, this is very very basic right now. No password authentication, and no
+    check to ensure that the entered username is actually in the database.
+    """
+    if self.state == "initialize":
+
+            user = get_account(self.players, self.username)
+            self.player = generate_player(user)
+            self.instantiate_party()
+            self.state = "idle"
+        # password = get_encrypted_password(self.players, self.username)
+        # if password:
+        #     valid = compare_passwords(self.password, self.secret_key, password)
+        #     # password = encrypt_password(self.password, self.secret_key)
+        #     # ^^^^ will be used for sign up ^^^^^
+        #     if valid:
+        #         print("Passwords match")
+        #         user = get_account(self.players, self.username)
+        #         self.player = generate_player(user)
+        #         self.instantiate_party()
+        #         self.state = "idle"
+
+        #     elif not valid:
+        #         print("Password does not match")
+        # else:
+        #     print("Username not found")
 
 def terminal_test_login(self):
     user = get_account(self.players, "peeup")

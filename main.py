@@ -2,7 +2,7 @@ import game
 
 if __name__ == "__main__":
 
-    game = game.Game()
+    game = game.Game("127.0.0.1")
 
     while True:
         if game.state == "initialize":

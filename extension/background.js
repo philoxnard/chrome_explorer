@@ -30,9 +30,15 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
                 /////////////////////////////////////////////////////////////
                 if (data.state == "initialize encounter"){
                     console.log("You did it")
-                    registration.showNotification('Phoxtrot', {
-                        body: "You found a phox! Click the extention to fight it!",
-                    })
+
+                    // Experimenting with what's the best way to alert the user that they found a phox.
+                    // The notification thing is probably best, but iirc it didn't work when the program
+                    // was hosted on AWS and I'm not sure why.
+
+                    // registration.showNotification('Phoxtrot', {
+                    //     body: "You found a phox! Click the extention to fight it!",
+                    // })
+                    alert("You found a Phox! Click the extention to fight it!")
                 }
             })
         })
@@ -40,23 +46,23 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
 })
 
 
-chrome.tabs.onRemoved.addListener(function(tabid, removed){
-    fetch(addr+'/exit')
-    .then(function() {
-        console.log('Closing response detected')
-    })
-})
+// chrome.tabs.onRemoved.addListener(function(tabid, removed){
+//     fetch(addr+'/exit')
+//     .then(function() {
+//         console.log('Closing response detected')
+//     })
+// })
 
-addEventListener('unload', function(){
-    fetch(addr+'/exit')
-    .then(function() {
-        console.log('Closing response detected')
-    })
-})
+// addEventListener('unload', function(){
+//     fetch(addr+'/exit')
+//     .then(function() {
+//         console.log('Closing response detected')
+//     })
+// })
 
-addEventListener('beforeunload', function(){
-    fetch(addr+'/exit')
-    .then(function() {
-        console.log('Closing response detected')
-    })
-})
+// addEventListener('beforeunload', function(){
+//     fetch(addr+'/exit')
+//     .then(function() {
+//         console.log('Closing response detected')
+//     })
+// })

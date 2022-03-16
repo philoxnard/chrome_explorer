@@ -27,6 +27,7 @@ def instantiate_party(self):
     player = self.players.find({"username": self.player.username})
     for doc in player:
         self.player.collection = doc["collection"]
+    print(self.player.collection)
     for phox, dictionary in self.player.collection.items():
         if dictionary["in_party"] < 4:
             base_phox = get_base_phox(phox, self.phoxes)

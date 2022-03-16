@@ -55,7 +55,7 @@ class Phox:
         # How many turns a phox has been active for
         self.turns_active = 0
 
-        # Stats that alter the effectiveness of super effective and not very 
+        # Stats that alter the effectiveness of super effective and not very
         # effective moves used by this Phox and against this Phox
         self.advantage_mod = 1
         self.disadvantage_mod = 1
@@ -78,14 +78,62 @@ class Phox:
         # Set to true whenever a wild phox is instantiated
         self.is_wild = False
 
-        ##### List of possible passive upgrade abilities 
+        ##### List of possible passive upgrade abilities
         self.copypaste = False
         self.regenerate = 0
         self.null_field = False
 
         ##### List of possible mods for specific attakcs
         self.repost_mod = 1
-        
+
+    def cleanupAttack(self):
+        """
+        After a phox makes an attack, we call this function to clean up some of its attributes
+        """
+        self.is_attacking = False
+        self.AS -= self.AS_threshold
+        self.can_act = False
+
+    def doesPhoxHaveEnoughRAM(self, attack):
+
+        if self.RAM >= attack.cost:
+            return True
+
+        else:
+            return False
+
+
+    def getAttacksAsJSON(self):
+
+        json_list = []
+        for attack in self.attacks:
+            json_list.append(attack.serialize())
+
+        return json_list
+
+    def getFullJSONPhox(self):
+        json_attacks = []
+        json_upgrades = []
+        json_base_upgrades = []
+        for attack in self.attacks:
+            json_attacks.append(attack.serialize())
+        for index, row in enumerate(self.upgrade_tree):
+            json_upgrades.append([])
+            for upgrade in row:
+                json_upgrades[index].append(upgrade.serialize())
+        for upgrade in self.base_upgrades:
+            json_base_upgrades.append(upgrade.serialize())
+        json_phox = self.serialize()
+        json_phox["base upgrades"]= json_base_upgrades
+        json_phox["upgrade tree"] = json_upgrades
+        json_phox["attacks"] = json_attacks
+        return json_phox
+
+    def incrementTurns(self):
+        self.turns_active += 1
+
+    def resetUpgradeIndexes(self):
+        self.upgrade_indexes = []
 
     def serialize(self):
         stats = self.stats
