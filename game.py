@@ -65,7 +65,7 @@ class Game:
         self.cleanup_info_dict = {}
 
         # The max level for phoxes. If the game goes live, this may be increased
-        self.level_cap = 5
+        self.level_cap = 20
 
         # Set to true whenever a phox gets a change to its upgrade so that the game
         # knows to reinstantiate it when the popup closes
@@ -144,6 +144,14 @@ class Game:
     def refresh_player(self):
         print('firing')
         self.players = db.players
+
+    def swapActivePhox(self, old_phox, new_phox):
+
+        new_phox.enterCombat()
+        # there should probably be a function here that's like, old_phox.leaveCombat()
+        self.active_phoxes.remove(old_phox)
+        self.active_phoxes.insert(0, new_phox)
+        self.combat_state = None
 
 if __name__ == '__main__':
     game = Game("localhost")

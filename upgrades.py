@@ -12,8 +12,22 @@
 # based on the effect of the talent.
 
 # This way, talents can be updated by changing them in the database.
-# However, this document must be updated each time a talent is made with 
+# However, this document must be updated each time a talent is made with
 # a brand new effect.
+
+"""
+A quick reference dictionary of effects:
+
+new_attack - adds the attack to the phox's list of attacks
+stat_boost - adds a flat boost to the phox's stats
+stat_boost_after_attack - adds a flat boost to the phox's temp stats after each time they attack
+stat_mod - multiply the phox's stat by that amount
+NEEDS WORK immunity - gives immunity to the noted status effect OR attack family
+family_mod - multiply the damage the phox deals with that family of attack
+adv/dadv/weak/res_mod - change the effectiveness of weakness/resistances/advantage/disadvantage for that phox
+NEEDS WORK favored_foe - add that family to the phox's favored foe list
+
+"""
 
 def get_upgrade_effects(upgrade_string, phox, upgradeDB):
     upgrade = upgradeDB.find({"name": upgrade_string})
@@ -53,7 +67,7 @@ def get_upgrade_effects(upgrade_string, phox, upgradeDB):
 
             if title == "dadv_mod":
                 phox.disadvantage_mod *= effect
-            
+
             if title == "new_attack":
                 phox.attack_strings.append(effect)
 

@@ -78,14 +78,14 @@ def pre_attack_effect(attacker, defender, attack):
             if defender.copypaste:
                 defender.temp_lsec *= effect
                 pre_effect_dict["pre effect"]+=(f"{defender.name.title()} copied the stat boost! ")
-        
+
         if title == "cpow_mod":
             attacker.temp_cpow *= effect
             pre_effect_dict["pre effect"]+=(f"CPOW multipled by {effect}! ")
             if defender.copypaste:
                 defender.temp_cpow *= effect
                 pre_effect_dict["pre effect"]+=(f"{defender.name.title()} copied the stat boost! ")
-        
+
         if title == "lpow_mod":
             attacker.temp_lpow *= effect
             pre_effect_dict["pre effect"]+=(f"LPOW multipled by {effect}! ")
@@ -97,7 +97,7 @@ def pre_attack_effect(attacker, defender, attack):
         if title == "csec_drain":
             defender.temp_csec *= effect
             pre_effect_dict["pre effect"]+=(f"Defender CSEC multipled by {effect}! ")
-        
+
         if title == "lsec_drain":
             defender.temp_lsec *= effect
             pre_effect_dict["pre effect"]+=(f"Defender LSEC multipled by {effect}! ")
@@ -138,6 +138,7 @@ def pre_attack_effect(attacker, defender, attack):
             elif effect in defender.status:
                 pre_effect_dict["pre effect"]+=(f"{defender.name.title()} was already afflicted by {effect}! ")
 
+    # I'm pretty sure null_field works the same was as Miracle Guard for Shedinja
     if defender.null_field:
         null_field_success = False
         for phox_fam in defender.family:

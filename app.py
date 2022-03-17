@@ -1,3 +1,11 @@
+"""
+
+
+
+"""
+
+
+
 from flask import Flask, request, json, Response, render_template, session, jsonify
 from flask_cors import CORS
 from flask_socketio import SocketIO, send
@@ -194,7 +202,7 @@ def handle_combat_cleanup(sid, methods=["GET"]):
 @socketio.on('view party')
 def handle_party_view(sid, methods=["GET"]):
 
-    game = getGameSession()
+    game = getGameSession(games)
 
     # We need to put all of the information for each phox in a list, then send that list
     # to the front end so that it can be displayed
@@ -209,41 +217,54 @@ def handle_party_view(sid, methods=["GET"]):
     # in their PC
     if game.at_phoxtrot:
 
-        # Get the player object from the database
+        # Get the player's collection from the database
         collection = game.getPlayerCollection()
 
         socketio.emit('draw collection', collection, room=sid)
 
 @socketio.on('select phox')
 def handle_select_phox(raw_phox, sid, methods=["GET"]):
+    """
+    This function is called when the user selects a phox in their party. If we're in combat, we attempt
+    to swap the phox into combat - but only if the phox isn't disconnected. If we're not in combat, we
+    present the user with a detailed readout of the phox's stats and upgrades.
+    """
 
     game = getGameSession(games)
+
+    # Not sure why we need this, it must come over really dirty from the front end
     selected_phox = raw_phox.partition("<")[0].lower()
-    __logger.info(selected_phox)
-    for phox in game.player.party:
-        if phox.species == selected_phox:
-            __logger.info("found the selected phox")
-            __logger.info(game.state)
-            __logger.info(game.combat_state)
-            if phox.disconnected:
-                __logger.info("disconnected")
-            if game.state == "encounter" and game.combat_state == "waiting":
-                __logger.info("game state is correct")
-                if not phox.disconnected:
-                    __logger.info("the selected phox is not disconnected")
-                    for active_phox in game.active_phoxes:
-                        if not active_phox.is_wild:
-                            # function to reset phox's AS and temp stats
-                            active_phox.first_attack = True
-                            game.active_phoxes.remove(active_phox)
-                            game.active_phoxes.insert(0, phox)
-                            __logger.info(f'Swapping out {active_phox.name} for {phox.name}')
-                            active_phox.can_act = False
-                            game.combat_state = None
-                            socketio.emit('swapped phox', phox.name, room=sid)
-                            __logger.info(f'swapping to {phox.name}')
-            elif game.state == "idle" or game.state == "explore":
-                socketio.emit('view phox', selected_phox.title(), room=sid)
+    new_phox = getPhoxInParty(game, selected_phox)
+
+    # If we're in combat and it's the player's turn, then this function attempts to swap out the active phox
+    if game.state == "encounter" and game.combat_state == "waiting":
+
+        if new_phox.disconnected:
+
+            # If the phox is disconnected, we don't swap and should emit something to the front that says so.
+            __logger.info("disconnected")
+
+        elif not new_phox.disconnected:
+
+            # If the new phox isn't disconnected, then we want to swap it in.
+            # First, we get the phox that's actively in combat and is swapping out
+            active_phox = game.getPlayerActivePhox()
+
+            # function to reset phox's AS and temp stats
+            # ^^^^ This above comment was written here before. Not sure if it was an indication of what's happening,
+            #       or an indication of what NEEDS to happen.
+            game.swapActivePhox(active_phox, new_phox)
+
+            __logger.info(f'Swapping out {active_phox.name} for {new_phox.name}')
+
+            socketio.emit('swapped phox', new_phox.name, room=sid)
+
+
+    # If we aren't in combat, we just want to look at the phox's details
+    elif game.state == "idle" or game.state == "explore":
+
+        # Note - if this doesn't work, replace new_phox.species with selected_phox
+        socketio.emit('view phox', selected_phox.title(), room=sid)
 
 @socketio.on('reset upgrades')
 def handle_upgrade_reset(phox_species, sid, methods=["GET"]):
@@ -260,8 +281,13 @@ def handle_upgrade_reset(phox_species, sid, methods=["GET"]):
 def handle_upgrade_select(phox_species, row, option, sid, methods=["GET"]):
 
     game = getGameSession(games)
+    print('found game')
     phox = getPhoxInParty(game, phox_species)
+    print('found phox')
+    print(dir(phox))
     upgraded_phox = handleUpgradeSelect(game, phox, row, option)
+    print('found upgraded_phox?')
+    print(upgraded_phox)
 
     if upgraded_phox:
         socketio.emit('update upgrades', upgraded_phox.upgrade_indexes, room=sid)

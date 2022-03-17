@@ -102,6 +102,11 @@ class Phox:
         else:
             return False
 
+    def enterCombat(self):
+
+        # This function may need to also need to set the phox's temp stats to be equal to base stats
+        self.first_attack = True
+        self.can_act = False
 
     def getAttacksAsJSON(self):
 
